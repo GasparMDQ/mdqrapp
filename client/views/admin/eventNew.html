@@ -1,0 +1,29 @@
+<template name="eventNew">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="row">
+        <h3>Seleccione un nuevo evento</h3>
+        <p>
+          <button type="button" class="btn btn-primary" id="facebook-refresh-events">
+            <span class="glypicon glypicon-refresh"></span> Actualizar lista de eventos
+          </button>
+        </p>
+      </div>
+      {{#each eventos}}
+        <div class="row">
+          {{> eventNewShow}}
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</template>
+
+<template name="eventNewShow">
+    <div class="col-sm-4 col-sm-offset-1">
+      <div class="row">{{this.name}}</div>
+      <div class="row">{{this.startTime}}</div>
+    </div>
+    <div class="col-sm-2 col-sm-offset-1">
+      <a class="btn btn-success btn-block" href="#" {{#if existeEvento }}disabled="disabled">Ya existe{{else}}>Agregar {{/if}}</a>
+    </div>
+</template>

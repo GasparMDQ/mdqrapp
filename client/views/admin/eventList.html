@@ -1,0 +1,58 @@
+<template name="eventList">
+  <div class="row" id="alert-container">
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      {{#if eventos}}
+        {{#each eventos}}
+          {{> evento}}
+        {{/each}}
+      {{else}}
+        <p>No hay eventos disponibles.</p>
+      {{/if}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-2 col-sm-offset-1">
+      <a class="btn btn-primary btn-block" href="{{pathFor 'newEvent'}}">Nuevo evento</a>
+    </div>
+  </div>
+</template>
+
+<template name="evento">
+  <div class="col-md-10 col-md-offset-1">
+    <div class="row">
+      <div class="col-sm-7">
+        <h2>
+          {{this.name}}
+          {{#if this.active}}
+            <span class="badge badge-danger">active</span>
+          {{/if}}
+        </h2>
+      </div>
+      <div class="col-sm-4 col-sm-offset-1">
+        <h2></h2>
+        <div class="pull-right">
+          {{#unless this.active}}
+            <button type="button" class="btn btn-primary btn-sm">
+              <span class="glyphicon glyphicon-ok-sign"></span> Activar
+            </button>
+          {{/unless}}
+          <a class="btn btn-default btn-sm" href="#">
+            <span class="glyphicon glyphicon-edit"></span> Editar
+          </a>
+          <button type="button" class="btn btn-danger btn-sm">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="alert alert-info">
+          {{this.shortDescripcion}}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

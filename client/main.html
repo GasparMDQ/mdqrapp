@@ -1,0 +1,19 @@
+<head>
+  <title>MDQ Rollers App</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+</head>
+
+<template name="layout">
+  <div id="wrap">
+    <div id="nav">
+      {{> navbar}}
+    </div>
+    <div class="container">
+      <div id="header"></div>
+      {{yield}}
+    </div>
+    <div id="push"></div>
+  </div>
+  {{> footer}}
+</template>

@@ -1,0 +1,50 @@
+<template name="navbar">
+  {{#if currentUser }}
+    {{> navbarLogged}}
+  {{else}}
+    {{> navbarAnonymous}}
+  {{/if}}
+</template>
+
+<template name="navbarAnonymous">
+  <header class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button class="navbar-toggle btn" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">MDQ Rollers App</a>
+      </div>      
+      <nav class="navbar-collapse bs-navbar-collapse collapse" role="navigation" style="height: 1px;">
+      </nav>
+    </div>
+  </header>
+</template>
+
+<template name="navbarLogged">
+  <header class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button class="navbar-toggle btn" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+          <img src="{{pic}}" class="headerTinymanPhoto">
+        </button>
+        <a class="navbar-brand" href="/">MDQ Rollers App</a>
+      </div>      
+      <nav class="navbar-collapse bs-navbar-collapse collapse" role="navigation" style="height: 1px;">
+        <img src="{{pic}}" class="headerTinymanPhoto pull-right hidden-xs">
+        <ul class="nav navbar-nav">
+          {{#if currentUser }}
+            <li>
+              <a id="adminLnk" href="{{pathFor 'admin'}}">Administracion</a>
+            </li>
+          {{/if}}          
+          <li class="last">
+            <a id="exitLnk" href="#">Salir</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+</template>

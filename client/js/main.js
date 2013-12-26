@@ -1,0 +1,66 @@
+Meteor.subscribe('users');
+Meteor.subscribe('events');
+
+Meteor.methods({
+  updateUserProfile: function (data){
+    //Do validate first!!
+    console.log("Profile updated! (client side)");
+  }
+});
+
+if (Meteor.isClient) {
+}
+
+if (Meteor.isServer) {
+  Meteor.startup(function () {
+    // code to run on server at startup
+  });
+}
+
+// Routing data
+Router.configure({
+  layoutTemplate: 'layout'
+});
+
+Router.map(function () {
+
+  this.route('home', {
+    path: '/',
+    template: 'home'
+  });
+
+  this.route('profileEdit', {
+    path: '/profile',
+    template: 'profileEdit',
+    before: function (){
+      if(!Meteor.loggingIn() && !Meteor.user()) {
+        this.redirect("home");
+      }
+    }
+  });
+
+  this.route('admin', {
+    path: '/admin',
+    template: 'eventList',
+    //Incluir verificacion de permisos
+    before: function (){
+      if(!Meteor.loggingIn() && !Meteor.user()) {
+        this.redirect("home");
+      }
+    }
+  });
+
+  this.route('newEvent', {
+    path: '/admin/new',
+    template: 'eventNew',
+    //Incluir verificacion de permisos
+    before: function (){
+      if(!Meteor.loggingIn() && !Meteor.user()) {
+        this.redirect("home");
+      }
+      //Refrescar el listado de eventos del usuario
+      //Meteor.call('refreshUserAttendingEvents',Meteor.user());
+    }
+  });
+
+});

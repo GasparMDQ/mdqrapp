@@ -1,0 +1,76 @@
+/* CSS declarations go here */
+@CHARSET "UTF-8";
+html, body {
+  height: 100%;
+  background-color: white;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 12px;
+  word-wrap: break-word;
+}
+
+img {
+  border: none;
+}
+
+.clearfix {
+  clear:both;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right
+}
+
+#wrap {
+  min-height: 100%;
+  height: auto;
+  margin: 0 auto -60px;
+}
+
+#wrap > .container {
+  padding-top: 40px;
+}
+
+.container {
+  width: auto;
+  max-width: 940px;
+  padding: 0 15px;
+}
+
+.container .credit {
+  margin: 20px 0;
+}
+
+code {
+  font-size: 80%;
+}
+
+.bigPhoto {
+  border: 2px solid #222222;
+  border-top: 2px solid #222222;
+  -webkit-border-radius: 5px;
+  margin: 3px 5px 3px 3px;
+}
+
+.btn-home {
+  width: 250px;
+}
+
+.loading-indicator {
+  display: inline;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+textarea {
+  resize: none;
+}
+
+.badge-danger {
+  color: #ffffff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}

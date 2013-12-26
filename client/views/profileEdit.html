@@ -1,0 +1,34 @@
+<template name="profileEdit">
+<form class="form">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="form-group {{#if false}}has-error{{/if}}">
+      <label for="inpNom">Nombre </label>
+      <input id="inpNom" class="form-control" placeholder="Ingrese su nombre" value="{{perfil.nombre}}"/>
+    </div>
+    <div class="form-group {{#if false}}has-error{{/if}}">
+      <label class="control-label" for="inpApe">Apellido </label>
+      <input id="inpApe" class="form-control" placeholder="Ingrese su apellido" value="{{perfil.apellido}}"/>
+    </div>
+    <div class="form-group {{#if false}}has-error{{/if}}">
+      <label class="control-label" for="inpDoc">Número de Documento </label>
+      <input type="number" id="inpDoc" class="form-control" placeholder="Ingrese su número de documento" value="{{perfil.documento}}"/>
+      <p class="help-block">Ingrese solo los números, sin puntos ni espacios.</p>
+    </div>
+    <div class="form-group {{#if false}}has-error{{/if}}">
+      <label class="control-label" for="inpTel">Teléfono </label>
+      <input type="number" id="inpTel" class="form-control" placeholder="Ingrese su teléfono" value="{{perfil.telefono}}"/>
+      <p class="help-block">Recordá poner el código de área. Por ejemplo si la linea es de Mar del Plata: 223xxxxxxx</p>
+    </div>
+    <div class="form-group {{#if false}}has-error{{/if}}">
+      <label class="control-label" for="inpTelEm">Teléfono de Emergencias </label>
+      <input type="number" id="inpTelEm" class="form-control" placeholder="Ingrese un teléfono para llamar en caso de alguna emergencia" value="{{perfil.telefonoEmergencia}}"/>
+      <p class="help-block">Recordá poner el código de área. Por ejemplo si la linea es de Mar del Plata: 223xxxxxxx</p>
+    </div>
+    <div class="form-group {{#if false}}has-error{{/if}}">
+      <label class="control-label" for="inpOS">Obra Social </label>
+      <input id="inpOS" class="form-control" placeholder="Ingrese su obra social" value="{{perfil.obraSocial}}"/>
+    </div>
+    <button type="submit" class="btn btn-default btn-success">Actualizar perfil</button>
+  </div>
+</form>
+</template>
