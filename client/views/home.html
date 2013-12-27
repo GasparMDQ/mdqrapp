@@ -45,29 +45,29 @@
               {{#if isEventOpen}}
                 <p>
                   {{#if isProfileComplete}}
-                    <a class="btn btn-lg btn-block {{#if isRoomSelected }}btn-success{{else}}btn-primary{{/if}}" href="#">
+                    <button class="btn btn-lg btn-block {{#if isRoomSelected }}btn-success{{else}}btn-primary{{/if}}">
                   {{else}}
-                    <a class="btn btn-default btn-lg btn-block" disable="disable" href="">
+                    <button class="btn btn-default btn-lg btn-block" disabled="disabled">
                   {{/if}}
                   <span class="glyphicon glyphicon-ok"></span> Elegí donde dormir
-                  </a>
+                  </button>
                 </p>
                 <p>
                   {{#if isProfileComplete}}
-                    <a class="btn btn-lg btn-block {{#if isBusSelected }}btn-success{{else}}btn-primary{{/if}}" href="#">
+                    <button class="btn btn-lg btn-block {{#if isBusSelected }}btn-success{{else}}btn-primary{{/if}}">
                   {{else}}
-                    <a class="btn btn-default btn-lg btn-block" disable="disable" href="">
+                    <button class="btn btn-default btn-lg btn-block" disabled="disabled">
                   {{/if}}
                   <span class="glyphicon glyphicon-ok"></span> Elegí donde viajar
-                  </a>
+                  </button>
                 </p>
               {{/if}}
 
               {{#if isEventEnabled}}
                 <p>
-                  <a class="btn btn-lg btn-block btn-success" href="#">
+                  <button class="btn btn-lg btn-block btn-success">
                     <span class="glyphicon glyphicon-ok"></span> Chismógrafo!
-                  </a>
+                  </button>
                 </p>
               {{/if}}
             {{/if}}

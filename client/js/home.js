@@ -17,12 +17,12 @@ if (Meteor.isClient) {
   };
 
   Template.homeLogged.isEventOpen = function () {
-    //Opera sobr el evento activo
+    //Opera sobr el evento open
     return true;
   };
 
   Template.homeLogged.isEventEnabled = function () {
-    //Opera sobr el evento activo
+    //Opera sobr el evento si esta enabled
     return false;
   };
 

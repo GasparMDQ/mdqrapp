@@ -1,3 +1,10 @@
+var Trunc = function(string, n, useWordBoundary){
+  var toLong = string.length>n,
+  s_ = toLong ? string.substr(0,n-1) : string;
+  s_ = useWordBoundary && toLong ? s_.substr(0,s_.lastIndexOf(' ')) : s_;
+  return  toLong ? s_ + ' ...' : s_;
+};
+
 Meteor.methods({
   refreshUserAttendingEvents: function(user){
     var results = Meteor.call('getUserAttendingEvents');
@@ -32,11 +39,17 @@ Meteor.methods({
 
       //Verifico que tenga los permisos necesarios para agregar eventos
       if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
-        var results = Meteor.call('getEventInfo', eId);
+        var evento = Meteor.call('getEventInfo', eId);
 
         //Se utiliza el ID del evento como _ID para la DB
-        results._id = results.id;
-        Eventos.insert(results);
+        evento._id = evento.id;
+        evento.active = false; //El evento que se gestiona en el sitio
+        evento.open = false; //Evento disponible para registrarse
+        evento.enabled = false; //Funcionalidades del evento activas (chismografo, etc)
+        if (evento.description){
+          evento.shortDescripcion = Trunc(evento.description,200,true);
+        }
+        Eventos.insert(evento);
       } else {
         console.log(error);
       }
