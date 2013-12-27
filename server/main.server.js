@@ -13,6 +13,7 @@ var getFbPicture = function(accessToken) {
 }
 
 Accounts.onCreateUser(function(options, user) {
+  user.eventos = [];
   if(options.profile) {
     options.profile.picture = getFbPicture(user.services.facebook.accessToken);
     user.profile = options.profile;
@@ -20,20 +21,7 @@ Accounts.onCreateUser(function(options, user) {
   return user;
 })
 
-Meteor.methods({
-  updateUserProfile: function (data){
-    Meteor.users.update({_id:data.id}, {$set: {
-      "profile.nombre": data.nombre,
-      "profile.apellido": data.apellido,
-      "profile.documento": data.documento,
-      "profile.telefono": data.telefono,
-      "profile.telefonoEmergencia": data.telefonoEmergencia,
-      "profile.obraSocial": data.obraSocial
-    }});
-
-    console.log("Profile id: \""+data.id+"\" updated! (server side)");
-  },
-});
+Meteor.methods({});
 
 Meteor.publish('users', function(){
   return Meteor.users.find({_id:this.userId});
@@ -42,3 +30,9 @@ Meteor.publish('users', function(){
 Meteor.publish('events', function(){
   return Eventos.find();
 });
+
+//Config de Roles
+//Roles.createRole('super-admin');
+//Roles.createRole('admin');
+//Roles.createRole('user');
+//Roles.addUsersToRoles('ZEieGpsHSBgBAsjhS', 'super-admin'); //<<-- Poner ID del super admin

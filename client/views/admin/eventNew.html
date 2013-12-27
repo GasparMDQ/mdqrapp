@@ -24,6 +24,6 @@
       <div class="row">{{this.startTime}}</div>
     </div>
     <div class="col-sm-2 col-sm-offset-1">
-      <a class="btn btn-success btn-block" href="#" {{#if existeEvento }}disabled="disabled">Ya existe{{else}}>Agregar {{/if}}</a>
+      <button data-event="{{this._id}}" class="btn btn-success btn-block js-add-event" href="#" {{#if existeEvento }}disabled="disabled">Ya existe{{else}}>Agregar {{/if}}</button>
     </div>
 </template>

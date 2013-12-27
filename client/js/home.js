@@ -38,7 +38,14 @@ if (Meteor.isClient) {
 
   Template.homeLogged.isProfileComplete = function () {
     //Verificar que el usuario tenga sus campos obligatorios completos
-    return false;
+    Meteor.call('hasProfileComplete', Meteor.user(), function(error,result){
+      if(!error){
+        Session.set('profile-complete', result);
+      } else {
+        Session.set('profile-complete', false);
+      }
+    });
+    return Session.get('profile-complete');
   };
 
   Template.homeLogged.picId = function () {

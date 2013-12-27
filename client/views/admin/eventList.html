@@ -3,19 +3,23 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      {{#if eventos}}
-        {{#each eventos}}
-          {{> evento}}
-        {{/each}}
-      {{else}}
-        <p>No hay eventos disponibles.</p>
-      {{/if}}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-2 col-sm-offset-1">
-      <a class="btn btn-primary btn-block" href="{{pathFor 'newEvent'}}">Nuevo evento</a>
-    </div>
+    {{#if isInRole 'admin' 'super-admin'}}
+        {{#if eventos}}
+          {{#each eventos}}
+            {{> evento}}
+          {{/each}}
+        {{else}}
+          <p>No hay eventos disponibles.</p>
+        {{/if}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-2 col-sm-offset-1">
+          <a class="btn btn-primary btn-block" href="{{pathFor 'newEvent'}}">Nuevo evento</a>
+        </div>
+    {{else}}
+      <p>No tiene permisos para gestionar eventos.</p>
+    {{/if}}    
   </div>
 </template>
 

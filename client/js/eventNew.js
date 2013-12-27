@@ -22,4 +22,17 @@ if (Meteor.isClient) {
     return result;
   };
 
+  Template.eventNewShow.events({
+    'click .js-add-event' : function (e) {
+      e.preventDefault();
+      var eId = parseInt($(e.target).data('event'));
+      var response = Meteor.call('addNewEvent', eId, Meteor.user(), function (error, result){
+        if (error) {
+          alert(error.message);
+        }
+      });
+
+    }
+  });
+
 }

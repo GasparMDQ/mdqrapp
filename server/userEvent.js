@@ -26,4 +26,20 @@ Meteor.methods({
       }
     };
   },
+
+  addNewEvent: function(eId, user){
+    Meteor.call('userHasEvento',eId, user, function (error, result){
+
+      //Verifico que tenga los permisos necesarios para agregar eventos
+      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+        var results = Meteor.call('getEventInfo', eId);
+
+        //Se utiliza el ID del evento como _ID para la DB
+        results._id = results.id;
+        Eventos.insert(results);
+      } else {
+        console.log(error);
+      }
+    });
+  }
 });

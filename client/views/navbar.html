@@ -36,9 +36,11 @@
         <img src="{{pic}}" class="headerTinymanPhoto pull-right hidden-xs">
         <ul class="nav navbar-nav">
           {{#if currentUser }}
-            <li>
-              <a id="adminLnk" href="{{pathFor 'admin'}}">Administracion</a>
-            </li>
+            {{#if isInRole 'admin' 'super-admin'}}
+              <li>
+                <a id="adminLnk" href="{{pathFor 'admin'}}">Eventos</a>
+              </li>
+            {{/if}}          
           {{/if}}          
           <li class="last">
             <a id="exitLnk" href="#">Salir</a>

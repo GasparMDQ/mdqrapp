@@ -29,10 +29,19 @@ Facebook.prototype.getUserAttendingEvents = function(){
   return this.query('me/events?fields=admins,name,owner,id,start_time&type=attending');
 }
 
+Facebook.prototype.getEventInfo = function(eId){
+  return this.query(eId + '?fields=admins,name,owner,id,start_time,end_time,description');
+}
+
 Meteor.methods({
   getUserAttendingEvents: function(){
     var fb = new Facebook(Meteor.user().services.facebook.accessToken);
     var data = fb.getUserAttendingEvents();
+    return data;  
+  },
+  getEventInfo: function(eId){
+    var fb = new Facebook(Meteor.user().services.facebook.accessToken);
+    var data = fb.getEventInfo(eId);
     return data;  
   },
 });

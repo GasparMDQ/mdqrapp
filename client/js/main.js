@@ -1,12 +1,7 @@
 Meteor.subscribe('users');
 Meteor.subscribe('events');
 
-Meteor.methods({
-  updateUserProfile: function (data){
-    //Do validate first!!
-    console.log("Profile updated! (client side)");
-  }
-});
+Meteor.methods({});
 
 if (Meteor.isClient) {
 }
@@ -34,7 +29,7 @@ Router.map(function () {
     template: 'profileEdit',
     before: function (){
       if(!Meteor.loggingIn() && !Meteor.user()) {
-        this.redirect("home");
+        this.redirect('home');
       }
     }
   });
@@ -45,7 +40,7 @@ Router.map(function () {
     //Incluir verificacion de permisos
     before: function (){
       if(!Meteor.loggingIn() && !Meteor.user()) {
-        this.redirect("home");
+        this.redirect('home');
       }
     }
   });
@@ -56,7 +51,7 @@ Router.map(function () {
     //Incluir verificacion de permisos
     before: function (){
       if(!Meteor.loggingIn() && !Meteor.user()) {
-        this.redirect("home");
+        this.redirect('home');
       }
       //Refrescar el listado de eventos del usuario
       //Meteor.call('refreshUserAttendingEvents',Meteor.user());
