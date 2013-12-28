@@ -4,10 +4,12 @@ if (Meteor.isClient) {
   };
 
   Template.homeLogged.greeting = function () {
-    if (Meteor.user().services.facebook.gender == "male") {
-      return "Bienvenido "+Meteor.user().profile.name+"!";
-    } else {
-      return "Bienvenida "+Meteor.user().profile.name+"!";
+    if(Meteor.user() && Meteor.user().services && Meteor.user().services.facebook){
+      if (Meteor.user().services.facebook.gender == "male") {
+        return "Bienvenido "+Meteor.user().profile.name+"!";
+      } else {
+        return "Bienvenida "+Meteor.user().profile.name+"!";
+      }
     }
   };
 
@@ -49,11 +51,8 @@ if (Meteor.isClient) {
   };
 
   Template.homeLogged.picId = function () {
-    var facebookProfile;
-    facebookProfile=Meteor.user().services.facebook;
-
-    if(facebookProfile) {
-      return facebookProfile.id;
+    if(Meteor.user() && Meteor.user().services && Meteor.user().services.facebook){
+      return Meteor.user().services.facebook.id;
     }
   };
 }

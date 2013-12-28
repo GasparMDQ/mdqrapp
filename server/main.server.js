@@ -35,4 +35,4 @@ Meteor.publish('events', function(){
 //Roles.createRole('super-admin');
 //Roles.createRole('admin');
 //Roles.createRole('user');
-//Roles.addUsersToRoles('ZEieGpsHSBgBAsjhS', 'super-admin'); //<<-- Poner ID del super admin
+//Roles.addUsersToRoles('h4FNibnjGG2heK3a6', 'super-admin'); //<<-- Poner ID del super admin

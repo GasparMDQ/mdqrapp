@@ -11,8 +11,11 @@ if (Meteor.isClient) {
       }
       return data;
     };
-    return Eventos.find({
-      _id: { $in: eventosUsuario(Meteor.user()) }
-    }).fetch();
+    
+    if (Meteor.user() && Meteor.user().eventos){
+      return Eventos.find({
+        _id: { $in: eventosUsuario(Meteor.user()) }
+      }).fetch();
+    }
   };
 }

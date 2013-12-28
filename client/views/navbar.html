@@ -36,7 +36,7 @@
         <img src="{{pic}}" class="headerTinymanPhoto pull-right hidden-xs">
         <ul class="nav navbar-nav">
           {{#if currentUser }}
-            {{#if isInRole 'admin' 'super-admin'}}
+            {{#if isInRole 'admin, super-admin'}}
               <li>
                 <a id="adminLnk" href="{{pathFor 'admin'}}">Eventos</a>
               </li>

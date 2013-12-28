@@ -2,7 +2,7 @@ if (Meteor.isClient) {
   Template.eventNew.eventos = function () {
     return Meteor.user().eventos;
   };
-
+  
   Template.eventNew.events({
     'click #facebook-refresh-events' : function (e) {
       e.preventDefault();

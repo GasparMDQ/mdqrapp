@@ -3,7 +3,7 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-    {{#if isInRole 'admin' 'super-admin'}}
+    {{#if isInRole 'admin, super-admin'}}
         {{#if eventos}}
           {{#each eventos}}
             {{> evento}}
