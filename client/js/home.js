@@ -15,17 +15,34 @@ if (Meteor.isClient) {
 
   Template.homeLogged.isEventSet = function () {
     //Buscar si existe un evento "activo"
-    return true;
+    if(Eventos.find({active:true}).count() == 1){
+      var eId = Eventos.findOne({active:true})._id;
+      Session.set('event-active', eId);
+      return true;
+    }
+    return false;
   };
 
   Template.homeLogged.isEventOpen = function () {
-    //Opera sobr el evento open
-    return true;
+    //Opera sobre el evento open
+    var eId = Session.get('event-active');
+    var evento = Eventos.findOne({_id:eId});
+    if(evento){
+      return evento.open;
+    } else {
+      return false;
+    }
   };
 
   Template.homeLogged.isEventEnabled = function () {
     //Opera sobr el evento si esta enabled
-    return false;
+    var eId = Session.get('event-active');
+    var evento = Eventos.findOne({_id:eId});
+    if(evento){
+      return evento.enabled;
+    } else {
+      return false;
+    }
   };
 
   Template.homeLogged.isRoomSelected = function () {

@@ -30,7 +30,7 @@
         <h2>
           {{this.name}}
           {{#if this.active}}
-            <span class="badge badge-danger">active</span>
+            <span class="badge badge-danger">activo</span>
           {{/if}}
         </h2>
       </div>
@@ -38,8 +38,12 @@
         <h2></h2>
         <div class="pull-right">
           {{#unless this.active}}
-            <button type="button" class="btn btn-primary btn-sm">
+            <button data-event="{{this._id}}" type="button" class="btn btn-primary btn-sm js-set-active">
               <span class="glyphicon glyphicon-ok-sign"></span> Activar
+            </button>
+          {{ else }}
+            <button data-event="{{this._id}}" type="button" class="btn btn-warning btn-sm js-set-deactive">
+              <span class="glyphicon glyphicon-ok-sign"></span> Desactivar
             </button>
           {{/unless}}
           <a class="btn btn-default btn-sm" href="#">

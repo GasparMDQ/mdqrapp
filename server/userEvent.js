@@ -43,16 +43,53 @@ Meteor.methods({
 
         //Se utiliza el ID del evento como _ID para la DB
         evento._id = evento.id;
-        evento.active = false; //El evento que se gestiona en el sitio
-        evento.open = false; //Evento disponible para registrarse
-        evento.enabled = false; //Funcionalidades del evento activas (chismografo, etc)
+
+        //El evento que se gestiona en el sitio
+        evento.active = false;
+        
+        //Evento disponible para registrarse
+        evento.open = false;
+        
+        //Funcionalidades del evento activas (chismografo, etc)
+        evento.enabled = false;
+
+        //Lista de micros y habitaciones vacias
+        evento.micros = [];
+        evento.habitaciones = [];
+        
         if (evento.description){
           evento.shortDescripcion = Trunc(evento.description,200,true);
         }
-        Eventos.insert(evento);
+
+        //Se usa update con {upsert:true} para evitar errores por claves duplicadas en caso de multiples clicks
+        Eventos.update({ _id:evento._id}, evento, {upsert:true});
       } else {
         console.log(error);
       }
     });
+  },
+
+  setActiveEvent: function(eId, user){
+    Meteor.call('userHasEvento',eId, user, function (error, result){
+      //Verifico que tenga los permisos necesarios para agregar eventos
+      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+        Eventos.update({ _id: { $ne: eId.toString() }}, { $set: { active: false }}, {multi: true});
+        Eventos.update({ _id: eId.toString() }, { $set: { active: true }});
+      } else {
+        console.log('Error:setActiveEvent: ' + error);
+      }
+    });
+  },
+
+  setUnActiveEvent: function(eId, user){
+    Meteor.call('userHasEvento',eId, user, function (error, result){
+      //Verifico que tenga los permisos necesarios para agregar eventos
+      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+        Eventos.update({ _id: eId.toString() }, { $set: { active: false }});
+      } else {
+        console.log('Error:setUnActiveEvent: ' + error);
+      }
+    });
   }
+
 });

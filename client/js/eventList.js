@@ -18,4 +18,46 @@ if (Meteor.isClient) {
       }).fetch();
     }
   };
+
+  Template.eventList.events({
+    'click .js-set-active' : function (e) {
+      e.preventDefault();
+      var eId = $(e.target).data('event');
+      var response = Meteor.call('setActiveEvent', eId, Meteor.user(), function (error, result){
+        if (error) {
+          alert(error.message);
+        }
+      });
+
+    },
+
+    'click .js-set-deactive' : function (e) {
+      e.preventDefault();
+      var eId = $(e.target).data('event');
+
+      var response = Meteor.call('setUnActiveEvent', eId, Meteor.user(), function (error, result){
+        if (error) {
+          alert(error.message);
+        }
+      });
+
+    }
+  });
+
+//Stubs
+Meteor.methods({
+  setActiveEvent: function(eId, user){
+    if(eId){
+      Eventos.update({ _id: { $ne: eId.toString() }}, { $set: { active: false }}, {multi: true});
+      Eventos.update({ _id: eId.toString() }, { $set: { active: true }});
+    }
+  },
+
+  setUnActiveEvent: function(eId, user){
+    if(eId){
+      Eventos.update({ _id: eId.toString() }, { $set: { active: false }});
+    }
+  }
+});
+
 }

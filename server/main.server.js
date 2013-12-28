@@ -14,6 +14,7 @@ var getFbPicture = function(accessToken) {
 
 Accounts.onCreateUser(function(options, user) {
   user.eventos = [];
+  Roles.addUsersToRoles(user, 'user');
   if(options.profile) {
     options.profile.picture = getFbPicture(user.services.facebook.accessToken);
     user.profile = options.profile;
@@ -27,8 +28,27 @@ Meteor.publish('users', function(){
   return Meteor.users.find({_id:this.userId});
 });
 
-Meteor.publish('events', function(){
-  return Eventos.find();
+Meteor.publish('events', function(userId){
+  if (Roles.userIsInRole(userId, ['super-admin'])){
+    //Todos
+  console.log('super-admin');
+    return Eventos.find();
+  }
+
+  if (Roles.userIsInRole(userId, ['admin'])){
+    //Activo + los propios
+  console.log('admin');
+    return Eventos.find();
+  }
+
+  if (Roles.userIsInRole(userId, ['user'])){
+    //Solo activo
+  console.log('user');
+    return Eventos.find();
+  }
+  console.log('Stop');
+  this.stop();
+  return;
 });
 
 //Config de Roles
