@@ -56,7 +56,7 @@ Meteor.methods({
         //Lista de micros y habitaciones vacias
         evento.micros = [];
         evento.habitaciones = [];
-        
+
         if (evento.description){
           evento.shortDescripcion = Trunc(evento.description,200,true);
         }
@@ -64,14 +64,19 @@ Meteor.methods({
         //Se usa update con {upsert:true} para evitar errores por claves duplicadas en caso de multiples clicks
         Eventos.update({ _id:evento._id}, evento, {upsert:true});
       } else {
-        console.log(error);
+        if(error){
+          console.log('Error:userHasEvento: ' + error);
+        } else {
+          console.log('Error:addNewEvent: not allowed');
+        }
+
       }
     });
   },
 
   setActiveEvent: function(eId, user){
     Meteor.call('userHasEvento',eId, user, function (error, result){
-      //Verifico que tenga los permisos necesarios para agregar eventos
+      //Verifico que tenga los permisos necesarios para activar eventos
       if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
         Eventos.update({ _id: { $ne: eId.toString() }}, { $set: { active: false }}, {multi: true});
         Eventos.update({ _id: eId.toString() }, { $set: { active: true }});
@@ -83,11 +88,22 @@ Meteor.methods({
 
   setUnActiveEvent: function(eId, user){
     Meteor.call('userHasEvento',eId, user, function (error, result){
-      //Verifico que tenga los permisos necesarios para agregar eventos
+      //Verifico que tenga los permisos necesarios para desactivar eventos
       if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
         Eventos.update({ _id: eId.toString() }, { $set: { active: false }});
       } else {
         console.log('Error:setUnActiveEvent: ' + error);
+      }
+    });
+  },
+
+  removeEvent: function(eId, user){
+    Meteor.call('userHasEvento',eId, user, function (error, result){
+      //Verifico que tenga los permisos necesarios para borrar eventos
+      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+        Eventos.remove({ _id: eId.toString() });
+      } else {
+        console.log('Error:removeEvent: ' + error);
       }
     });
   }

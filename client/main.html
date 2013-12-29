@@ -2,6 +2,7 @@
   <title>MDQ Rollers App</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <link rel="icon" sizes="16x16 32x32" href="/favicon.png?v=2">  
 </head>
 
 <template name="layout">
@@ -11,7 +12,9 @@
     </div>
     <div class="container">
       <div id="header"></div>
-      {{yield}}
+        <div id="contenido">
+          {{yield}}
+        </div>
     </div>
     <div id="push"></div>
   </div>

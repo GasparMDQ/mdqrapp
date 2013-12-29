@@ -1,29 +1,52 @@
 <template name="eventNew">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="row">
-        <h3>Seleccione un nuevo evento</h3>
-        <p>
-          <button type="button" class="btn btn-primary" id="facebook-refresh-events">
-            <span class="glypicon glypicon-refresh"></span> Actualizar lista de eventos
-          </button>
-        </p>
-      </div>
-      {{#each eventos}}
-        <div class="row">
-          {{> eventNewShow}}
-        </div>
-      {{/each}}
+  <div class="container">
+    <div class="row">
+      <h3>Agregar nuevo evento</h3>
+      <p>
+        Aqui se listan sus eventos de facebook en los cuales es administrador o dueño del mismo.
+      </p>
+      <p>
+        <button type="button" class="btn btn-primary" id="facebook-refresh-events">
+          <span class="glyphicon glyphicon-refresh"></span> Actualizar mi listado de eventos
+        </button>
+      </p>
+    </div>
+    <div class="row">
+      <ul class="list-group">
+        {{#each eventos}}
+          <li class="list-group-item">
+            {{> eventNewShow}}
+          </li>
+        {{/each}}
+      </ul>
     </div>
   </div>
 </template>
 
 <template name="eventNewShow">
+  <div class="row">
     <div class="col-sm-4 col-sm-offset-1">
-      <div class="row">{{this.name}}</div>
-      <div class="row">{{this.startTime}}</div>
+      <div class="row">
+        <strong>
+          {{this.name}}
+        </strong>
+      </div>
+      <div class="row">
+        {{this.startTime}}
+      </div>
     </div>
-    <div class="col-sm-2 col-sm-offset-1">
-      <button data-event="{{this._id}}" class="btn btn-success btn-block js-add-event" href="#" {{#if existeEvento }}disabled="disabled">Ya existe{{else}}>Agregar {{/if}}</button>
+
+    <div class="col-sm-3 col-sm-offset-3">
+      {{#if existeEvento }}
+        <button class="btn btn-warning btn-block" disabled="disabled">
+          Ya fue agregado
+        </button>
+      {{else}}
+        <button data-event="{{this._id}}" class="btn btn-success btn-block js-add-event">
+          Agregar
+        </button>
+      {{/if}}
+
     </div>
+  </div>
 </template>

@@ -12,3 +12,5 @@ accounts-ui
 iron-router
 npm
 roles
+mongo-ext
+publish-with-relations

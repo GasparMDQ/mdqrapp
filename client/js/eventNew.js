@@ -1,6 +1,8 @@
 if (Meteor.isClient) {
   Template.eventNew.eventos = function () {
-    return Meteor.user().eventos;
+    if(Meteor.user()){
+      return Meteor.user().eventos;
+    }
   };
   
   Template.eventNew.events({
@@ -25,8 +27,7 @@ if (Meteor.isClient) {
   Template.eventNewShow.events({
     'click .js-add-event' : function (e) {
       e.preventDefault();
-      var eId = parseInt($(e.target).data('event'));
-      var response = Meteor.call('addNewEvent', eId, Meteor.user(), function (error, result){
+      var response = Meteor.call('addNewEvent', $(e.target).data('event'), Meteor.user(), function (error, result){
         if (error) {
           alert(error.message);
         }
@@ -34,5 +35,18 @@ if (Meteor.isClient) {
 
     }
   });
+
+  //Stubs
+  Meteor.methods({
+    addNewEvent: function(eId, user){
+      if(eId){
+        Eventos.update({ _id : eId.toString() }, {
+          _id : eId.toString(),
+          name : 'Nuevo evento',
+          shortDescripcion : 'Actualizando datos desde Facebook ...'
+        }, {upsert:true});
+      }
+    }
+  });  
 
 }

@@ -18,14 +18,16 @@
           <a class="btn btn-primary btn-block" href="{{pathFor 'newEvent'}}">Nuevo evento</a>
         </div>
     {{else}}
-      <p>No tiene permisos para gestionar eventos.</p>
+      <div class="alert alert-danger">
+        <p>No tiene permisos para gestionar eventos.</p>
+      </div>
     {{/if}}    
   </div>
 </template>
 
 <template name="evento">
   <div class="col-md-10 col-md-offset-1">
-    <div class="row">
+    <div class="row js-evento" data-event="{{this._id}}">
       <div class="col-sm-7">
         <h2>
           {{this.name}}
@@ -38,18 +40,18 @@
         <h2></h2>
         <div class="pull-right">
           {{#unless this.active}}
-            <button data-event="{{this._id}}" type="button" class="btn btn-primary btn-sm js-set-active">
+            <button type="button" class="btn btn-primary btn-sm js-set-active">
               <span class="glyphicon glyphicon-ok-sign"></span> Activar
             </button>
           {{ else }}
-            <button data-event="{{this._id}}" type="button" class="btn btn-warning btn-sm js-set-deactive">
+            <button type="button" class="btn btn-warning btn-sm js-set-deactive">
               <span class="glyphicon glyphicon-ok-sign"></span> Desactivar
             </button>
           {{/unless}}
           <a class="btn btn-default btn-sm" href="#">
             <span class="glyphicon glyphicon-edit"></span> Editar
           </a>
-          <button type="button" class="btn btn-danger btn-sm">
+          <button type="button" class="btn btn-danger btn-sm js-event-remove">
             <span class="glyphicon glyphicon-remove"></span>
           </button>
         </div>

@@ -22,8 +22,17 @@ if (Meteor.isClient) {
   Template.eventList.events({
     'click .js-set-active' : function (e) {
       e.preventDefault();
-      var eId = $(e.target).data('event');
-      var response = Meteor.call('setActiveEvent', eId, Meteor.user(), function (error, result){
+      var response = Meteor.call('setActiveEvent', $(e.target).closest('div.js-evento').data('event'), Meteor.user(), function (error, result){
+        if (error) {
+          alert(error.message);
+        }
+      });
+
+    },
+
+    'click .js-event-remove' : function (e) {
+      e.preventDefault();
+      var response = Meteor.call('removeEvent', $(e.target).closest('div.js-evento').data('event'), Meteor.user(), function (error, result){
         if (error) {
           alert(error.message);
         }
@@ -33,9 +42,7 @@ if (Meteor.isClient) {
 
     'click .js-set-deactive' : function (e) {
       e.preventDefault();
-      var eId = $(e.target).data('event');
-
-      var response = Meteor.call('setUnActiveEvent', eId, Meteor.user(), function (error, result){
+      var response = Meteor.call('setUnActiveEvent', $(e.target).closest('div.js-evento').data('event'), Meteor.user(), function (error, result){
         if (error) {
           alert(error.message);
         }
@@ -56,6 +63,12 @@ Meteor.methods({
   setUnActiveEvent: function(eId, user){
     if(eId){
       Eventos.update({ _id: eId.toString() }, { $set: { active: false }});
+    }
+  },
+
+  removeEvent: function(eId, user){
+    if(eId){
+      Eventos.remove({ _id: eId.toString() });
     }
   }
 });

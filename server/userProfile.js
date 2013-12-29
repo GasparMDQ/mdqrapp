@@ -46,11 +46,10 @@ Meteor.methods({
   userHasEvento: function(eId, user) {
     if(user.eventos) {
       for(var i = 0;i<user.eventos.length;i++) {
-        if(user.eventos[i]._id == eId) { return true;}
+        if(user.eventos[i]._id == eId) { return true; }
       }
-    } else {
-      return false;
     }  
+    return false;
   }
 
 });

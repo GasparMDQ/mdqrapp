@@ -13,6 +13,12 @@ if (Meteor.isClient) {
     }
   };
 
+  Template.homeLogged.destination = function () {
+    //Buscar si existe un evento "activo"
+    var eName = Eventos.findOne({active:true}).name;
+    return eName;
+  };
+
   Template.homeLogged.isEventSet = function () {
     //Buscar si existe un evento "activo"
     if(Eventos.find({active:true}).count() == 1){

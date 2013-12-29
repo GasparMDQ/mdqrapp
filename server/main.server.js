@@ -31,22 +31,22 @@ Meteor.publish('users', function(){
 Meteor.publish('events', function(userId){
   if (Roles.userIsInRole(userId, ['super-admin'])){
     //Todos
-  console.log('super-admin');
+  console.log('User:Role:super-admin');
     return Eventos.find();
   }
 
   if (Roles.userIsInRole(userId, ['admin'])){
     //Activo + los propios
-  console.log('admin');
+  console.log('User:Role:admin');
     return Eventos.find();
   }
 
   if (Roles.userIsInRole(userId, ['user'])){
     //Solo activo
-  console.log('user');
+  console.log('User:Role:user');
     return Eventos.find();
   }
-  console.log('Stop');
+  console.log('User:Role:none');
   this.stop();
   return;
 });

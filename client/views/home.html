@@ -7,73 +7,73 @@
 </template>
 
 <template name="homeAnonymous">
-  <div id="contenido">
-    <div class="jumbotron">
-      <div class="container">
-        <h1>Bienvenido!</h1>
-        <p>Utilice su cuenta de Facebook para ingresar a la aplicación</p>
-        <p></p>
-        <p>{{loginButtons}}</p>
-      </div>
+  <div class="jumbotron">
+    <div class="container">
+      <h1>Bienvenido!</h1>
+      <p>Utilice su cuenta de Facebook para ingresar a la aplicación</p>
+      <p></p>
+      <p>{{loginButtons}}</p>
     </div>
-</div>  
+  </div>
 </template>
 
 <template name="homeLogged">
-  <div id="contenido">
-    <div class="jumbotron">
-      <div class="container">
-        <div class="row">
-          <h1>{{ greeting }}</h1>
+  <div class="jumbotron">
+    <div class="container">
+      <div class="row">
+        <h1>{{ greeting }}</h1>
+      </div>
+      {{#unless isEventSet }}
+        <div class="alert alert-block alert-danger">
+          Todavia no nos decidimos a donde viajar!
         </div>
-        {{#unless isEventSet }}
-          <div class="alert alert-block alert-danger">
-            Todavia no nos decidimos a donde viajar!
-          </div>
-        {{/unless}}
+      {{ else }}
         <div class="row">
-          <div class="col-sm-6">
-            <img src="https://graph.facebook.com/{{picId}}/picture?width=200&height=200" class="bigPhoto img-responsive">
-          </div>
-          <div class="col-sm-4 col-sm-offset-2">
-            <p>
-              <a class="btn btn-lg btn-block {{#if isProfileComplete }}btn-success{{else}}btn-primary{{/if}}" href="{{pathFor 'profileEdit'}}">
-                <span class="glyphicon glyphicon-ok"></span> Actualizá tu perfil
-              </a>
-            </p>
-            {{#if isEventSet}}
-              {{#if isEventOpen}}
-                <p>
-                  {{#if isProfileComplete}}
-                    <button class="btn btn-lg btn-block {{#if isRoomSelected }}btn-success{{else}}btn-primary{{/if}}">
-                  {{else}}
-                    <button class="btn btn-default btn-lg btn-block" disabled="disabled">
-                  {{/if}}
-                  <span class="glyphicon glyphicon-ok"></span> Elegí donde dormir
-                  </button>
-                </p>
-                <p>
-                  {{#if isProfileComplete}}
-                    <button class="btn btn-lg btn-block {{#if isBusSelected }}btn-success{{else}}btn-primary{{/if}}">
-                  {{else}}
-                    <button class="btn btn-default btn-lg btn-block" disabled="disabled">
-                  {{/if}}
-                  <span class="glyphicon glyphicon-ok"></span> Elegí donde viajar
-                  </button>
-                </p>
-              {{/if}}
-
-              {{#if isEventEnabled}}
-                <p>
-                  <button class="btn btn-lg btn-block btn-success">
-                    <span class="glyphicon glyphicon-ok"></span> Chismógrafo!
-                  </button>
-                </p>
-              {{/if}}
+          Nuestro próximo viaje es a <strong>{{ destination }}</strong>
+        </div>
+      {{/unless}}
+      <div class="row">
+        <div class="col-sm-6">
+          <img src="https://graph.facebook.com/{{picId}}/picture?width=200&height=200" class="bigPhoto img-responsive">
+        </div>
+        <div class="col-sm-4 col-sm-offset-2">
+          <p>
+            <a class="btn btn-lg btn-block {{#if isProfileComplete }}btn-success{{else}}btn-primary{{/if}}" href="{{pathFor 'profileEdit'}}">
+              <span class="glyphicon glyphicon-ok"></span> Actualizá tu perfil
+            </a>
+          </p>
+          {{#if isEventSet}}
+            {{#if isEventOpen}}
+              <p>
+                {{#if isProfileComplete}}
+                  <button class="btn btn-lg btn-block {{#if isRoomSelected }}btn-success{{else}}btn-primary{{/if}}">
+                {{else}}
+                  <button class="btn btn-default btn-lg btn-block" disabled="disabled">
+                {{/if}}
+                <span class="glyphicon glyphicon-ok"></span> Elegí donde dormir
+                </button>
+              </p>
+              <p>
+                {{#if isProfileComplete}}
+                  <button class="btn btn-lg btn-block {{#if isBusSelected }}btn-success{{else}}btn-primary{{/if}}">
+                {{else}}
+                  <button class="btn btn-default btn-lg btn-block" disabled="disabled">
+                {{/if}}
+                <span class="glyphicon glyphicon-ok"></span> Elegí donde viajar
+                </button>
+              </p>
             {{/if}}
-          </div>
+
+            {{#if isEventEnabled}}
+              <p>
+                <button class="btn btn-lg btn-block btn-success">
+                  <span class="glyphicon glyphicon-ok"></span> Chismógrafo!
+                </button>
+              </p>
+            {{/if}}
+          {{/if}}
         </div>
       </div>
     </div>
-  </div>  
+  </div>
 </template>
