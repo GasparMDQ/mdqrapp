@@ -7,6 +7,9 @@ var Trunc = function(string, n, useWordBoundary){
 
 Meteor.methods({
   refreshUserAttendingEvents: function(user){
+    //En caso de que el evento exista, se debe refrescar el owner
+    //y los admins del mismo!!
+    //@todo
     var results = Meteor.call('getUserAttendingEvents');
     var data = new Object(null);
     var addData = false;

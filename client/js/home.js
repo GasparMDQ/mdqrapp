@@ -51,6 +51,18 @@ if (Meteor.isClient) {
     }
   };
 
+  Template.homeLogged.userAttendingEvent = function () {
+    //Indica si el usuario logueado asistirá al evento
+    Meteor.call('userAttendingEvento', Session.get('event-active'), Meteor.user(), function(error,result){
+      if(!error){
+        Session.set('event-attending', result);
+      } else {
+        Session.set('event-attending', false);
+      }
+    });
+    return Session.get('event-attending');
+  };
+
   Template.homeLogged.isRoomSelected = function () {
     //Buscar si el usuario tiene una habitacion seleccionada en el evento activo
     return false;

@@ -50,7 +50,19 @@ Meteor.methods({
       }
     }  
     return false;
-  }
+  },
 
+  userAttendingEvento: function(eId, user) {
+    var results = Meteor.call('getUserAttendingEvents');
+
+    for (var i = 0; i < results.data.length; i++) {
+      if(eId == results.data[i].id) {
+
+        //Investigar si este metodo es el mas eficiente. Ya que es disparado varias veces al loguear el HOME
+        return true;
+      }
+    };
+    return false;
+  }
 });
 

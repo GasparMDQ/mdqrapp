@@ -58,8 +58,18 @@ Router.map(function () {
       if(!Meteor.loggingIn() && !Meteor.user()) {
         this.redirect('home');
       }
-      //Refrescar el listado de eventos del usuario
-      //Meteor.call('refreshUserAttendingEvents',Meteor.user());
+    }
+  });
+
+  this.route('newEvent', {
+    path: '/admin/edit/:_id',
+    template: 'eventEdit',
+    //Incluir verificacion de permisos
+    before: function (){
+      if(!Meteor.loggingIn() && !Meteor.user()) {
+        this.redirect('home');
+      }
+      Session.set('edit-event', this.params._id);
     }
   });
 

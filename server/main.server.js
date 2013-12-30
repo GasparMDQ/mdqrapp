@@ -31,20 +31,17 @@ Meteor.publish('users', function(){
 Meteor.publish('events', function(userId){
   if (Roles.userIsInRole(userId, ['super-admin'])){
     //Todos
-  console.log('User:Role:super-admin');
     return Eventos.find();
   }
 
-  if (Roles.userIsInRole(userId, ['admin'])){
+  if (Roles.userIsInRole(userId, ['admin']) && userId.services && userId.services.facebook){
     //Activo + los propios
-  console.log('User:Role:admin');
-    return Eventos.find();
+    return Eventos.find( {$or: [{active:true}, { 'owner.id': userId.services.facebook.id}, {'admins.data.id': userId.services.facebook.id}]} );
   }
 
   if (Roles.userIsInRole(userId, ['user'])){
     //Solo activo
-  console.log('User:Role:user');
-    return Eventos.find();
+    return Eventos.find({active:true});
   }
   console.log('User:Role:none');
   this.stop();

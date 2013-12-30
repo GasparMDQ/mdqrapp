@@ -26,43 +26,45 @@
 </template>
 
 <template name="evento">
-  <div class="col-md-10 col-md-offset-1">
-    <div class="row js-evento" data-event="{{this._id}}">
-      <div class="col-sm-7">
-        <h2>
-          {{this.name}}
-          {{#if this.active}}
-            <span class="badge badge-danger">activo</span>
-          {{/if}}
-        </h2>
+  <div class="row js-evento" data-event="{{this._id}}">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="row">
+        <div class="col-sm-7">
+          <h2>
+            {{this.name}}
+            {{#if this.active}}
+              <span class="badge badge-danger">activo</span>
+            {{/if}}
+          </h2>
+        </div>
+        <div class="col-sm-4 col-sm-offset-1">
+          <h2></h2>
+          <div class="pull-right">
+            {{#unless this.active}}
+              <button type="button" class="btn btn-primary btn-sm js-set-active">
+                <span class="glyphicon glyphicon-ok-sign"></span> Activar
+              </button>
+            {{ else }}
+              <button type="button" class="btn btn-warning btn-sm js-set-deactive">
+                <span class="glyphicon glyphicon-ok-sign"></span> Desactivar
+              </button>
+            {{/unless}}
+            <a class="btn btn-default btn-sm" href="#">
+              <span class="glyphicon glyphicon-edit"></span> Editar
+            </a>
+            <button type="button" class="btn btn-danger btn-sm js-event-remove">
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="col-sm-4 col-sm-offset-1">
-        <h2></h2>
-        <div class="pull-right">
-          {{#unless this.active}}
-            <button type="button" class="btn btn-primary btn-sm js-set-active">
-              <span class="glyphicon glyphicon-ok-sign"></span> Activar
-            </button>
-          {{ else }}
-            <button type="button" class="btn btn-warning btn-sm js-set-deactive">
-              <span class="glyphicon glyphicon-ok-sign"></span> Desactivar
-            </button>
-          {{/unless}}
-          <a class="btn btn-default btn-sm" href="#">
-            <span class="glyphicon glyphicon-edit"></span> Editar
-          </a>
-          <button type="button" class="btn btn-danger btn-sm js-event-remove">
-            <span class="glyphicon glyphicon-remove"></span>
-          </button>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="alert alert-info">
+            {{this.shortDescripcion}}
+          </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="alert alert-info">
-          {{this.shortDescripcion}}
-        </div>
-      </div>
-    </div>
-  </div>
+  </div>  
 </template>
