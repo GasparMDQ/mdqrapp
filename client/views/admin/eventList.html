@@ -49,9 +49,11 @@
                 <span class="glyphicon glyphicon-ok-sign"></span> Desactivar
               </button>
             {{/unless}}
-            <a class="btn btn-default btn-sm" href="#">
+            {{#with eId }}
+            <a class="btn btn-default btn-sm" href="{{ pathFor 'editEvent' }}">
               <span class="glyphicon glyphicon-edit"></span> Editar
             </a>
+            {{/with}}
             <button type="button" class="btn btn-danger btn-sm js-event-remove">
               <span class="glyphicon glyphicon-remove"></span>
             </button>

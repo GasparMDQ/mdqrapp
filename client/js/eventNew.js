@@ -4,9 +4,14 @@ if (Meteor.isClient) {
       return Meteor.user().eventos;
     }
   };
+
+  Template.eventNew.rendered = function () {
+    $('.loading-indicator').hide();  
+  };
   
   Template.eventNew.events({
     'click #facebook-refresh-events' : function (e) {
+      $('#event-refresh').show();
       e.preventDefault();
       //Use Call to execute insert on server side after
       //checking data complete
@@ -14,6 +19,7 @@ if (Meteor.isClient) {
         if (error) {
           alert(error.message);
         }
+        $('#event-refresh').hide();
       });
     }
   });

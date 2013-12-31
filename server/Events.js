@@ -51,14 +51,15 @@ Meteor.methods({
         evento.active = false;
         
         //Evento disponible para registrarse
-        evento.open = false;
+        evento.registracion = false;
         
         //Funcionalidades del evento activas (chismografo, etc)
-        evento.enabled = false;
+        evento.chismografo = false;
 
-        //Lista de micros y habitaciones vacias
+        //Lista de chismes, micros y habitaciones vacias
         evento.micros = [];
         evento.habitaciones = [];
+        evento.chismes = [];
 
         if (evento.description){
           evento.shortDescripcion = Trunc(evento.description,200,true);
@@ -89,13 +90,13 @@ Meteor.methods({
     });
   },
 
-  setUnActiveEvent: function(eId, user){
+  unSetActiveEvent: function(eId, user){
     Meteor.call('userHasEvento',eId, user, function (error, result){
       //Verifico que tenga los permisos necesarios para desactivar eventos
       if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
         Eventos.update({ _id: eId.toString() }, { $set: { active: false }});
       } else {
-        console.log('Error:setUnActiveEvent: ' + error);
+        console.log('Error:unSetActiveEvent: ' + error);
       }
     });
   },
@@ -109,6 +110,77 @@ Meteor.methods({
         console.log('Error:removeEvent: ' + error);
       }
     });
-  }
+  },
+
+  setRegisterEvent: function(eId, user){
+    Meteor.call('userHasEvento',eId, user, function (error, result){
+      //Verifico que tenga los permisos necesarios para desactivar eventos
+      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+        Eventos.update({ _id: eId.toString() }, { $set: { registracion: true }});
+      } else {
+        console.log('Error:setRegisterEvent: ' + error);
+      }
+    });
+  },
+
+  unSetRegisterEvent: function(eId, user){
+    Meteor.call('userHasEvento',eId, user, function (error, result){
+      //Verifico que tenga los permisos necesarios para desactivar eventos
+      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+        Eventos.update({ _id: eId.toString() }, { $set: { registracion: false }});
+      } else {
+        console.log('Error:unSetRegisterEvent: ' + error);
+      }
+    });
+    if(eId){
+    }
+  },
+  setChismeEvent: function(eId, user){
+    Meteor.call('userHasEvento',eId, user, function (error, result){
+      //Verifico que tenga los permisos necesarios para desactivar eventos
+      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+        Eventos.update({ _id: eId.toString() }, { $set: { chismografo: true }});
+      } else {
+        console.log('Error:setChismeEvent: ' + error);
+      }
+    });
+  },
+
+  unSetChismeEvent: function(eId, user){
+    Meteor.call('userHasEvento',eId, user, function (error, result){
+      //Verifico que tenga los permisos necesarios para desactivar eventos
+      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+        Eventos.update({ _id: eId.toString() }, { $set: { chismografo: false }});
+      } else {
+        console.log('Error:unSetChismeEvent: ' + error);
+      }
+    });
+  },
+
+  refreshEventData: function(eId, user){
+    Meteor.call('userHasEvento',eId, user, function (error, result){
+
+      //Verifico que tenga los permisos necesarios para agregar eventos
+      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+        var evento = Meteor.call('getEventInfo', eId);
+
+        if (evento.description){
+          evento.shortDescripcion = Trunc(evento.description,200,true);
+        }
+
+        Eventos.update({ _id:eId}, {$set: evento}, {upsert:true});
+      } else {
+        if(error){
+          console.log('Error:userHasEvento: ' + error);
+        } else {
+          console.log('Error:addNewEvent: not allowed');
+        }
+
+      }
+    });
+  },
+
+
+
 
 });

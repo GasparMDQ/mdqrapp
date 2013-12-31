@@ -1,4 +1,9 @@
 if (Meteor.isClient) {
+  Template.evento.eId = function () {
+    //Setting data context for links
+    return {_id: this._id};
+  };
+
   Template.eventList.userLogged = function () {
     return Meteor.user();
   };
@@ -42,7 +47,7 @@ if (Meteor.isClient) {
 
     'click .js-set-deactive' : function (e) {
       e.preventDefault();
-      var response = Meteor.call('setUnActiveEvent', $(e.target).closest('div.js-evento').data('event'), Meteor.user(), function (error, result){
+      var response = Meteor.call('unSetActiveEvent', $(e.target).closest('div.js-evento').data('event'), Meteor.user(), function (error, result){
         if (error) {
           alert(error.message);
         }
@@ -60,7 +65,7 @@ Meteor.methods({
     }
   },
 
-  setUnActiveEvent: function(eId, user){
+  unSetActiveEvent: function(eId, user){
     if(eId){
       Eventos.update({ _id: eId.toString() }, { $set: { active: false }});
     }

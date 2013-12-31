@@ -42,8 +42,8 @@
               <span class="glyphicon glyphicon-ok"></span> Actualizá tu perfil
             </a>
           </p>
-          {{#if userAttendingEvent}}
-            {{#if isEventSet}}
+          {{#if isEventSet}}
+            {{#if userAttendingEvent}}
               {{#if isEventOpen}}
                 <p>
                   {{#if isProfileComplete}}
@@ -76,14 +76,16 @@
           {{/if}}
         </div>
       </div>
-      {{#if userAttendingEvent}}
-        <p>
-          Algo para poner cuando asiste al evento!
-        </p>
-      {{ else }}
-        <p>
-          Debe indicar que asistirá al evento para poder continuar con el registro
-        </p>
+      {{#if isEventSet}}
+        {{#if userAttendingEvent}}
+          <p>
+            Algo para poner cuando asiste al evento!
+          </p>
+        {{ else }}
+          <p>
+            Debe indicar que asistirá al evento para poder continuar con el registro
+          </p>
+        {{/if}}
       {{/if}}
     </div>
   </div>

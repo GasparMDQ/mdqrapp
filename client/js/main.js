@@ -26,7 +26,15 @@ Router.map(function () {
 
   this.route('home', {
     path: '/',
-    template: 'home'
+    template: 'home',
+    before: function(){
+      if(Eventos.find({active:true}).count() == 1){
+        var eId = Eventos.findOne({active:true})._id;
+        Session.set('event-active', eId);
+      } else {
+        Session.set('event-active', false);
+      }
+    }
   });
 
   this.route('profileEdit', {
@@ -61,7 +69,7 @@ Router.map(function () {
     }
   });
 
-  this.route('newEvent', {
+  this.route('editEvent', {
     path: '/admin/edit/:_id',
     template: 'eventEdit',
     //Incluir verificacion de permisos

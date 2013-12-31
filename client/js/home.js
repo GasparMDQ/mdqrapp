@@ -21,20 +21,18 @@ if (Meteor.isClient) {
 
   Template.homeLogged.isEventSet = function () {
     //Buscar si existe un evento "activo"
-    if(Eventos.find({active:true}).count() == 1){
-      var eId = Eventos.findOne({active:true})._id;
-      Session.set('event-active', eId);
+    if(Session.get('event-active')){
       return true;
+    } else {
+      return false;
     }
-    return false;
   };
 
   Template.homeLogged.isEventOpen = function () {
     //Opera sobre el evento open
-    var eId = Session.get('event-active');
-    var evento = Eventos.findOne({_id:eId});
+    var evento = Eventos.findOne({_id:Session.get('event-active')});
     if(evento){
-      return evento.open;
+      return evento.registracion;
     } else {
       return false;
     }
@@ -42,10 +40,9 @@ if (Meteor.isClient) {
 
   Template.homeLogged.isEventEnabled = function () {
     //Opera sobr el evento si esta enabled
-    var eId = Session.get('event-active');
-    var evento = Eventos.findOne({_id:eId});
+    var evento = Eventos.findOne({_id:Session.get('event-active')});
     if(evento){
-      return evento.enabled;
+      return evento.chismografo;
     } else {
       return false;
     }

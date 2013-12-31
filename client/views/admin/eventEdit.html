@@ -1,15 +1,56 @@
 <template name="eventEdit">
   <div class="container">
+    <div id="evento-header">
+      {{> eventData}}
+    </div>
+
     <div class="row">
-      <h3>Evento: {{ eId }}</h3>
       <p>
-        Aqui se listan sus eventos de facebook en los cuales es administrador o dueño del mismo.
-      </p>
-      <p>
-        <button type="button" class="btn btn-primary" id="facebook-refresh-events">
-          <span class="glyphicon glyphicon-refresh"></span> Actualizar mi listado de eventos
+        <button type="button" class="btn btn-primary js-facebook-refresh-event">
+          <span class="glyphicon glyphicon-refresh"></span> Recargar datos de Facebook
         </button>
+        <img src="/loading.gif" class="loading-indicator" id="event-refresh"/>
+        <a href="#" type="button" class="btn btn-info pull-right" disabled="disabled"><span class="glyphicon glyphicon-list"></span> Reporte del Evento</a>
       </p>
+    </div>
+
+    <div class="row" id="alert-container">
+    </div>    
+
+    <div class="row">
+      <p>
+        <div class="make-switch js-event-active-switch" data-on="success" data-off="danger" data-on-label="SI" data-off-label="NO">
+          <input type="checkbox" {{#if evento.active }}checked{{/if}}>
+        </div> Evento Activo
+      </p>
+      <p>
+        <div class="make-switch js-event-register-switch" data-on="success" data-off="danger" data-on-label="SI" data-off-label="NO">
+          <input type="checkbox" {{#if evento.registracion }}checked{{/if}}>
+        </div> Registración
+      </p>
+      <p>
+        <div class="make-switch js-event-chismografo-switch" data-on="success" data-off="danger" data-on-label="SI" data-off-label="NO">
+          <input type="checkbox" {{#if evento.chismografo }}checked{{/if}}>
+        </div> Chismografo
+        <a  href="#" type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-exclamation-sign"></span> Filtrar</a>
+      </p>
+    </div>
+  </div>
+</template>
+
+<template name="eventData">
+  <div class="row">
+    <div class="col-sm-4">
+      <h3>{{ evento.name }}</h3>
+    </div>
+    <div class="col-sm-4 col-sm-offset-4">
+      <h3 class="hidden-sm hidden-xs"></h3>
+      {{ formatDate evento.start_time "short"}} - {{ formatDate evento.end_time "short"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-info">{{ evento.description}}</div>
     </div>
   </div>
 </template>
