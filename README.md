@@ -15,3 +15,7 @@ Siendo root setear las siguientes variables:
 Ejecutar meteorite con el parametro: `--port=80`
 
 `$mrt --port=80`
+
+
+El deploy en Heroku se realiza con las instrucciones indicadas en:
+`https://github.com/oortcloud/heroku-buildpack-meteorite`
