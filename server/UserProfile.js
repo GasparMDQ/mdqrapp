@@ -1,12 +1,12 @@
 Meteor.methods({
   hasProfileComplete: function(user){
     if(user.profile) {
-      if(user.profile.nombre == '' ){ return false; }
-      if(user.profile.apellido == '' ){ return false; }
-      if(user.profile.documento == '' ){ return false; }
-      if(user.profile.telefono == '' ){ return false; }
-      if(user.profile.telefonoEmergencia == '' ){ return false; }
-      if(user.profile.obraSocial == '' ){ return false; }
+      if(!user.profile.nombre || user.profile.nombre == ''){ return false; }
+      if(!user.profile.apellido  || user.profile.apellido == '' ){ return false; }
+      if(!user.profile.documento || user.profile.documento == '' ){ return false; }
+      if(!user.profile.telefono  || user.profile.telefono == '' ){ return false; }
+      if(!user.profile.telefonoEmergencia || user.profile.telefonoEmergencia == '' ){ return false; }
+      if(!user.profile.obraSocial || user.profile.obraSocial == '' ){ return false; }
       return true;
     }
     return false;
@@ -14,15 +14,17 @@ Meteor.methods({
 
   isProfileValid: function(user){
     if(user.profile) {
-      if(user.profile.nombre == '' ){ return false; }
-      if(user.profile.apellido == '' ){ return false; }
-      if(user.profile.documento == '' ){ return false; }
+
+      if(!user.profile.nombre || user.profile.nombre == ''){ return false; }
+      if(!user.profile.apellido  || user.profile.apellido == '' ){ return false; }
+      if(!user.profile.documento || user.profile.documento == '' ){ return false; }
+      if(!user.profile.telefono  || user.profile.telefono == '' ){ return false; }
+      if(!user.profile.telefonoEmergencia || user.profile.telefonoEmergencia == '' ){ return false; }
+      if(!user.profile.obraSocial || user.profile.obraSocial == '' ){ return false; }
+
       if(!parseInt(user.profile.documento)){ return false; }
-      if(user.profile.telefono == '' ){ return false; }
       if(!parseInt(user.profile.telefono)){ return false; }
-      if(user.profile.telefonoEmergencia == '' ){ return false; }
       if(!parseInt(user.profile.telefonoEmergencia)){ return false; }
-      if(user.profile.obraSocial == '' ){ return false; }
 
       //Pending: check only numbers on doc & phone
       return true;

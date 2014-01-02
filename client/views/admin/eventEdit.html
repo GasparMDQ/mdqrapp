@@ -75,22 +75,51 @@
 
 <template name="eventRoomsList">
   <h3>Habitaciones <a href="#" type="button" class="btn btn-info btn-xs" disabled="disabled"><span class="glyphicon glyphicon-list"></span> Reporte</a></h3>
+  {{#if rooms}}
+    {{#each rooms}}
+      {{> roomEdit}}
+    {{/each}}
+  {{else}}
+    <p>No hay habitaciones cargadas</p>
+  {{/if}}
   {{> roomNew}}
 </template>
 
 <template name="roomNew">
-  <div class="form-group">
-    <input id="roomId" type="text" class="form-control" placeholder="Ingrese el identificador">
+  <div>
+    <div class="form-group">
+      <input id="roomId" type="text" class="form-control" placeholder="Ingrese el identificador">
+    </div>
+    <div class="form-group">
+      <input id="roomDesc" type="text" class="form-control" placeholder="Ingrese la descripcion">
+    </div>
+    <div class="form-group">
+      <input id="roomQty" type="text" class="form-control" placeholder="Ingrese el cupo">
+    </div>
+    <button type="button" class="btn btn-success btn-sm js-add-room">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
   </div>
-  <div class="form-group">
-    <input id="roomDesc" type="text" class="form-control" placeholder="Ingrese la descripcion">
+</template>
+
+<template name="roomEdit">
+  <div class="js-room" data-room="{{this._id}}">
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Ingrese el identificador" value="{{ this.id }}">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Ingrese la descripcion" value="{{ this.descripcion }}">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Ingrese el cupo" value="{{ this.cupo }}">
+    </div>
+    <button type="button" class="btn btn-warning btn-sm js-update-room">
+      <span class="glyphicon glyphicon-save"></span>
+    </button>
+    <button type="button" class="btn btn-danger btn-sm js-remove-room">
+      <span class="glyphicon glyphicon-minus"></span>
+    </button>
   </div>
-  <div class="form-group">
-    <input id="roomQty" type="text" class="form-control" placeholder="Ingrese el cupo">
-  </div>
-  <button type="button" class="btn btn-success btn-sm js-add-room">
-    <span class="glyphicon glyphicon-plus"></span>
-  </button>
 </template>
 
 <template name="eventBusList">

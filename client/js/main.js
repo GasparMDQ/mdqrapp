@@ -5,6 +5,12 @@ Deps.autorun(function(){
   //Posible problema de performance!!
   Meteor.subscribe('events', Meteor.user());
 });
+Deps.autorun(function(){
+  Meteor.subscribe('rooms', Session.get('event-active'), Meteor.user());
+});
+Deps.autorun(function(){
+  Meteor.subscribe('buses', Session.get('event-active'), Meteor.user());
+});
 
 Meteor.methods({});
 

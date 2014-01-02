@@ -14,7 +14,11 @@ var getFbPicture = function(accessToken) {
 
 Accounts.onCreateUser(function(options, user) {
   user.eventos = [];
-  Roles.addUsersToRoles(user, 'user');
+
+  user.roles = ['user'];
+
+  //Not working!
+  //Roles.addUsersToRoles(user._id, 'user');
   if(options.profile) {
     options.profile.picture = getFbPicture(user.services.facebook.accessToken);
     user.profile = options.profile;
@@ -44,6 +48,34 @@ Meteor.publish('events', function(userId){
     return Eventos.find({active:true});
   }
   console.log('User:Role:none');
+  this.stop();
+  return;
+});
+
+Meteor.publish('rooms', function(eventId, userId){
+  if (Roles.userIsInRole(userId, ['super-admin', 'admin'])){
+    return Rooms.find();
+  }
+  
+  if (eventId){
+    return Rooms.find( {'eventId': eventId });
+  }
+
+  console.log('Rooms:Event:none');
+  this.stop();
+  return;
+});
+
+Meteor.publish('buses', function(eventId, userId){
+  if (Roles.userIsInRole(userId, ['super-admin', 'admin'])){
+    return Buses.find();
+  }
+
+  if (eventId){
+    return Buses.find( {'eventId': eventId });
+  }
+
+  console.log('Buses:Event:none');
   this.stop();
   return;
 });

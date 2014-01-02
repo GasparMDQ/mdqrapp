@@ -1,6 +1,6 @@
 if (Meteor.isClient) {
   Template.eventEdit.rendered = function () {
-    $('.make-switch').bootstrapSwitch();
+    $('.make-switch').not('.has-switch').bootstrapSwitch();
     $('.loading-indicator').hide();
 
     //Hack de para manejar custom events
@@ -39,7 +39,10 @@ if (Meteor.isClient) {
         });
       }
     });
+  };
 
+  Template.eventRoomsList.rooms = function () {
+    if(Session.get('edit-event')) { return Rooms.find({'eventId': Session.get('edit-event')}, {sort: { 'id': 1}}); };
   };
 
   Template.eventEdit.evento = function () {
@@ -69,6 +72,29 @@ if (Meteor.isClient) {
     }
   };
 
+  Template.roomNew.events({
+    'click .js-add-room' : function (e) {
+      e.preventDefault();
+      $(e.target).prop('disabled', true);
+      var roomData = {
+        id: $('#roomId').val(),
+        descripcion: $('#roomDesc').val(),
+        cupo: $('#roomQty').val(),
+        eventId : Session.get('edit-event')
+      };
+      var response = Meteor.call('roomAddNew', Session.get('edit-event'), Meteor.user(), roomData, function (error, result){
+        if (error) {
+          alert(error.message);
+        } else {
+        }
+        $(e.target).prop('disabled', false);
+      });
+      $('#roomId').val('');
+      $('#roomDesc').val('');
+      $('#roomQty').val('');
+    },
+  });
+
   Template.eventEdit.events({
     'click .js-facebook-refresh-event' : function (e) {
       $('#event-refresh').show();
@@ -78,6 +104,18 @@ if (Meteor.isClient) {
           alert(error.message);
         }
         $('#event-refresh').hide();
+      });
+
+    },
+  });
+
+  Template.roomEdit.events({
+    'click .js-remove-room' : function (e) {
+      e.preventDefault();
+      var response = Meteor.call('removeRoom', $(e.target).closest('div.js-room').data('room'), Session.get('edit-event'), Meteor.user(), function (error, result){
+        if (error) {
+          alert(error.message);
+        }
       });
 
     },
@@ -106,7 +144,23 @@ if (Meteor.isClient) {
       if(eId){
         Eventos.update({ _id: eId.toString() }, { $set: { chismografo: false }});
       }
+    },
+
+    roomAddNew: function(eId, user, roomData){
+      if(eId && roomData){
+        if(!roomData.id || roomData.id == ''){ return false; }
+        if(!roomData.descripcion  || roomData.descripcion == '' ){ return false; }
+        if(!roomData.cupo || roomData.cupo == '' ){ return false; }
+        Rooms.insert(roomData);
+      }
+    },
+
+    removeRoom: function(rId, eId, user){
+      if(rId){
+        Rooms.remove({ _id: rId.toString() });
+      }
     }
+
   });
 
 }

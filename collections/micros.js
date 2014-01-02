@@ -1,0 +1,1 @@
+Buses = new Meteor.Collection('buses');
