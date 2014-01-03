@@ -50,13 +50,6 @@ if (Meteor.isClient) {
 
   Template.homeLogged.userAttendingEvent = function () {
     //Indica si el usuario logueado asistirá al evento
-    Meteor.call('userAttendingEvento', Session.get('event-active'), Meteor.user(), function(error,result){
-      if(!error){
-        Session.set('event-attending', result);
-      } else {
-        Session.set('event-attending', false);
-      }
-    });
     return Session.get('event-attending');
   };
 
@@ -72,13 +65,6 @@ if (Meteor.isClient) {
 
   Template.homeLogged.isProfileComplete = function () {
     //Verificar que el usuario tenga sus campos obligatorios completos
-    Meteor.call('hasProfileComplete', Meteor.user(), function(error,result){
-      if(!error){
-        Session.set('profile-complete', result);
-      } else {
-        Session.set('profile-complete', false);
-      }
-    });
     return Session.get('profile-complete');
   };
 

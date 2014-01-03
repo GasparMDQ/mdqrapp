@@ -79,7 +79,7 @@ if (Meteor.isClient) {
       var roomData = {
         id: $('#roomId').val(),
         descripcion: $('#roomDesc').val(),
-        cupo: $('#roomQty').val(),
+        cupo: parseInt($('#roomQty').val()),
         eventId : Session.get('edit-event')
       };
       var response = Meteor.call('roomAddNew', Session.get('edit-event'), Meteor.user(), roomData, function (error, result){

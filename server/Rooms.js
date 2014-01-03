@@ -5,6 +5,7 @@ Meteor.methods({
       if(!roomData.id || roomData.id == ''){ return false; }
       if(!roomData.descripcion  || roomData.descripcion == '' ){ return false; }
       if(!roomData.cupo || roomData.cupo == '' ){ return false; }
+      if(roomData.cupo < 0) { return false; }
       return true;
     }
     return false;

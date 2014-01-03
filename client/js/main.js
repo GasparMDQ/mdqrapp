@@ -34,9 +34,29 @@ Router.map(function () {
     path: '/',
     template: 'home',
     before: function(){
+      //Verifica el estado del perfil
+      Meteor.call('hasProfileComplete', Meteor.user(), function(error,result){
+        if(!error){
+          Session.set('profile-complete', result);
+        } else {
+          Session.set('profile-complete', false);
+        }
+      });
+
+      //Verifica que haya un evento activo y lo setea
       if(Eventos.find({active:true}).count() == 1){
         var eId = Eventos.findOne({active:true})._id;
         Session.set('event-active', eId);
+
+        //Verifica que el usuario asista al evento activo
+        Meteor.call('userAttendingEvento', Session.get('event-active'), Meteor.user(), function(error,result){
+          if(!error){
+            Session.set('event-attending', result);
+          } else {
+            Session.set('event-attending', false);
+          }
+        });
+
       } else {
         Session.set('event-active', false);
       }

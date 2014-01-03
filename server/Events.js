@@ -105,6 +105,7 @@ Meteor.methods({
     Meteor.call('userHasEvento',eId, user, function (error, result){
       //Verifico que tenga los permisos necesarios para borrar eventos
       if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+        Rooms.remove({ eventId: eId.toString() });
         Eventos.remove({ _id: eId.toString() });
       } else {
         console.log('Error:removeEvent: ' + error);

@@ -1,6 +1,6 @@
 Meteor.methods({
   hasProfileComplete: function(user){
-    if(user.profile) {
+    if(user && user.profile) {
       if(!user.profile.nombre || user.profile.nombre == ''){ return false; }
       if(!user.profile.apellido  || user.profile.apellido == '' ){ return false; }
       if(!user.profile.documento || user.profile.documento == '' ){ return false; }
@@ -13,7 +13,7 @@ Meteor.methods({
   },
 
   isProfileValid: function(user){
-    if(user.profile) {
+    if(user && user.profile) {
 
       if(!user.profile.nombre || user.profile.nombre == ''){ return false; }
       if(!user.profile.apellido  || user.profile.apellido == '' ){ return false; }
@@ -42,7 +42,7 @@ Meteor.methods({
       "profile.obraSocial": data.obraSocial
     }});
 
-    console.log("Profile id: \""+data.id+"\" updated! (server side)");
+    //console.log("Profile id: \""+data.id+"\" updated! (server side)");
   },
 
   userHasEvento: function(eId, user) {
@@ -56,7 +56,6 @@ Meteor.methods({
 
   userAttendingEvento: function(eId, user) {
     var results = Meteor.call('getUserAttendingEvents');
-
     for (var i = 0; i < results.data.length; i++) {
       if(eId == results.data[i].id) {
 
