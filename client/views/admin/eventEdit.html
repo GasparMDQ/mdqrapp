@@ -75,18 +75,20 @@
 
 <template name="eventRoomsList">
   <h3>Habitaciones <a href="#" type="button" class="btn btn-info btn-xs" disabled="disabled"><span class="glyphicon glyphicon-list"></span> Reporte</a></h3>
-  {{#if rooms}}
+  {{#if hasRooms}}
     {{#each rooms}}
       {{> roomEdit}}
     {{/each}}
   {{else}}
-    <p>No hay habitaciones cargadas</p>
+    <div class="alert alert-danger">
+      <p>No hay habitaciones cargadas</p>
+    </div>
   {{/if}}
   {{> roomNew}}
 </template>
 
 <template name="roomNew">
-  <div>
+  <div class="js-room alert alert-info">
     <div class="form-group">
       <input id="roomId" type="text" class="form-control" placeholder="Ingrese el identificador">
     </div>
@@ -103,15 +105,15 @@
 </template>
 
 <template name="roomEdit">
-  <div class="js-room" data-room="{{this._id}}">
+  <div class="js-room alert" data-room="{{this._id}}">
     <div class="form-group">
-      <input type="text" class="form-control" placeholder="Ingrese el identificador" value="{{ this.id }}">
+      <input type="text" class="form-control js-room-id" placeholder="Ingrese el identificador" value="{{ this.id }}">
     </div>
     <div class="form-group">
-      <input type="text" class="form-control" placeholder="Ingrese la descripcion" value="{{ this.descripcion }}">
+      <input type="text" class="form-control js-room-desc" placeholder="Ingrese la descripcion" value="{{ this.descripcion }}">
     </div>
     <div class="form-group">
-      <input type="number" class="form-control" placeholder="Ingrese el cupo" min="1" value="{{ this.cupo }}">
+      <input type="number" class="form-control js-room-qty" placeholder="Ingrese el cupo" min="1" value="{{ this.cupo }}">
     </div>
     <button type="button" class="btn btn-warning btn-sm js-update-room">
       <span class="glyphicon glyphicon-save"></span>
@@ -124,20 +126,51 @@
 
 <template name="eventBusList">
   <h3>Micros <a href="#" type="button" class="btn btn-info btn-xs" disabled="disabled"><span class="glyphicon glyphicon-list"></span> Reporte</a></h3>
+  {{#if hasBuses}}
+    {{#each buses}}
+      {{> busEdit}}
+    {{/each}}
+  {{else}}
+    <div class="alert alert-danger">
+      <p>No hay micros cargados</p>
+    </div>
+  {{/if}}
   {{> busNew}}
 </template>
 
 <template name="busNew">
-  <div class="form-group">
-    <input id="busId" type="text" class="form-control" placeholder="Ingrese el identificador">
+  <div class="js-bus alert alert-info">
+    <div class="form-group">
+      <input id="busId" type="text" class="form-control" placeholder="Ingrese el identificador">
+    </div>
+    <div class="form-group">
+      <input id="busDesc" type="text" class="form-control" placeholder="Ingrese la descripcion">
+    </div>
+    <div class="form-group">
+      <input id="busQty" type="number" class="form-control" placeholder="Ingrese el cupo" min="1">
+    </div>
+    <button type="button" class="btn btn-success btn-sm js-add-bus">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
   </div>
-  <div class="form-group">
-    <input id="busDesc" type="text" class="form-control" placeholder="Ingrese la descripcion">
+</template>
+
+<template name="busEdit">
+  <div class="js-bus alert" data-bus="{{this._id}}">
+    <div class="form-group">
+      <input type="text" class="form-control js-bus-id" placeholder="Ingrese el identificador" value="{{ this.id }}">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control js-bus-desc" placeholder="Ingrese la descripcion" value="{{ this.descripcion }}">
+    </div>
+    <div class="form-group">
+      <input type="number" class="form-control js-bus-qty" placeholder="Ingrese el cupo" min="1" value="{{ this.cupo }}">
+    </div>
+    <button type="button" class="btn btn-warning btn-sm js-update-bus">
+      <span class="glyphicon glyphicon-save"></span>
+    </button>
+    <button type="button" class="btn btn-danger btn-sm js-remove-bus">
+      <span class="glyphicon glyphicon-minus"></span>
+    </button>
   </div>
-  <div class="form-group">
-    <input id="busQty" type="text" class="form-control" placeholder="Ingrese el cupo">
-  </div>
-  <button type="button" class="btn btn-success btn-sm js-add-bus">
-    <span class="glyphicon glyphicon-plus"></span>
-  </button>
 </template>

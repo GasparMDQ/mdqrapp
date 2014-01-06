@@ -1,29 +1,29 @@
 
 Meteor.methods({
-  isRoomValid: function(roomData){
-    if(roomData) {
-      if(!roomData.id || roomData.id == ''){ return false; }
-      if(!roomData.descripcion  || roomData.descripcion == '' ){ return false; }
-      if(!roomData.cupo || roomData.cupo == '' ){ return false; }
-      if(roomData.cupo < 0) { return false; }
+  isBusValid: function(busData){
+    if(busData) {
+      if(!busData.id || busData.id == ''){ return false; }
+      if(!busData.descripcion  || busData.descripcion == '' ){ return false; }
+      if(!busData.cupo || busData.cupo == '' ){ return false; }
+      if(busData.cupo < 0) { return false; }
       return true;
     }
     return false;
   },
 
-  roomAddNew: function(eId, user, roomData){
-    Meteor.call('isRoomValid',roomData, function (error, result){
+  busAddNew: function(eId, user, busData){
+    Meteor.call('isBusValid',busData, function (error, result){
       if (result) {
         Meteor.call('userHasEvento',eId, user, function (error, result){
 
           //Verifico que tenga los permisos necesarios para agregar eventos
           if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
-            Rooms.insert(roomData);
+            Buses.insert(busData);
           } else {
             if(error){
               console.log('Error:userHasEvento: ' + error);
             } else {
-              console.log('Error:roomAddNew: not allowed');
+              console.log('Error:busAddNew: not allowed');
             }
 
           }
@@ -32,19 +32,19 @@ Meteor.methods({
     });
   },
 
-  updateRoom: function(rId, user, roomData){
-    Meteor.call('isRoomValid',roomData, function (error, result){
+  updateBus: function(rId, user, busData){
+    Meteor.call('isBusValid',busData, function (error, result){
       if (result) {
-        Meteor.call('userHasEvento',roomData.eventId, user, function (error, result){
+        Meteor.call('userHasEvento',busData.eventId, user, function (error, result){
 
           //Verifico que tenga los permisos necesarios para agregar eventos
           if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
-            Rooms.update({ _id:roomData._id}, roomData);;
+            Buses.update({ _id:busData._id}, busData);;
           } else {
             if(error){
               console.log('Error:userHasEvento: ' + error);
             } else {
-              console.log('Error:updateRoom: not allowed');
+              console.log('Error:updateBus: not allowed');
             }
 
           }
@@ -53,13 +53,13 @@ Meteor.methods({
     });
   },
 
-  removeRoom: function(rId, eId, user){
+  removeBus: function(rId, eId, user){
     Meteor.call('userHasEvento',eId, user, function (error, result){
       //Verifico que tenga los permisos necesarios para editar el eventos
       if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
-        Rooms.remove({ _id: rId.toString() });
+        Buses.remove({ _id: rId.toString() });
       } else {
-        console.log('Error:removeRoom: ' + error);
+        console.log('Error:removeBus: ' + error);
       }
     });
   },

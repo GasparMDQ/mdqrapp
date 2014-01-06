@@ -41,8 +41,26 @@ if (Meteor.isClient) {
     });
   };
 
+  Template.eventRoomsList.hasRooms = function () {
+    if(Session.get('edit-event')) {
+      var roomsCount = Rooms.find({'eventId': Session.get('edit-event')}, {sort: { 'id': 1}}).count();
+      return roomsCount>0;
+    };
+  };
+
   Template.eventRoomsList.rooms = function () {
     if(Session.get('edit-event')) { return Rooms.find({'eventId': Session.get('edit-event')}, {sort: { 'id': 1}}); };
+  };
+
+  Template.eventBusList.hasBuses = function () {
+    if(Session.get('edit-event')) {
+      var busesCount = Buses.find({'eventId': Session.get('edit-event')}, {sort: { 'id': 1}}).count();
+      return busesCount>0;
+    };
+  };
+
+  Template.eventBusList.buses = function () {
+    if(Session.get('edit-event')) { return Buses.find({'eventId': Session.get('edit-event')}, {sort: { 'id': 1}}); };
   };
 
   Template.eventEdit.evento = function () {
@@ -74,8 +92,9 @@ if (Meteor.isClient) {
 
   Template.roomNew.events({
     'click .js-add-room' : function (e) {
+      var updateBtn = $(e.target).closest('div.js-room').find('button.js-add-room').first();
       e.preventDefault();
-      $(e.target).prop('disabled', true);
+      updateBtn.prop('disabled', true);
       var roomData = {
         id: $('#roomId').val(),
         descripcion: $('#roomDesc').val(),
@@ -87,11 +106,35 @@ if (Meteor.isClient) {
           alert(error.message);
         } else {
         }
-        $(e.target).prop('disabled', false);
+        updateBtn.prop('disabled', false);
       });
       $('#roomId').val('');
       $('#roomDesc').val('');
       $('#roomQty').val('');
+    },
+  });
+
+  Template.busNew.events({
+    'click .js-add-bus' : function (e) {
+      var updateBtn = $(e.target).closest('div.js-bus').find('button.js-add-bus').first();
+      e.preventDefault();
+      updateBtn.prop('disabled', true);
+      var busData = {
+        id: $('#busId').val(),
+        descripcion: $('#busDesc').val(),
+        cupo: parseInt($('#busQty').val()),
+        eventId : Session.get('edit-event')
+      };
+      var response = Meteor.call('busAddNew', Session.get('edit-event'), Meteor.user(), busData, function (error, result){
+        if (error) {
+          alert(error.message);
+        } else {
+        }
+        updateBtn.prop('disabled', false);
+      });
+      $('#busId').val('');
+      $('#busDesc').val('');
+      $('#busQty').val('');
     },
   });
 
@@ -117,8 +160,95 @@ if (Meteor.isClient) {
           alert(error.message);
         }
       });
-
     },
+    
+    'click .js-update-room' : function (e) {
+      e.preventDefault();
+      var updateBtn = $(e.target).closest('div.js-room').find('button.js-update-room').first();
+      var updateSpan = $(e.target).closest('div.js-room').find('span.glyphicon-save').first();
+
+      var roomData = {
+        _id: $(e.target).closest('div.js-room').data('room'),
+        id: $(e.target).closest('div.js-room').find('input.js-room-id').val(),
+        descripcion: $(e.target).closest('div.js-room').find('input.js-room-desc').val(),
+        cupo: parseInt($(e.target).closest('div.js-room').find('input.js-room-qty').val()),
+        eventId : Session.get('edit-event')
+      };
+
+      updateBtn.prop('disabled', true);
+      var response = Meteor.call('updateRoom', $(e.target).closest('div.js-room').data('room'), Meteor.user(), roomData, function (error, result){
+        if (error) {
+          alert(error.message);
+          updateBtn.prop('disabled', false);
+        } else {
+          updateSpan.toggleClass('glyphicon-saved');
+          updateSpan.toggleClass('glyphicon-save');
+          updateBtn.toggleClass('btn-warning');
+          updateBtn.toggleClass('btn-success');
+
+          //Modificaciones esteticas
+          setTimeout(function(){
+            updateBtn.toggleClass('btn-warning');
+            updateBtn.toggleClass('btn-success');
+            updateSpan.toggleClass('glyphicon-saved');
+            updateSpan.toggleClass('glyphicon-save');
+            updateBtn.prop('disabled', false);
+            },
+            3000
+          );
+        }
+      });
+    },
+  });
+
+  Template.busEdit.events({
+    'click .js-remove-bus' : function (e) {
+      e.preventDefault();
+      var response = Meteor.call('removeBus', $(e.target).closest('div.js-bus').data('bus'), Session.get('edit-event'), Meteor.user(), function (error, result){
+        if (error) {
+          alert(error.message);
+        }
+      });
+    },
+    
+    'click .js-update-bus' : function (e) {
+      e.preventDefault();
+      var updateBtn = $(e.target).closest('div.js-bus').find('button.js-update-bus').first();
+      var updateSpan = $(e.target).closest('div.js-bus').find('span.glyphicon-save').first();
+
+      var busData = {
+        _id: $(e.target).closest('div.js-bus').data('bus'),
+        id: $(e.target).closest('div.js-bus').find('input.js-bus-id').val(),
+        descripcion: $(e.target).closest('div.js-bus').find('input.js-bus-desc').val(),
+        cupo: parseInt($(e.target).closest('div.js-bus').find('input.js-bus-qty').val()),
+        eventId : Session.get('edit-event')
+      };
+
+      updateBtn.prop('disabled', true);
+      var response = Meteor.call('updateBus', $(e.target).closest('div.js-bus').data('bus'), Meteor.user(), busData, function (error, result){
+        if (error) {
+          alert(error.message);
+          updateBtn.prop('disabled', false);
+        } else {
+          updateSpan.toggleClass('glyphicon-saved');
+          updateSpan.toggleClass('glyphicon-save');
+          updateBtn.toggleClass('btn-warning');
+          updateBtn.toggleClass('btn-success');
+
+          //Modificaciones esteticas
+          setTimeout(function(){
+            updateBtn.toggleClass('btn-warning');
+            updateBtn.toggleClass('btn-success');
+            updateSpan.toggleClass('glyphicon-saved');
+            updateSpan.toggleClass('glyphicon-save');
+            updateBtn.prop('disabled', false);
+            },
+            3000
+          );
+        }
+      });
+    },
+
   });
 
   //Stubs
@@ -155,9 +285,42 @@ if (Meteor.isClient) {
       }
     },
 
+    updateRoom: function(rId, user, roomData){
+      if(rId && roomData){
+        if(!roomData.id || roomData.id == ''){ return false; }
+        if(!roomData.descripcion  || roomData.descripcion == '' ){ return false; }
+        if(!roomData.cupo || roomData.cupo == '' ){ return false; }
+        Rooms.update({ _id:roomData._id}, roomData);
+      }
+    },
+
     removeRoom: function(rId, eId, user){
       if(rId){
         Rooms.remove({ _id: rId.toString() });
+      }
+    },
+
+    busAddNew: function(eId, user, busData){
+      if(eId && busData){
+        if(!busData.id || busData.id == ''){ return false; }
+        if(!busData.descripcion  || busData.descripcion == '' ){ return false; }
+        if(!busData.cupo || busData.cupo == '' ){ return false; }
+        Buses.insert(busData);
+      }
+    },
+
+    updateBus: function(bId, user, busData){
+      if(bId && busData){
+        if(!busData.id || busData.id == ''){ return false; }
+        if(!busData.descripcion  || busData.descripcion == '' ){ return false; }
+        if(!busData.cupo || busData.cupo == '' ){ return false; }
+        Buses.update({ _id:busData._id}, busData);
+      }
+    },
+
+    removeBus: function(bId, eId, user){
+      if(bId){
+        Buses.remove({ _id: bId.toString() });
       }
     }
 
