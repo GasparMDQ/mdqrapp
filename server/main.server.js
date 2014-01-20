@@ -28,8 +28,18 @@ Accounts.onCreateUser(function(options, user) {
 
 Meteor.methods({});
 
-Meteor.publish('users', function(){
+Meteor.publish('userData', function(){
   return Meteor.users.find({_id:this.userId});
+});
+
+Meteor.publish('allUsersData', function(){
+  return Meteor.users.find({},{
+    fields: {
+      '_id': 1,
+      'profile.nombre': 1,
+      'services.facebook.id': 1
+    }
+  });
 });
 
 Meteor.publish('events', function(userId){
@@ -47,35 +57,26 @@ Meteor.publish('events', function(userId){
     //Solo activo
     return Eventos.find({active:true});
   }
-  console.log('User:Role:none');
+  //console.log('User:Role:none');
   this.stop();
   return;
 });
 
-Meteor.publish('rooms', function(eventId, userId){
+Meteor.publish('roomsAndBuses', function(eventId, userId){
   if (Roles.userIsInRole(userId, ['super-admin', 'admin'])){
-    return Rooms.find();
+    return [
+      Rooms.find(),
+      Buses.find()
+    ];
   }
   
   if (eventId){
-    return Rooms.find( {'eventId': eventId });
+    return [
+      Rooms.find( {'eventId': eventId }),
+      Buses.find( {'eventId': eventId })
+    ];
   }
 
-  console.log('Rooms:Event:none');
-  this.stop();
-  return;
-});
-
-Meteor.publish('buses', function(eventId, userId){
-  if (Roles.userIsInRole(userId, ['super-admin', 'admin'])){
-    return Buses.find();
-  }
-
-  if (eventId){
-    return Buses.find( {'eventId': eventId });
-  }
-
-  console.log('Buses:Event:none');
   this.stop();
   return;
 });

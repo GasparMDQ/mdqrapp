@@ -20,6 +20,11 @@ if (Meteor.isClient) {
     if (Meteor.user() && Meteor.user().eventos){
       return Eventos.find({
         _id: { $in: eventosUsuario(Meteor.user()) }
+      },{
+        sort: {
+          active: -1,
+          start_time:1
+        }
       }).fetch();
     }
   };

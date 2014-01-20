@@ -25,7 +25,7 @@
       </div>
       {{#unless isEventSet }}
         <div class="alert alert-block alert-danger">
-          Todavia no nos decidimos a donde viajar!
+          Todavía no nos decidimos a donde viajar!
         </div>
       {{ else }}
         <div class="row">
@@ -47,12 +47,12 @@
               {{#if isEventOpen}}
                 <p>
                   {{#if isProfileComplete}}
-                    <button class="btn btn-lg btn-block {{#if isRoomSelected }}btn-success{{else}}btn-primary{{/if}}">
+                    <a class="btn btn-lg btn-block {{#if isRoomSelected }}btn-success{{else}}btn-primary{{/if}}" href="{{pathFor 'roomsList'}}">
                   {{else}}
-                    <button class="btn btn-default btn-lg btn-block" disabled="disabled">
+                    <a class="btn btn-default btn-lg btn-block" disabled="disabled">
                   {{/if}}
                   <span class="glyphicon glyphicon-ok"></span> Elegí donde dormir
-                  </button>
+                  </a>
                 </p>
                 <p>
                   {{#if isProfileComplete}}

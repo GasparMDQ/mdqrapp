@@ -54,15 +54,29 @@ Meteor.methods({
     return false;
   },
 
-  userAttendingEvento: function(eId, user) {
-    var results = Meteor.call('getUserAttendingEvents');
-    for (var i = 0; i < results.data.length; i++) {
-      if(eId == results.data[i].id) {
+  userHasRoom: function(eId, user) {
+    var results = Rooms.findOne({
+      'pax': { $in: [user._id] },
+      'eventId': eId
+    });
 
-        //Investigar si este metodo es el mas eficiente. Ya que es disparado varias veces al loguear el HOME
-        return true;
-      }
-    };
+    if(results) {
+      return true;
+    }  
+    return false;
+  },
+
+  userAttendingEvento: function(eId, user) {
+    var results = Meteor.call('getUserAttendingEvents',user);
+    if(results.data){
+      for (var i = 0; i < results.data.length; i++) {
+        if(eId == results.data[i].id) {
+
+          //Investigar si este metodo es el mas eficiente. Ya que es disparado varias veces al loguear el HOME
+          return true;
+        }
+      };
+    }
     return false;
   }
 });

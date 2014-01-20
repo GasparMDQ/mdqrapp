@@ -10,7 +10,7 @@ Meteor.methods({
     //En caso de que el evento exista, se debe refrescar el owner
     //y los admins del mismo!!
     //@todo
-    var results = Meteor.call('getUserAttendingEvents');
+    var results = Meteor.call('getUserAttendingEvents',user);
     var data = new Object(null);
     var addData = false;
 

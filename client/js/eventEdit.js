@@ -71,25 +71,6 @@ if (Meteor.isClient) {
     return Eventos.findOne({_id: Session.get('edit-event')});
   };
 
-  Template.eventData.formatDate = function (datetime, format) {
-    if(datetime){
-      var DateFormats = {
-             short: "DD/MM/YYYY HH:mm",
-             long: "dddd DD.MM.YYYY HH:mm"
-      };
-
-      if (moment) {
-        f = DateFormats[format];
-        return moment(datetime).format(f);
-      }
-      else {
-        return datetime;
-      }
-    } else {
-      return 'sin informacion';
-    }
-  };
-
   Template.roomNew.events({
     'click .js-add-room' : function (e) {
       var updateBtn = $(e.target).closest('div.js-room').find('button.js-add-room').first();
@@ -99,7 +80,8 @@ if (Meteor.isClient) {
         id: $('#roomId').val(),
         descripcion: $('#roomDesc').val(),
         cupo: parseInt($('#roomQty').val()),
-        eventId : Session.get('edit-event')
+        eventId : Session.get('edit-event'),
+        pax: []
       };
       var response = Meteor.call('roomAddNew', Session.get('edit-event'), Meteor.user(), roomData, function (error, result){
         if (error) {
@@ -123,7 +105,8 @@ if (Meteor.isClient) {
         id: $('#busId').val(),
         descripcion: $('#busDesc').val(),
         cupo: parseInt($('#busQty').val()),
-        eventId : Session.get('edit-event')
+        eventId : Session.get('edit-event'),
+        pax: []
       };
       var response = Meteor.call('busAddNew', Session.get('edit-event'), Meteor.user(), busData, function (error, result){
         if (error) {
@@ -290,7 +273,14 @@ if (Meteor.isClient) {
         if(!roomData.id || roomData.id == ''){ return false; }
         if(!roomData.descripcion  || roomData.descripcion == '' ){ return false; }
         if(!roomData.cupo || roomData.cupo == '' ){ return false; }
-        Rooms.update({ _id:roomData._id}, roomData);
+        Rooms.update(
+          { _id:roomData._id},
+          { $set: {
+            'id': roomData.id,
+            'descripcion': roomData.descripcion,
+            'cupo': roomData.cupo
+          }}
+        );
       }
     },
 

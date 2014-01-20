@@ -30,22 +30,12 @@ if (Meteor.isClient) {
 
   Template.homeLogged.isEventOpen = function () {
     //Opera sobre el evento open
-    var evento = Eventos.findOne({_id:Session.get('event-active')});
-    if(evento){
-      return evento.registracion;
-    } else {
-      return false;
-    }
+    return Session.get('event-registracion');
   };
 
   Template.homeLogged.isEventEnabled = function () {
-    //Opera sobr el evento si esta enabled
-    var evento = Eventos.findOne({_id:Session.get('event-active')});
-    if(evento){
-      return evento.chismografo;
-    } else {
-      return false;
-    }
+    //Opera sobre el evento si esta enabled
+    return Session.get('event-chismografo');
   };
 
   Template.homeLogged.userAttendingEvent = function () {

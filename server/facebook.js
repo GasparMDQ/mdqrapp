@@ -34,10 +34,14 @@ Facebook.prototype.getEventInfo = function(eId){
 }
 
 Meteor.methods({
-  getUserAttendingEvents: function(){
-    var fb = new Facebook(Meteor.user().services.facebook.accessToken);
-    var data = fb.getUserAttendingEvents();
-    return data;  
+  getUserAttendingEvents: function(user){
+    if (user) { 
+      var fb = new Facebook(user.services.facebook.accessToken);
+      var data = fb.getUserAttendingEvents();
+      return data;  
+    } else {
+      return [];
+    }
   },
   getEventInfo: function(eId){
     var fb = new Facebook(Meteor.user().services.facebook.accessToken);
