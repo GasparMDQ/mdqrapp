@@ -74,7 +74,7 @@ Meteor.methods({
     //Veririco que se hayan pasado todos los parametros
     if(rId && user && eId){
       //Verifico que el usuario tenga el evento
-      Meteor.call('userHasEvento',eId, user, function (error, result){
+      Meteor.call('userAttendingEvento',eId, user, function (error, result){
         if(result){
           //Verifico que el usuario no este en otra habitacion del mismo evento
           Meteor.call('userHasRoom',eId, user, function (error, result){
@@ -94,7 +94,7 @@ Meteor.methods({
           });
 
         } else {
-          console.log('Error:roomCheckIn:userHasEvento: '+ error);
+          console.log('Error:roomCheckIn:userAttendingEvento: '+ error);
         }
       });
     } else {
@@ -104,7 +104,7 @@ Meteor.methods({
 
   roomCheckOut: function(rId, userId, eId){
     if(Meteor.user()._id == userId) {
-      Meteor.call('userHasEvento',eId, Meteor.user(), function (error, result){
+      Meteor.call('userAttendingEvento',eId, Meteor.user(), function (error, result){
         //Verifico que tenga los permisos necesarios para realizar el checkOut el eventos
         if(result && rId){
           Rooms.update( { '_id': rId }, { $pull: { 'pax': Meteor.user()._id } } );
