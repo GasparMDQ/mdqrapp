@@ -46,6 +46,9 @@ Meteor.methods({
       var reservas = Rooms.find({'pax': user._id, 'eventId': eId}).count();
       if (reservas == 0){
         Rooms.update( { '_id': rId }, { $addToSet: { 'pax': user._id } } );
+      } else {
+        var habitacion = Rooms.findOne({'pax': user._id, 'eventId': eId});
+        alert('Ya se tiene seleccionada la habitación ' + habitacion.id);
       }
     }
   },
