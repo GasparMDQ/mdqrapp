@@ -43,7 +43,10 @@ if (Meteor.isClient) {
 Meteor.methods({
   roomCheckIn: function(rId, user, eId){
     if(rId){
-      Rooms.update( { '_id': rId }, { $addToSet: { 'pax': user._id } } );
+      var reservas = Rooms.find({'pax': user._id, 'eventId': eId}).count();
+      if (reservas == 0){
+        Rooms.update( { '_id': rId }, { $addToSet: { 'pax': user._id } } );
+      }
     }
   },
 
