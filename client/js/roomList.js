@@ -12,7 +12,7 @@ if (Meteor.isClient) {
     return this.cupo - this.pax.length;
   };
 
-  Template.paxDetail.user = function () {
+  Template.paxRoomDetail.user = function () {
     return Meteor.users.findOne({'_id': this.toString()});
   };
 
@@ -27,7 +27,7 @@ if (Meteor.isClient) {
 
     }
   });
-  Template.paxDetail.events({
+  Template.paxRoomDetail.events({
     'click .js-check-out' : function (e) {
       e.preventDefault();
       var response = Meteor.call('roomCheckOut', $(e.target).closest('div.js-room').data('room'), $(e.target).data('profile'), Session.get('event-active'), function (error, result){

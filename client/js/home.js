@@ -45,11 +45,28 @@ if (Meteor.isClient) {
 
   Template.homeLogged.isRoomSelected = function () {
     //Buscar si el usuario tiene una habitacion seleccionada en el evento activo
+    var results = Rooms.findOne({
+      'pax': { $in: [Meteor.user()._id] },
+      'eventId': Session.get('event-active')
+    });
+
+    if(results) {
+      return true;
+    }  
     return false;
   };
 
   Template.homeLogged.isBusSelected = function () {
     //Buscar si el usuario tiene una habitacion seleccionada en el evento activo
+    var results = Buses.findOne({
+      'pax': { $in: [Meteor.user()._id] },
+      'eventId': Session.get('event-active')
+    });
+
+    if(results) {
+      return true;
+    }  
+    return false;
     return false;
   };
 

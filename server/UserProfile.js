@@ -66,6 +66,18 @@ Meteor.methods({
     return false;
   },
 
+  userHasBus: function(eId, user) {
+    var results = Buses.findOne({
+      'pax': { $in: [user._id] },
+      'eventId': eId
+    });
+
+    if(results) {
+      return true;
+    }  
+    return false;
+  },
+
   userAttendingEvento: function(eId, user) {
     var results = Meteor.call('getUserAttendingEvents',user);
     if(results.data){

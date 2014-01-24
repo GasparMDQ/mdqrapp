@@ -81,10 +81,10 @@ var setEventOptions = function(){
 
 //Global rules
 Router.before(mustBeSignedIn, {except: ['home']});
-Router.before(setEventOptions, {only: ['home', 'roomsList']});
-Router.before(setProfileStatus, {only: ['home', 'roomsList']});
-Router.before(mustBeOpen, {only: ['roomsList']});
-Router.before(mustBeAttending, {only: ['roomsList']});
+Router.before(setEventOptions, {only: ['home', 'roomsList', 'busesList']});
+Router.before(setProfileStatus, {only: ['home', 'roomsList', 'busesList']});
+Router.before(mustBeOpen, {only: ['roomsList', 'busesList']});
+Router.before(mustBeAttending, {only: ['roomsList', 'busesList']});
 
 Router.map(function () {
 
@@ -101,6 +101,11 @@ Router.map(function () {
   this.route('roomsList', {
     path: '/habitaciones',
     template: 'roomsList',
+  });
+
+  this.route('busesList', {
+    path: '/micros',
+    template: 'busesList',
   });
 
   this.route('admin', {
