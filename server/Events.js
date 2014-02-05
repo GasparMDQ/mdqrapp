@@ -81,7 +81,10 @@ Meteor.methods({
   setActiveEvent: function(eId, user){
     Meteor.call('userHasEvento',eId, user, function (error, result){
       //Verifico que tenga los permisos necesarios para activar eventos
-      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+      if(
+        (result && Roles.userIsInRole(user, ['admin'])) ||
+        Roles.userIsInRole(user, ['super-admin'])
+       ){
         Eventos.update({ _id: { $ne: eId.toString() }}, { $set: { active: false }}, {multi: true});
         Eventos.update({ _id: eId.toString() }, { $set: { active: true }});
       } else {
@@ -93,7 +96,10 @@ Meteor.methods({
   unSetActiveEvent: function(eId, user){
     Meteor.call('userHasEvento',eId, user, function (error, result){
       //Verifico que tenga los permisos necesarios para desactivar eventos
-      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+      if(
+        (result && Roles.userIsInRole(user, ['admin'])) ||
+        Roles.userIsInRole(user, ['super-admin'])
+       ){
         Eventos.update({ _id: eId.toString() }, { $set: { active: false }});
       } else {
         console.log('Error:unSetActiveEvent: ' + error);
@@ -104,7 +110,10 @@ Meteor.methods({
   removeEvent: function(eId, user){
     Meteor.call('userHasEvento',eId, user, function (error, result){
       //Verifico que tenga los permisos necesarios para borrar eventos
-      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+      if(
+        (result && Roles.userIsInRole(user, ['admin'])) ||
+        Roles.userIsInRole(user, ['super-admin'])
+       ){
         Rooms.remove({ eventId: eId.toString() });
         Eventos.remove({ _id: eId.toString() });
       } else {
@@ -116,7 +125,10 @@ Meteor.methods({
   setRegisterEvent: function(eId, user){
     Meteor.call('userHasEvento',eId, user, function (error, result){
       //Verifico que tenga los permisos necesarios para desactivar eventos
-      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+      if(
+        (result && Roles.userIsInRole(user, ['admin'])) ||
+        Roles.userIsInRole(user, ['super-admin'])
+       ){
         Eventos.update({ _id: eId.toString() }, { $set: { registracion: true }});
       } else {
         console.log('Error:setRegisterEvent: ' + error);
@@ -127,7 +139,10 @@ Meteor.methods({
   unSetRegisterEvent: function(eId, user){
     Meteor.call('userHasEvento',eId, user, function (error, result){
       //Verifico que tenga los permisos necesarios para desactivar eventos
-      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+      if(
+        (result && Roles.userIsInRole(user, ['admin'])) ||
+        Roles.userIsInRole(user, ['super-admin'])
+       ){
         Eventos.update({ _id: eId.toString() }, { $set: { registracion: false }});
       } else {
         console.log('Error:unSetRegisterEvent: ' + error);
@@ -139,7 +154,10 @@ Meteor.methods({
   setChismeEvent: function(eId, user){
     Meteor.call('userHasEvento',eId, user, function (error, result){
       //Verifico que tenga los permisos necesarios para desactivar eventos
-      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+      if(
+        (result && Roles.userIsInRole(user, ['admin'])) ||
+        Roles.userIsInRole(user, ['super-admin'])
+       ){
         Eventos.update({ _id: eId.toString() }, { $set: { chismografo: true }});
       } else {
         console.log('Error:setChismeEvent: ' + error);
@@ -150,7 +168,10 @@ Meteor.methods({
   unSetChismeEvent: function(eId, user){
     Meteor.call('userHasEvento',eId, user, function (error, result){
       //Verifico que tenga los permisos necesarios para desactivar eventos
-      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
+      if(
+        (result && Roles.userIsInRole(user, ['admin'])) ||
+        Roles.userIsInRole(user, ['super-admin'])
+       ){
         Eventos.update({ _id: eId.toString() }, { $set: { chismografo: false }});
       } else {
         console.log('Error:unSetChismeEvent: ' + error);
@@ -180,8 +201,4 @@ Meteor.methods({
       }
     });
   },
-
-
-
-
 });

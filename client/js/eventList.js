@@ -9,6 +9,10 @@ if (Meteor.isClient) {
   };
 
   Template.eventList.eventos = function () {
+    if (Roles.userIsInRole(Meteor.user(), ['super-admin'])){
+      return Eventos.find();
+    }    
+
     var eventosUsuario = function(usr){
       var data = [];
       for(var i=0;i<usr.eventos.length; i++){
