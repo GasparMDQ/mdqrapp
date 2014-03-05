@@ -20,73 +20,24 @@
 <template name="homeLogged">
   <div class="jumbotron">
     <div class="container">
-      <div class="row">
+      <div class="row hidden-xs">
         <h1>{{ greeting }}</h1>
+        <p>
+          Seleccione una actividad
+        </p>
       </div>
-      {{#unless isEventSet }}
-        <div class="alert alert-block alert-danger">
-          Todavía no nos decidimos a dónde viajar!
-        </div>
-      {{ else }}
-        <div class="row">
-          Nuestro próximo viaje es a <strong>{{ destination }}</strong>
-        </div>
-      {{/unless}}
-      <div class="row">
-        <div class="col-sm-6">
-          <img src="https://graph.facebook.com/{{picId}}/picture?width=200&height=200" class="bigPhoto img-responsive">
-        </div>
-        <div class="col-sm-4 col-sm-offset-2">
-          <p>
-            <a class="btn btn-lg btn-block {{#if isProfileComplete }}btn-success{{else}}btn-primary{{/if}}" href="{{pathFor 'profileEdit'}}">
-              <span class="glyphicon glyphicon-ok"></span> Actualizá tu perfil
-            </a>
-          </p>
-          {{#if isEventSet}}
-            {{#if userAttendingEvent}}
-              {{#if isEventOpen}}
-                <p>
-                  {{#if isProfileComplete}}
-                    <a class="btn btn-lg btn-block {{#if isRoomSelected }}btn-success{{else}}btn-primary{{/if}}" href="{{pathFor 'roomsList'}}">
-                  {{else}}
-                    <a class="btn btn-default btn-lg btn-block" disabled="disabled">
-                  {{/if}}
-                  <span class="glyphicon glyphicon-ok"></span> Elegí dónde dormir
-                  </a>
-                </p>
-                <p>
-                  {{#if isProfileComplete}}
-                    <a class="btn btn-lg btn-block {{#if isBusSelected }}btn-success{{else}}btn-primary{{/if}}" href="{{pathFor 'busesList'}}">
-                  {{else}}
-                    <a class="btn btn-default btn-lg btn-block" disabled="disabled">
-                  {{/if}}
-                  <span class="glyphicon glyphicon-ok"></span> Elegí dónde viajar
-                  </a>
-                </p>
-              {{/if}}
-
-              {{#if isEventEnabled}}
-                <p>
-                  <button class="btn btn-lg btn-block btn-success">
-                    <span class="glyphicon glyphicon-ok"></span> Chismógrafo!
-                  </button>
-                </p>
-              {{/if}}
-            {{/if}}
-          {{/if}}
-        </div>
+      <div class="col-sm-6">
+        <a class="btn btn-lg btn-block" href="{{pathFor 'tesoroHome'}}">
+          <img src="/bt_busqueda.jpg" class="img-home img-responsive img-rounded">
+          Búsqueda del Tesoro
+        </a>
       </div>
-      {{#if isEventSet}}
-        {{#if userAttendingEvent}}
-          <p>
-            Algo para poner cuando asiste al evento!
-          </p>
-        {{ else }}
-          <p>
-            Debe indicar que asistirá al evento para poder continuar con el registro
-          </p>
-        {{/if}}
-      {{/if}}
+      <div class="col-sm-6">
+        <a class="btn btn-lg btn-block"  href="{{pathFor 'viajesHome'}}">
+          <img src="/bt_viajes.jpg" class="img-home img-responsive img-rounded">
+          Viaja con MDQ Rollers
+        </a>
+        </div>
     </div>
   </div>
 </template>

@@ -32,6 +32,10 @@ Meteor.publish('userData', function(){
   return Meteor.users.find({_id:this.userId});
 });
 
+Meteor.publish('teams', function(){
+  return Equipos.find();
+});
+
 Meteor.publish('allUsersData', function(){
   return Meteor.users.find({},{
     fields: {
@@ -40,6 +44,21 @@ Meteor.publish('allUsersData', function(){
       'services.facebook.id': 1
     }
   });
+});
+
+Meteor.publish('busquedas', function(userId){
+  if (Roles.userIsInRole(userId, ['super-admin', 'admin'])){
+    //Todas
+    return Busquedas.find();
+  }
+
+  if (Roles.userIsInRole(userId, ['user'])){
+    //Solo activa
+    return Busquedas.find({active:true});
+  }
+  //console.log('User:Role:none');
+  this.stop();
+  return;
 });
 
 Meteor.publish('events', function(userId){

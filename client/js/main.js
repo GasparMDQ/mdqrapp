@@ -1,10 +1,17 @@
 Meteor.subscribe('userData');
 Meteor.subscribe('allUsersData');
+Meteor.subscribe('teams');
 Deps.autorun(function(){
 
   //Al pasar el usuario y no el ID, se resuscribe cada vez que se modifica el mismo
   //Posible problema de performance!!
   Meteor.subscribe('events', Meteor.user());
+});
+Deps.autorun(function(){
+
+  //Al pasar el usuario y no el ID, se resuscribe cada vez que se modifica el mismo
+  //Posible problema de performance!!
+  Meteor.subscribe('busquedas', Meteor.user());
 });
 Deps.autorun(function(){
   Meteor.subscribe('roomsAndBuses', Session.get('event-active'), Meteor.user());
@@ -34,13 +41,19 @@ var mustBeSignedIn = function(){
 
 var mustBeOpen = function(){
   if(!Session.get('event-registracion')){
-    this.redirect('home'); 
+    this.redirect('viajesHome'); 
   }
 };
 
 var mustBeAttending = function(){
   if(!Session.get('event-attending')){
-    this.redirect('home'); 
+    this.redirect('viajesHome'); 
+  }
+};
+
+var mustBeAQuest = function(){
+  if(!Session.get('busqueda-active')){
+    this.redirect('tesoroHome'); 
   }
 };
 
@@ -79,12 +92,26 @@ var setEventOptions = function(){
   }
 };
 
+var setBusquedaOptions = function(){
+  //Verifica que haya un evento activo y lo setea
+  if(Busquedas.find({active:true}).count() == 1){
+  var busqueda = Busquedas.findOne({active:true});
+    Session.set('busqueda-active', busqueda._id);
+    Session.set('busqueda-inProgress', busqueda.live);
+  } else {
+    Session.set('busqueda-active', false);
+    Session.set('busqueda-inProgress', false);
+  }
+};
+
 //Global rules
 Router.before(mustBeSignedIn, {except: ['home']});
-Router.before(setEventOptions, {only: ['home', 'roomsList', 'busesList']});
-Router.before(setProfileStatus, {only: ['home', 'roomsList', 'busesList']});
+Router.before(setEventOptions, {only: ['viajesHome', 'roomsList', 'busesList']});
+Router.before(setBusquedaOptions, {only: ['tesoroHome', 'teamList']});
+Router.before(setProfileStatus, {only: ['viajesHome', 'tesoroHome', 'roomsList', 'busesList']});
 Router.before(mustBeOpen, {only: ['roomsList', 'busesList']});
 Router.before(mustBeAttending, {only: ['roomsList', 'busesList']});
+Router.before(mustBeAQuest, {only: ['teamList']});
 
 Router.map(function () {
 
@@ -92,6 +119,16 @@ Router.map(function () {
     path: '/',
     template: 'home',
   });
+
+  this.route('tesoroHome', {
+    path: '/tesoro',
+    template: 'homeTesoro',
+  });  
+
+  this.route('viajesHome', {
+    path: '/viaje',
+    template: 'homeViajes',
+  });  
 
   this.route('profileEdit', {
     path: '/profile',
@@ -128,6 +165,27 @@ Router.map(function () {
       Session.set('edit-event', this.params._id);
     }
   });
+
+  this.route('busquedaList', {
+    path: '/admin/tesoro',
+    template: 'busquedaAdminHome',
+    //Incluir verificacion de permisos
+  });
+
+
+  this.route('editBusqueda', {
+    path: '/admin/tesoro/:_id',
+    template: 'busquedaEdit',
+    //Incluir verificacion de permisos
+    before: function (){
+      Session.set('edit-busqueda', this.params._id);
+    }
+  });
+
+  this.route('teamList', {
+    path: '/tesoro/teams',
+    template: 'teamList',
+  });  
 
 });
 

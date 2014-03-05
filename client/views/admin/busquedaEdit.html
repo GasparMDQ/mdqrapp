@@ -1,0 +1,172 @@
+<template name="busquedaEdit">
+  <div class="container">
+    <div id="evento-header">
+      {{> busquedaData}}
+    </div>
+
+    <div class="row">
+      <p>
+        Some text here?
+      </p>
+    </div>
+
+    <div class="row" id="alert-container">
+    </div>    
+
+    <div class="row">
+      <p>
+        <div class="make-switch js-event-active-switch" data-on="success" data-off="danger" data-on-label="SI" data-off-label="NO">
+          <input type="checkbox" {{#if busqueda.active }}checked{{/if}}>
+        </div> Búsqueda Activa
+      </p>
+      <p>
+        <div class="make-switch js-event-live-switch" data-on="success" data-off="danger" data-on-label="SI" data-off-label="NO">
+          <input type="checkbox" {{#if busqueda.live }}checked{{/if}}>
+        </div> Búsqueda en Progreso
+      </p>
+    </div>
+  </div>
+
+  <div class="form-no-label">
+    <div class="well">
+      {{> busquedaNodosList}}
+    </div>
+
+    <div class="well">
+      {{> busquedaRutasList}}
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <a class="btn btn-warning pull-right" href="{{pathFor 'busquedaList'}}">Volver</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>
+
+<template name="busquedaData">
+  <div class="row">
+    <div class="col-sm-4">
+      <h3>{{ busqueda.id }}</h3>
+    </div>
+    <div class="col-sm-4 col-sm-offset-4">
+      <h3 class="hidden-sm hidden-xs"></h3>
+      {{ formatDate busqueda.date "short"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-info">{{ evento.description}}</div>
+    </div>
+  </div>
+</template>
+
+<template name="busquedaNodosList">
+  <h3>Nodos</h3>
+  {{#if hasNodos}}
+    {{#each nodo}}
+      {{> nodoEdit}}
+    {{/each}}
+  {{else}}
+    <div class="alert alert-danger">
+      <p>No hay nodos cargados</p>
+    </div>
+  {{/if}}
+  {{> nodoNew}}
+</template>
+
+<template name="nodoNew">
+  <div class="js-nodo alert alert-info" role="form">
+    <div class="form-group">
+      <input id="nodoId" type="text" class="form-control" placeholder="Ingrese el identificador del sobre">
+    </div>
+    <div class="form-group">
+      <input id="nodoQuestion" type="text" class="form-control" placeholder="Ingrese la pregunta">
+    </div>
+    <div class="form-group">
+      <input id="nodoAnswer" type="number" class="form-control" placeholder="Ingrese la respuesta">
+    </div>
+    <div class="form-group">
+      <input id="nodoLowOffset" type="number" class="form-control" placeholder="Ingrese el margen inferior">
+    </div>
+    <div class="form-group">
+      <input id="nodoHighOffset" type="number" class="form-control" placeholder="Ingrese el margen superior">
+    </div>
+    <button type="button" class="btn btn-success btn-sm js-add-nodo">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
+  </div>
+</template>
+
+<template name="nodoEdit">
+  <div class="js-nodo alert" data-nodo="{{this._id}}">
+    <div class="form-group">
+      <input type="text" class="form-control js-nodo-id" placeholder="Ingrese el identificador" value="{{ this.id }}">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control js-nodo-question" placeholder="Ingrese la pregunta" value="{{ this.question }}">
+    </div>
+    <div class="form-group">
+      <input type="number" class="form-control js-nodo-answer" placeholder="Ingrese la respuesta" value="{{ this.answer }}">
+    </div>
+    <button type="button" class="btn btn-warning btn-sm js-update-nodo">
+      <span class="glyphicon glyphicon-save"></span>
+    </button>
+    <button type="button" class="btn btn-danger btn-sm js-remove-nodo">
+      <span class="glyphicon glyphicon-minus"></span>
+    </button>
+  </div>
+</template>
+
+<template name="busquedaRutasList">
+  <h3>Rutas</h3>
+  {{#if hasRoutes}}
+    {{#each routes}}
+      {{> routeEdit}}
+    {{/each}}
+  {{else}}
+    <div class="alert alert-danger">
+      <p>No hay rutas cargadas</p>
+    </div>
+  {{/if}}
+  {{> routeNew}}
+</template>
+
+<template name="routeNew">
+  <div class="js-route alert alert-info">
+    <div class="form-group">
+      <input id="routeId" type="text" class="form-control" placeholder="Ingrese el identificador">
+    </div>
+    <div class="form-group">
+      <input id="routeDesc" type="text" class="form-control" placeholder="Ingrese la descripcion">
+    </div>
+    <div class="form-group">
+      <input id="routeQty" type="number" class="form-control" placeholder="Ingrese el cupo" min="1">
+    </div>
+    <button type="button" class="btn btn-success btn-sm js-add-route">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
+  </div>
+</template>
+
+<template name="routeEdit">
+  <div class="js-route alert" data-route="{{this._id}}">
+    <div class="form-group">
+      <input type="text" class="form-control js-route-id" placeholder="Ingrese el identificador" value="{{ this.id }}">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control js-route-desc" placeholder="Ingrese la descripcion" value="{{ this.descripcion }}">
+    </div>
+    <div class="form-group">
+      <input type="number" class="form-control js-route-qty" placeholder="Ingrese el cupo" min="1" value="{{ this.cupo }}">
+    </div>
+    <button type="button" class="btn btn-warning btn-sm js-update-route">
+      <span class="glyphicon glyphicon-save"></span>
+    </button>
+    <button type="button" class="btn btn-danger btn-sm js-remove-route">
+      <span class="glyphicon glyphicon-minus"></span>
+    </button>
+  </div>
+</template>

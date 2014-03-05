@@ -1,0 +1,52 @@
+<template name="teamList">
+  <h1>
+    <strong>Lista de Equipos</strong>
+  </h1>
+  <p class="alert alert-danger">
+   Recordá que si el equipo no llega al mínimo de 3 jugadores anotados, no podrá participar de la búsqueda.
+  </p>
+  {{#if teams}}
+    <p class="text-info">Seleccioná un equipo o creá uno nuevo.</p>
+    {{#each teams}}
+      {{> teamDetail}}
+    {{/each}}
+  {{else}}
+    <p class="text-warning">Todavía no hay equipos creados. Sé el primero en inscribirse!</p>
+  {{/if}}
+</template>
+
+<template name="teamDetail">
+  <div class="row js-team" data-team="{{ this._id }}">
+    <div class="col-sm-10 col-sm-offset-1">
+      <div class="row">
+        <div class="col-sm-5">
+          <div class="row">
+            <div class="col-md-12">
+              <h2><strong>{{ this.id }}</strong> <small>{{ this.descripcion }}</small> </h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              {{#each this.pax }}
+                {{> paxTeamDetail}}
+              {{/each}}
+              {{#unless isFull }}
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default js-check-in"><span class="glyphicon glyphicon-plus"></span></button>
+                </div>
+              {{/unless }}
+
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 col-sm-offset-3">
+          <h2><small>Lugares disponibles</small> <span class="badge">{{ plazasDisponibles }}</span></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="paxTeamDetail">
+  <img src="https://graph.facebook.com/{{ user.services.facebook.id }}/picture" class="headerTinymanPhoto js-check-out"  alt="{{ user.profile.nombre }}" title="{{ user.profile.nombre }}" data-profile="{{ user._id }}">
+</template>

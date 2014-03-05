@@ -1,40 +1,42 @@
-<template name="eventList">
+<template name="busquedaAdminHome">
   <div class="row" id="alert-container">
   </div>
   <div class="row">
     <div class="col-sm-12">
     {{#if isInRole 'admin, super-admin'}}
-        {{> busquedaDelTesoro}}
-        {{#if eventos}}
-          {{#each eventos}}
-            {{> evento}}
+        {{#if hasBusquedas}}
+          {{#each busqueda}}
+            {{> busquedaTmpl}}
           {{/each}}
         {{else}}
-          <p>No hay eventos disponibles.</p>
+          <p>No hay búsquedas disponibles.</p>
         {{/if}}
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-2 col-sm-offset-1">
-          <a class="btn btn-primary btn-block" href="{{pathFor 'newEvent'}}">Nuevo evento</a>
+        <div class="col-sm-10 col-sm-offset-1">
+          {{> busquedaNew}}          
         </div>
     {{else}}
       <div class="alert alert-danger">
-        <p>No tiene permisos para gestionar eventos.</p>
+        <p>No tiene permisos para gestionar búsquedas.</p>
       </div>
     {{/if}}    
   </div>
 </template>
 
-<template name="evento">
-  <div class="row js-evento" data-event="{{this._id}}">
+<template name="busquedaTmpl">
+  <div class="row js-busqueda{{#if this.live}} bg-success{{/if}}" data-busqueda="{{this._id}}">
     <div class="col-md-10 col-md-offset-1">
       <div class="row">
         <div class="col-sm-7">
           <h2>
-            {{this.name}}
+            {{this.id}}
             {{#if this.active}}
               <span class="badge badge-danger">activo</span>
+            {{/if}}
+            {{#if this.live}}
+              <span class="badge badge-danger">LIVE</span>
             {{/if}}
           </h2>
         </div>
@@ -50,12 +52,12 @@
                 <span class="glyphicon glyphicon-ok-sign"></span> Desactivar
               </button>
             {{/unless}}
-            {{#with eId }}
-            <a class="btn btn-default btn-sm" href="{{ pathFor 'editEvent' }}">
+            {{#with bId }}
+            <a class="btn btn-default btn-sm" href="{{ pathFor 'editBusqueda' }}">
               <span class="glyphicon glyphicon-edit"></span> Editar
             </a>
             {{/with}}
-            <button type="button" class="btn btn-danger btn-sm js-event-remove">
+            <button type="button" class="btn btn-danger btn-sm js-busqueda-remove">
               <span class="glyphicon glyphicon-remove"></span>
             </button>
           </div>
@@ -64,7 +66,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="alert alert-info">
-            {{this.shortDescripcion}}
+            {{this.descripcion}}
           </div>
         </div>
       </div>
@@ -72,11 +74,19 @@
   </div>  
 </template>
 
-<template name="busquedaDelTesoro">
-  <div class="col-md-10 col-md-offset-1">
-        <a class="btn btn-warning btn-lg btn-block" href="{{pathFor 'busquedaList'}}">
-          Administrar las búsquedas del tesoro
-        </a>
-        <hr>
+<template name="busquedaNew">
+  <div class="js-busqueda alert alert-warning">
+    <div class="form-group">
+      <input id="busquedaId" type="text" class="form-control" placeholder="Ingrese el identificador">
+    </div>
+    <div class="form-group">
+      <input id="busquedaDesc" type="text" class="form-control" placeholder="Ingrese la descripcion">
+    </div>
+    <div class="form-group">
+      <input id="busquedaDate" type="datetime-local" class="form-control" placeholder="Ingrese la fecha de realización">
+    </div>
+    <button type="button" class="btn btn-success btn-sm js-add-busqueda">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
   </div>
 </template>
