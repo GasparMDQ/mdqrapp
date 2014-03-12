@@ -36,6 +36,10 @@ Meteor.publish('teams', function(){
   return Equipos.find();
 });
 
+Meteor.publish('nodos', function(){
+  return Nodos.find();
+});
+
 Meteor.publish('allUsersData', function(){
   return Meteor.users.find({},{
     fields: {

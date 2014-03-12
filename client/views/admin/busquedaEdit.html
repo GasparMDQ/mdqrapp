@@ -66,15 +66,32 @@
 <template name="busquedaNodosList">
   <h3>Nodos</h3>
   {{#if hasNodos}}
-    {{#each nodo}}
-      {{> nodoEdit}}
-    {{/each}}
+    <div class="panel-group" id="edit-nodo-accordion">
+      {{#each nodos}}
+        {{> nodoEdit}}
+      {{/each}}
+    </div>
   {{else}}
     <div class="alert alert-danger">
       <p>No hay nodos cargados</p>
     </div>
   {{/if}}
-  {{> nodoNew}}
+  <div class="panel-group" id="new-nodo-accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading bg-primary">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#new-nodo-accordion" href="#new-nodo-form">
+          Nuevo Nodo
+        </a>
+        </h4>
+      </div>
+      <div id="new-nodo-form" class="panel-collapse collapse">
+        <div class="panel-body">
+          {{> nodoNew}}
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <template name="nodoNew">
@@ -89,10 +106,16 @@
       <input id="nodoAnswer" type="number" class="form-control" placeholder="Ingrese la respuesta">
     </div>
     <div class="form-group">
-      <input id="nodoLowOffset" type="number" class="form-control" placeholder="Ingrese el margen inferior">
+      <input id="nodoLowOffset" min="0" type="number" class="form-control" placeholder="Ingrese el margen inferior">
     </div>
     <div class="form-group">
-      <input id="nodoHighOffset" type="number" class="form-control" placeholder="Ingrese el margen superior">
+      <input id="nodoHighOffset" min="0" type="number" class="form-control" placeholder="Ingrese el margen superior">
+    </div>
+    <div class="form-group">
+      <input id="nodoLatitude" type="text" class="form-control" placeholder="Latitud">
+    </div>
+    <div class="form-group">
+      <input id="nodoLongitude" type="text" class="form-control" placeholder="Longitud">
     </div>
     <button type="button" class="btn btn-success btn-sm js-add-nodo">
       <span class="glyphicon glyphicon-plus"></span>
@@ -101,23 +124,75 @@
 </template>
 
 <template name="nodoEdit">
-  <div class="js-nodo alert" data-nodo="{{this._id}}">
-    <div class="form-group">
-      <input type="text" class="form-control js-nodo-id" placeholder="Ingrese el identificador" value="{{ this.id }}">
+    <div class="panel panel-default">
+      <div class="panel-heading bg-info">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#edit-nodo-accordion" href="#edit-nodo-form-{{this._id}}">
+          {{ this.id }}
+        </a>
+        </h4>
+      </div>
+      <div id="edit-nodo-form-{{this._id}}" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="js-nodo" data-nodo="{{this._id}}">
+            <div class="row">
+              <div class="col-sm-6">
+                <form class="form-horizontal">
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Id</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control js-nodo-id" placeholder="Ingrese el identificador" value="{{ this.id }}">
+                    </div>
+                    <label class="control-label col-sm-4">Pregunta</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control js-nodo-question" placeholder="Ingrese la pregunta" value="{{ this.question }}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Respuesta</label>
+                    <div class="col-sm-8">
+                      <input type="number" class="form-control js-nodo-answer" placeholder="Ingrese la respuesta" value="{{ this.answer }}">
+                    </div>
+                    <label class="control-label col-sm-4">Margen inferior</label>
+                    <div class="col-sm-8">
+                      <input type="number" class="form-control js-nodo-lowOffset" placeholder="Ingrese el margen inferior" min="0" value="{{ this.lowOffset }}">
+                    </div>
+                    <label class="control-label col-sm-4">Margen Superior</label>
+                    <div class="col-sm-8">
+                      <input type="number" class="form-control js-nodo-highOffset" placeholder="Ingrese el margen superior" min="0" value="{{ this.highOffset }}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Latitud</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control js-nodo-latitude" placeholder="Latitud (90 a -90)" value="{{ this.latitude }}">
+                    </div>
+                    <label class="control-label col-sm-4">Longitud</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control js-nodo-longitude" placeholder="Longitud (180 a -180)" value="{{ this.longitude }}">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-6">
+                <img src="{{ mapUrl }}" class="img-responsive img-thumbnail">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <button type="button" class="btn btn-warning btn-sm js-update-nodo">
+                  <span class="glyphicon glyphicon-save"></span>
+                </button>
+                <button type="button" class="btn btn-danger btn-sm js-remove-nodo">
+                  <span class="glyphicon glyphicon-minus"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <input type="text" class="form-control js-nodo-question" placeholder="Ingrese la pregunta" value="{{ this.question }}">
-    </div>
-    <div class="form-group">
-      <input type="number" class="form-control js-nodo-answer" placeholder="Ingrese la respuesta" value="{{ this.answer }}">
-    </div>
-    <button type="button" class="btn btn-warning btn-sm js-update-nodo">
-      <span class="glyphicon glyphicon-save"></span>
-    </button>
-    <button type="button" class="btn btn-danger btn-sm js-remove-nodo">
-      <span class="glyphicon glyphicon-minus"></span>
-    </button>
-  </div>
+
 </template>
 
 <template name="busquedaRutasList">

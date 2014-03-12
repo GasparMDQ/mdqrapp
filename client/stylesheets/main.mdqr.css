@@ -82,3 +82,11 @@ textarea {
 .img-home {
   margin: auto;
 }
+
+.panel-heading.bg-primary {
+  color: #fff;
+  background-color: #428bca;  
+}
+.panel-heading.bg-info {
+  background-color: #d9edf7; 
+}

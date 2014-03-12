@@ -1,6 +1,8 @@
 Meteor.subscribe('userData');
 Meteor.subscribe('allUsersData');
 Meteor.subscribe('teams');
+Meteor.subscribe('nodos');
+
 Deps.autorun(function(){
 
   //Al pasar el usuario y no el ID, se resuscribe cada vez que se modifica el mismo

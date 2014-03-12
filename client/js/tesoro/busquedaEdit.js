@@ -37,7 +37,7 @@ if (Meteor.isClient) {
   };  
 
   Template.busquedaNodosList.hasNodos = function () {
-    var nodosCount = Nodos.find({'busquedaId': Session.get('edit-busqueda')}, {sort: { 'id': 1}}).count();
+    var nodosCount = Nodos.find({}, {sort: { 'id': 1}}).count();
     return nodosCount>0;
   };
 
@@ -58,6 +58,14 @@ if (Meteor.isClient) {
     };
   };
 
+  Template.nodoEdit.mapUrl = function () {
+    var url="/nomap.gif";
+    if(this.latitude && this.longitude) {
+      url="http://maps.googleapis.com/maps/api/staticmap?size=300x300&zoom=17&markers=color:red%7C"+this.latitude+","+this.longitude+"&key=AIzaSyD65xdO0lXLeF2lzjuN0qBqc6RgjYgK6Pc&sensor=false";
+    }
+    return url;
+  };
+
   Template.nodoNew.events({
     'click .js-add-nodo' : function (e) {
       var updateBtn = $(e.target).closest('div.js-nodo').find('button.js-add-nodo').first();
@@ -70,8 +78,16 @@ if (Meteor.isClient) {
         lowOffset: parseInt($('#nodoLowOffset').val()),
         highOffset: parseInt($('#nodoHighOffset').val()),
         busquedaId : Session.get('edit-busqueda'),
-        pax: []
+        longitude : parseFloat($('#nodoLongitude').val()),
+        latitude : parseFloat($('#nodoLatitude').val())
       };
+
+      //En caso de no haber ingresado valores, el offset se setea en 0
+      if(isNaN(nodoData.highOffset)) { nodoData.highOffset = 0 ;}
+      if(isNaN(nodoData.lowOffset)) { nodoData.lowOffset = 0 ;}
+      if(isNaN(nodoData.latitude)) { nodoData.latitude = "" ;}
+      if(isNaN(nodoData.longitude)) { nodoData.longitude = "" ;}
+
       var response = Meteor.call('nodoAddNew', Session.get('edit-busqueda'), Meteor.user(), nodoData, function (error, result){
         if (error) {
           alert(error.message);
@@ -82,6 +98,10 @@ if (Meteor.isClient) {
       $('#nodoId').val('');
       $('#nodoQuestion').val('');
       $('#nodoAnswer').val('');
+      $('#nodoLowOffset').val('');
+      $('#nodoHighOffset').val('');
+      $('#nodoLongitude').val('');
+      $('#nodoLatitude').val('');
     },
   });
 
@@ -128,10 +148,20 @@ if (Meteor.isClient) {
       var nodoData = {
         _id: $(e.target).closest('div.js-nodo').data('nodo'),
         id: $(e.target).closest('div.js-nodo').find('input.js-nodo-id').val(),
-        descripcion: $(e.target).closest('div.js-nodo').find('input.js-nodo-question').val(),
-        cupo: parseInt($(e.target).closest('div.js-nodo').find('input.js-nodo-answer').val()),
-        busquedaId : Session.get('edit-busqueda')
+        question: $(e.target).closest('div.js-nodo').find('input.js-nodo-question').val(),
+        answer: parseInt($(e.target).closest('div.js-nodo').find('input.js-nodo-answer').val()),
+        busquedaId : Session.get('edit-busqueda'),
+        lowOffset: parseInt($(e.target).closest('div.js-nodo').find('input.js-nodo-lowOffset').val()),
+        highOffset: parseInt($(e.target).closest('div.js-nodo').find('input.js-nodo-highOffset').val()),
+        latitude: parseFloat($(e.target).closest('div.js-nodo').find('input.js-nodo-latitude').val()),
+        longitude: parseFloat($(e.target).closest('div.js-nodo').find('input.js-nodo-longitude').val()),
       };
+
+      //En caso de no haber ingresado valores, el offset se setea en 0
+      if(isNaN(nodoData.highOffset)) { nodoData.highOffset = 0 ;}
+      if(isNaN(nodoData.lowOffset)) { nodoData.lowOffset = 0 ;}
+      if(isNaN(nodoData.latitude)) { nodoData.latitude = "" ;}
+      if(isNaN(nodoData.longitude)) { nodoData.longitude = "" ;}
 
       updateBtn.prop('disabled', true);
       var response = Meteor.call('updateNodo', $(e.target).closest('div.js-nodo').data('nodo'), Meteor.user(), nodoData, function (error, result){
@@ -211,8 +241,8 @@ if (Meteor.isClient) {
 
   //Stubs
   Meteor.methods({
-    nodoAddNew: function(bId, user, nodoData){
-      if(bId && nodoData){
+    nodoAddNew: function(nId, user, nodoData){
+      if(nId && nodoData){
         if(!nodoData.id || nodoData.id == ''){ return false; }
         if(!nodoData.question  || nodoData.question == '' ){ return false; }
         if(!nodoData.answer || nodoData.answer == '' ){ return false; }
@@ -225,18 +255,21 @@ if (Meteor.isClient) {
         if(!nodoData.id || nodoData.id == ''){ return false; }
         if(!nodoData.question  || nodoData.question == '' ){ return false; }
         if(!nodoData.answer || nodoData.answer == '' ){ return false; }
+
         Nodos.update(
           { _id:nodoData._id},
           { $set: {
             'id': nodoData.id,
             'question': nodoData.question,
-            'answer': nodoData.answer
+            'answer': nodoData.answer,
+            'lowOffset': nodoData.lowOffset,
+            'highOffset': nodoData.highOffset
           }}
         );
       }
     },
 
-    removeNodo: function(nId, eId, user){
+    removeNodo: function(nId, bId, user){
       if(nId){
         Nodos.remove({ _id: nId.toString() });
       }
