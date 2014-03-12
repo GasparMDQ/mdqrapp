@@ -28,13 +28,15 @@
   </div>
 
   <div class="form-no-label">
-    <div class="well">
-      {{> busquedaNodosList}}
-    </div>
 
     <div class="well">
       {{> busquedaRutasList}}
     </div>
+
+    <div class="well">
+      {{> busquedaNodosList}}
+    </div>
+
     <div class="container">
       <div class="row">
         <div class="col-sm-12">
@@ -78,11 +80,9 @@
   {{/if}}
   <div class="panel-group" id="new-nodo-accordion">
     <div class="panel panel-default">
-      <div class="panel-heading bg-primary">
+      <div class="panel-heading bg-primary" data-toggle="collapse" data-parent="#new-nodo-accordion" data-target="#new-nodo-form">
         <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#new-nodo-accordion" href="#new-nodo-form">
           Nuevo Nodo
-        </a>
         </h4>
       </div>
       <div id="new-nodo-form" class="panel-collapse collapse">
@@ -125,11 +125,9 @@
 
 <template name="nodoEdit">
     <div class="panel panel-default">
-      <div class="panel-heading bg-info">
+      <div class="panel-heading bg-info" data-toggle="collapse" data-target="#edit-nodo-form-{{this._id}}">
         <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#edit-nodo-accordion" href="#edit-nodo-form-{{this._id}}">
           {{ this.id }}
-        </a>
         </h4>
       </div>
       <div id="edit-nodo-form-{{this._id}}" class="panel-collapse collapse">
