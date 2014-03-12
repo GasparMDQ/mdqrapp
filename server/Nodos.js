@@ -10,7 +10,7 @@ Meteor.methods({
     if(nodoData) {
       if(!nodoData.id || nodoData.id == ''){ return false; }
       if(!nodoData.question  || nodoData.question == '' ){ return false; }
-      if(!nodoData.answer || nodoData.answer == '' ){ return false; }
+      if(isNaN(nodoData.answer)){ return false; }
 
       if(nodoData.lowOffset < 0) { return false; }
       if(nodoData.highOffset < 0) { return false; }

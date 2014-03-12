@@ -245,7 +245,7 @@ if (Meteor.isClient) {
       if(nId && nodoData){
         if(!nodoData.id || nodoData.id == ''){ return false; }
         if(!nodoData.question  || nodoData.question == '' ){ return false; }
-        if(!nodoData.answer || nodoData.answer == '' ){ return false; }
+        if(isNaN(nodoData.answer)){ return false; }
         Nodos.insert(nodoData);
       }
     },
@@ -254,7 +254,7 @@ if (Meteor.isClient) {
       if(nId && nodoData){
         if(!nodoData.id || nodoData.id == ''){ return false; }
         if(!nodoData.question  || nodoData.question == '' ){ return false; }
-        if(!nodoData.answer || nodoData.answer == '' ){ return false; }
+        if(isNaN(nodoData.answer)){ return false; }
 
         Nodos.update(
           { _id:nodoData._id},
