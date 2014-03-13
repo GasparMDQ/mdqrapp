@@ -148,7 +148,7 @@ if (Meteor.isClient) {
       var nodoData = {
         _id: $(e.target).closest('div.js-nodo').data('nodo'),
         id: $(e.target).closest('div.js-nodo').find('input.js-nodo-id').val(),
-        question: $(e.target).closest('div.js-nodo').find('input.js-nodo-question').val(),
+        question: $(e.target).closest('div.js-nodo').find('textarea.js-nodo-question').val(),
         answer: parseInt($(e.target).closest('div.js-nodo').find('input.js-nodo-answer').val()),
         busquedaId : Session.get('edit-busqueda'),
         lowOffset: parseInt($(e.target).closest('div.js-nodo').find('input.js-nodo-lowOffset').val()),

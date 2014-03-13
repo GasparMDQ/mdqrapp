@@ -36,8 +36,19 @@ Meteor.publish('teams', function(){
   return Equipos.find();
 });
 
-Meteor.publish('nodos', function(){
-  return Nodos.find();
+//Pasar usuario para filtrar datos que se envian de acuerdo a perfil
+Meteor.publish('nodos', function(userId){
+  if (Roles.userIsInRole(userId, ['super-admin', 'admin'])){
+    //Todos
+    return Nodos.find();
+  }
+
+  if (Roles.userIsInRole(userId, ['user'])){
+    //Ver si es necesario devolver algo en caso de solo ser un usuario
+    //return Nodos.find({active:true});
+  }
+  this.stop();
+  return;
 });
 
 Meteor.publish('allUsersData', function(){
