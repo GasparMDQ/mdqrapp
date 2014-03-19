@@ -133,11 +133,14 @@ if (Meteor.isClient) {
   Template.nodoEdit.events({
     'click .js-remove-nodo' : function (e) {
       e.preventDefault();
-      var response = Meteor.call('removeNodo', $(e.target).closest('div.js-nodo').data('nodo'), Session.get('edit-busqueda'), Meteor.user(), function (error, result){
-        if (error) {
-          alert(error.message);
-        }
-      });
+      var confirmation = confirm('Desea eliminar esta pregunta?');
+      if (confirmation == true ) {
+        var response = Meteor.call('removeNodo', $(e.target).closest('div.js-nodo').data('nodo'), Session.get('edit-busqueda'), Meteor.user(), function (error, result){
+          if (error) {
+            alert(error.message);
+          }
+        });
+      }
     },
     
     'click .js-update-nodo' : function (e) {

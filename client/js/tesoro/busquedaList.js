@@ -34,11 +34,14 @@ if (Meteor.isClient) {
 
     'click .js-busqueda-remove' : function (e) {
       e.preventDefault();
-      var response = Meteor.call('removeBusqueda', $(e.target).closest('div.js-busqueda').data('busqueda'), Meteor.user(), function (error, result){
-        if (error) {
-          alert(error.message);
-        }
-      });
+      var confirmation = confirm('Desea eliminar esta búsqueda?');
+      if (confirmation == true ) {
+        var response = Meteor.call('removeBusqueda', $(e.target).closest('div.js-busqueda').data('busqueda'), Meteor.user(), function (error, result){
+          if (error) {
+            alert(error.message);
+          }
+        });
+      }
 
     },
 

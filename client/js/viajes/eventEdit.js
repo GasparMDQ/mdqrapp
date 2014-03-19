@@ -138,11 +138,14 @@ if (Meteor.isClient) {
   Template.roomEdit.events({
     'click .js-remove-room' : function (e) {
       e.preventDefault();
-      var response = Meteor.call('removeRoom', $(e.target).closest('div.js-room').data('room'), Session.get('edit-event'), Meteor.user(), function (error, result){
-        if (error) {
-          alert(error.message);
-        }
-      });
+      var confirmation = confirm('Desea eliminar esta habitación?');
+      if (confirmation == true ) {
+        var response = Meteor.call('removeRoom', $(e.target).closest('div.js-room').data('room'), Session.get('edit-event'), Meteor.user(), function (error, result){
+          if (error) {
+            alert(error.message);
+          }
+        });
+      }
     },
     
     'click .js-update-room' : function (e) {
@@ -187,11 +190,14 @@ if (Meteor.isClient) {
   Template.busEdit.events({
     'click .js-remove-bus' : function (e) {
       e.preventDefault();
-      var response = Meteor.call('removeBus', $(e.target).closest('div.js-bus').data('bus'), Session.get('edit-event'), Meteor.user(), function (error, result){
-        if (error) {
-          alert(error.message);
-        }
-      });
+      var confirmation = confirm('Desea eliminar este micro?');
+      if (confirmation == true ) {
+        var response = Meteor.call('removeBus', $(e.target).closest('div.js-bus').data('bus'), Session.get('edit-event'), Meteor.user(), function (error, result){
+          if (error) {
+            alert(error.message);
+          }
+        });
+      }
     },
     
     'click .js-update-bus' : function (e) {
