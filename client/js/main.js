@@ -191,7 +191,7 @@ Router.map(function () {
 });
 
 // Handlebars Global Helpers
-Handlebars.registerHelper('formatDate', function (datetime, format) {
+UI.registerHelper('formatDate', function (datetime, format) {
   if(datetime){
     var DateFormats = {
            short: "DD/MM/YYYY HH:mm",

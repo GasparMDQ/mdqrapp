@@ -31,20 +31,24 @@
                 <p>
                   {{#if isProfileComplete}}
                     <a class="btn btn-lg btn-block {{#if isRoomSelected }}btn-success{{else}}btn-primary{{/if}}" href="{{pathFor 'roomsList'}}">
+                    <span class="glyphicon glyphicon-ok"></span> Elegí dónde dormir
+                    </a>
                   {{else}}
                     <a class="btn btn-default btn-lg btn-block" disabled="disabled">
-                  {{/if}}
                   <span class="glyphicon glyphicon-ok"></span> Elegí dónde dormir
-                  </a>
+                    </a>
+                  {{/if}}
                 </p>
                 <p>
                   {{#if isProfileComplete}}
                     <a class="btn btn-lg btn-block {{#if isBusSelected }}btn-success{{else}}btn-primary{{/if}}" href="{{pathFor 'busesList'}}">
+                    <span class="glyphicon glyphicon-ok"></span> Elegí dónde viajar
+                    </a>
                   {{else}}
                     <a class="btn btn-default btn-lg btn-block" disabled="disabled">
+                    <span class="glyphicon glyphicon-ok"></span> Elegí dónde viajar
+                    </a>
                   {{/if}}
-                  <span class="glyphicon glyphicon-ok"></span> Elegí dónde viajar
-                  </a>
                 </p>
               {{/if}}
 
@@ -66,7 +70,7 @@
           </p>
         {{ else }}
           <p>
-            Debe indicar que asistirá al evento para poder continuar con el registro
+            Debe indicar en Facebook que asistirá al evento para poder continuar con el registro
           </p>
         {{/if}}
       {{/if}}

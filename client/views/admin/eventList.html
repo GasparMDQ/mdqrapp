@@ -2,8 +2,8 @@
   <div class="row" id="alert-container">
   </div>
   <div class="row">
-    <div class="col-sm-12">
     {{#if isInRole 'admin, super-admin'}}
+      <div class="col-sm-12">
         {{> busquedaDelTesoro}}
         {{#if eventos}}
           {{#each eventos}}
@@ -12,15 +12,17 @@
         {{else}}
           <p>No hay eventos disponibles.</p>
         {{/if}}
-        </div>
       </div>
       <div class="row">
         <div class="col-sm-2 col-sm-offset-1">
           <a class="btn btn-primary btn-block" href="{{pathFor 'newEvent'}}">Nuevo evento</a>
         </div>
+      </div>
     {{else}}
-      <div class="alert alert-danger">
-        <p>No tiene permisos para gestionar eventos.</p>
+      <div class="col-sm-12">
+        <div class="alert alert-danger">
+          <p>No tiene permisos para gestionar eventos.</p>
+        </div>
       </div>
     {{/if}}    
   </div>

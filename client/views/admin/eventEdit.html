@@ -20,17 +20,17 @@
     <div class="row">
       <p>
         <div class="make-switch js-event-active-switch" data-on="success" data-off="danger" data-on-label="SI" data-off-label="NO">
-          <input type="checkbox" {{#if evento.active }}checked{{/if}}>
+          <input type="checkbox" checked={{ evento.active }}>
         </div> Evento Activo
       </p>
       <p>
         <div class="make-switch js-event-register-switch" data-on="success" data-off="danger" data-on-label="SI" data-off-label="NO">
-          <input type="checkbox" {{#if evento.registracion }}checked{{/if}}>
+          <input type="checkbox" checked={{ evento.registracion }}>
         </div> Registración
       </p>
       <p>
         <div class="make-switch js-event-chismografo-switch" data-on="success" data-off="danger" data-on-label="SI" data-off-label="NO">
-          <input type="checkbox" {{#if evento.chismografo }}checked{{/if}}>
+          <input type="checkbox" checked={{ evento.chismografo }}>
         </div> Chismógrafo
         <a  href="#" type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-exclamation-sign"></span> Filtrar</a>
       </p>

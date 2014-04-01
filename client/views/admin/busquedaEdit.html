@@ -16,12 +16,12 @@
     <div class="row">
       <p>
         <div class="make-switch js-event-active-switch" data-on="success" data-off="danger" data-on-label="SI" data-off-label="NO">
-          <input type="checkbox" {{#if busqueda.active }}checked{{/if}}>
+          <input type="checkbox" checked={{ busqueda.active }}>
         </div> Búsqueda Activa
       </p>
       <p>
         <div class="make-switch js-event-live-switch" data-on="success" data-off="danger" data-on-label="SI" data-off-label="NO">
-          <input type="checkbox" {{#if busqueda.live }}checked{{/if}}>
+          <input type="checkbox" checked={{ busqueda.live }}>
         </div> Búsqueda en Progreso
       </p>
     </div>
