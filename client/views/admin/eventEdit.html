@@ -19,19 +19,40 @@
 
     <div class="row">
       <p>
-        <div class="make-switch js-event-active-switch" data-on="success" data-off="danger" data-on-label="SI" data-off-label="NO">
-          <input type="checkbox" checked={{ evento.active }}>
-        </div> Evento Activo
+        {{#if evento.active }}
+          <button type="button" class="btn btn-success btn-sm js-event-active-toggle" data-toggle='{{evento.active}}'>
+            <span class="glyphicon glyphicon-ok"></span>
+          </button>
+        {{ else }}
+          <button type="button" class="btn btn-danger btn-sm js-event-active-toggle" data-toggle='{{evento.active}}'>
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        {{/if}}
+        Evento Activo
       </p>
       <p>
-        <div class="make-switch js-event-register-switch" data-on="success" data-off="danger" data-on-label="SI" data-off-label="NO">
-          <input type="checkbox" checked={{ evento.registracion }}>
-        </div> Registración
+        {{#if evento.registracion }}
+          <button type="button" class="btn btn-success btn-sm js-event-register-toggle" data-toggle='{{evento.registracion}}'>
+            <span class="glyphicon glyphicon-ok"></span>
+          </button>
+        {{ else }}
+          <button type="button" class="btn btn-danger btn-sm js-event-register-toggle" data-toggle='{{evento.registracion}}'>
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        {{/if}}
+        Registración
       </p>
       <p>
-        <div class="make-switch js-event-chismografo-switch" data-on="success" data-off="danger" data-on-label="SI" data-off-label="NO">
-          <input type="checkbox" checked={{ evento.chismografo }}>
-        </div> Chismógrafo
+        {{#if evento.chismografo }}
+          <button type="button" class="btn btn-success btn-sm js-event-chismografo-toggle" data-toggle='{{evento.chismografo}}'>
+            <span class="glyphicon glyphicon-ok"></span>
+          </button>
+        {{ else }}
+          <button type="button" class="btn btn-danger btn-sm js-event-chismografo-toggle" data-toggle='{{evento.chismografo}}'>
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        {{/if}}
+        Chismógrafo
         <a  href="#" type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-exclamation-sign"></span> Filtrar</a>
       </p>
     </div>

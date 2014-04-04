@@ -5,6 +5,10 @@ Meteor.methods({
       if(!busquedaData.id || busquedaData.id == ''){ return false; }
       if(!busquedaData.descripcion  || busquedaData.descripcion == '' ){ return false; }
       if(!busquedaData.date || busquedaData.date == '' ){ return false; }
+      if(isNaN(busquedaData.cupoMin) || busquedaData.cupoMin == '') { return false ;}
+      if(isNaN(busquedaData.cupoMax) || busquedaData.cupoMax == '') { return false ;}
+      if(busquedaData.cupoMax < busquedaData.cupoMin){ return false; }
+      
       return true;
     }
     return false;

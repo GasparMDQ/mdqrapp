@@ -1,31 +1,6 @@
 if (Meteor.isClient) {
   Template.busquedaEdit.rendered = function () {
-    $('.make-switch').not('.has-switch').bootstrapSwitch();
     $('.loading-indicator').hide();
-
-    //Hack de para manejar custom events
-    $('.js-event-active-switch').on('switch-change', function(e, data) {
-      if (data.value){
-        var response = Meteor.call('setActiveBusqueda', Session.get('edit-busqueda'), Meteor.user(), function (error, result){
-          if (error) { alert(error.message); }
-        });
-      } else {
-        var response = Meteor.call('unSetActiveBusqueda', Session.get('edit-busqueda'), Meteor.user(), function (error, result){
-          if (error) { alert(error.message); }
-        });
-      }
-    });
-    $('.js-event-live-switch').on('switch-change', function(e, data) {
-      if (data.value){
-        var response = Meteor.call('setLiveBusqueda', Session.get('edit-busqueda'), Meteor.user(), function (error, result){
-          if (error) { alert(error.message); }
-        });
-      } else {
-        var response = Meteor.call('unSetLiveBusqueda', Session.get('edit-busqueda'), Meteor.user(), function (error, result){
-          if (error) { alert(error.message); }
-        });
-      }
-    });
   };
 
   Template.busquedaEdit.busqueda = function () {
@@ -43,6 +18,19 @@ if (Meteor.isClient) {
 
   Template.busquedaNodosList.nodos = function () {
     return Nodos.find({}, {sort: { 'id': 1}});
+  };
+
+  Template.busquedaEquiposList.hasEquipos = function () {
+    if(Session.get('edit-busqueda')) {
+      var equiposCount = Equipos.find({'busquedaId': Session.get('edit-busqueda')}, {sort: { 'id': 1}}).count();
+      return equiposCount>0;
+    };
+  };
+
+  Template.busquedaEquiposList.equipos = function () {
+    if(Session.get('edit-busqueda')) {
+      return Equipos.find({'busquedaId': Session.get('edit-busqueda')}, {sort: { 'id': 1}});
+    };
   };
 
   Template.busquedaRutasList.hasRoutes = function () {
@@ -66,11 +54,50 @@ if (Meteor.isClient) {
     return url;
   };
 
+  Template.equipoShow.owner = function () {
+    var ownerItem = Meteor.users.findOne({'_id': this.owner.toString()});
+    if(ownerItem && ownerItem.profile) {
+      return ownerItem.profile.name;
+    }
+    return 'no-data';
+  };
+
+  Template.paxTeam.user = function () {
+    return Meteor.users.findOne({'_id': this.toString()});
+  };
+
+  Template.busquedaEdit.events({
+    'click .js-event-active-toggle': function (e) {
+      var data = $(e.currentTarget).data('toggle');
+      if (data){
+        var response = Meteor.call('unSetActiveBusqueda', Session.get('edit-busqueda'), Meteor.user(), function (error, result){
+          if (error) { alert(error.message); }
+        });
+      } else {
+        var response = Meteor.call('setActiveBusqueda', Session.get('edit-busqueda'), Meteor.user(), function (error, result){
+          if (error) { alert(error.message); }
+        });
+      }
+    },
+    'click .js-event-live-toggle': function (e) {
+      var data = $(e.currentTarget).data('toggle');
+      if (data){
+        var response = Meteor.call('unSetLiveBusqueda', Session.get('edit-busqueda'), Meteor.user(), function (error, result){
+          if (error) { alert(error.message); }
+        });
+      } else {
+        var response = Meteor.call('setLiveBusqueda', Session.get('edit-busqueda'), Meteor.user(), function (error, result){
+          if (error) { alert(error.message); }
+        });
+      }
+    },
+  });
+
   Template.nodoNew.events({
     'click .js-add-nodo' : function (e) {
-      var updateBtn = $(e.target).closest('div.js-nodo').find('button.js-add-nodo').first();
+      var addBtn = $(e.target).closest('div.js-nodo').find('button.js-add-nodo').first();
       e.preventDefault();
-      updateBtn.prop('disabled', true);
+      addBtn.prop('disabled', true);
       var nodoData = {
         id: $('#nodoId').val(),
         question: $('#nodoQuestion').val(),
@@ -93,7 +120,7 @@ if (Meteor.isClient) {
           alert(error.message);
         } else {
         }
-        updateBtn.prop('disabled', false);
+        addBtn.prop('disabled', false);
       });
       $('#nodoId').val('');
       $('#nodoQuestion').val('');
@@ -238,6 +265,21 @@ if (Meteor.isClient) {
           );
         }
       });
+    },
+
+  });
+
+  Template.equipoShow.events({
+    'click .js-team-remove' : function (e) {
+      e.preventDefault();
+      var confirmation = confirm('Esta seguro que desea eliminar este equipo?');
+      if (confirmation == true ) {
+        var response = Meteor.call('removeTeam', $(e.target).closest('div.js-team').data('team'), Meteor.user(), function (error, result){
+          if (error) {
+            alert(error.message);
+          }
+        });
+      }
     },
 
   });

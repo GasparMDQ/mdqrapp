@@ -1,44 +1,6 @@
 if (Meteor.isClient) {
   Template.eventEdit.rendered = function () {
-    $('.make-switch').not('.has-switch').bootstrapSwitch();
     $('.loading-indicator').hide();
-
-    //Hack de para manejar custom events
-    $('.js-event-active-switch').on('switch-change', function(e, data) {
-      if (data.value){
-        var response = Meteor.call('setActiveEvent', Session.get('edit-event'), Meteor.user(), function (error, result){
-          if (error) { alert(error.message); }
-        });
-      } else {
-        var response = Meteor.call('unSetActiveEvent', Session.get('edit-event'), Meteor.user(), function (error, result){
-          if (error) { alert(error.message); }
-        });
-      }
-    });
-
-    $('.js-event-register-switch').on('switch-change', function(e, data) {
-      if (data.value){
-        var response = Meteor.call('setRegisterEvent', Session.get('edit-event'), Meteor.user(), function (error, result){
-          if (error) { alert(error.message); }
-        });
-      } else {
-        var response = Meteor.call('unSetRegisterEvent', Session.get('edit-event'), Meteor.user(), function (error, result){
-          if (error) { alert(error.message); }
-        });
-      }
-    });
-
-    $('.js-event-chismografo-switch').on('switch-change', function(e, data) {
-      if (data.value){
-        var response = Meteor.call('setChismeEvent', Session.get('edit-event'), Meteor.user(), function (error, result){
-          if (error) { alert(error.message); }
-        });
-      } else {
-        var response = Meteor.call('unSetChismeEvent', Session.get('edit-event'), Meteor.user(), function (error, result){
-          if (error) { alert(error.message); }
-        });
-      }
-    });
   };
 
   Template.eventRoomsList.hasRooms = function () {
@@ -131,8 +93,44 @@ if (Meteor.isClient) {
         }
         $('#event-refresh').hide();
       });
-
     },
+    'click .js-event-active-toggle': function (e) {
+      var data = $(e.currentTarget).data('toggle');
+      if (data){
+        var response = Meteor.call('unSetActiveEvent', Session.get('edit-event'), Meteor.user(), function (error, result){
+          if (error) { alert(error.message); }
+        });
+      } else {
+        var response = Meteor.call('setActiveEvent', Session.get('edit-event'), Meteor.user(), function (error, result){
+          if (error) { alert(error.message); }
+        });
+      }
+    },
+    'click .js-event-register-toggle': function (e) {
+      var data = $(e.currentTarget).data('toggle');
+      if (data){
+        var response = Meteor.call('unSetRegisterEvent', Session.get('edit-event'), Meteor.user(), function (error, result){
+          if (error) { alert(error.message); }
+        });
+      } else {
+        var response = Meteor.call('setRegisterEvent', Session.get('edit-event'), Meteor.user(), function (error, result){
+          if (error) { alert(error.message); }
+        });
+      }
+    },
+    'click .js-event-chismografo-toggle': function (e) {
+      var data = $(e.currentTarget).data('toggle');
+      if (data){
+        var response = Meteor.call('unSetChismeEvent', Session.get('edit-event'), Meteor.user(), function (error, result){
+          if (error) { alert(error.message); }
+        });
+      } else {
+        var response = Meteor.call('setChismeEvent', Session.get('edit-event'), Meteor.user(), function (error, result){
+          if (error) { alert(error.message); }
+        });
+      }
+    },
+
   });
 
   Template.roomEdit.events({

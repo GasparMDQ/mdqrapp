@@ -2,16 +2,15 @@
   <h1>
     <strong>Lista de Equipos</strong>
   </h1>
-  <p class="alert alert-danger">
-   Recordá que si el equipo no llega al mínimo de 3 jugadores anotados, no podrá participar de la búsqueda.
-  </p>
-  {{#if teams}}
+  {{#if hasEquipos}}
     <p class="text-info">Seleccioná un equipo o creá uno nuevo.</p>
-    {{#each teams}}
+    {{> newTeam}}
+    {{#each equipos}}
       {{> teamDetail}}
     {{/each}}
   {{else}}
     <p class="text-warning">Todavía no hay equipos creados. Sé el primero en inscribirse!</p>
+    {{> newTeam}}    
   {{/if}}
 </template>
 
@@ -22,7 +21,14 @@
         <div class="col-sm-5">
           <div class="row">
             <div class="col-md-12">
-              <h2><strong>{{ this.id }}</strong> <small>{{ this.descripcion }}</small> </h2>
+              <h2><strong>{{ this.id }}</strong> <small>{{ this.descripcion }}</small>
+                {{#if isOwner }}
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-warning js-team-edit"><span class="glyphicon glyphicon-pencil"></span></button>
+                    <button type="button" class="btn btn-danger js-team-remove"><span class="glyphicon glyphicon-remove"></span></button>
+                  </div>
+                {{/if}}
+              </h2>
             </div>
           </div>
           <div class="row">
@@ -30,17 +36,18 @@
               {{#each this.pax }}
                 {{> paxTeamDetail}}
               {{/each}}
-              {{#unless isFull }}
+              {{#if canJoin }}
                 <div class="btn-group">
                   <button type="button" class="btn btn-default js-check-in"><span class="glyphicon glyphicon-plus"></span></button>
                 </div>
-              {{/unless }}
-
+              {{/if }}
             </div>
           </div>
         </div>
         <div class="col-sm-4 col-sm-offset-3">
-          <h2><small>Lugares disponibles</small> <span class="badge">{{ plazasDisponibles }}</span></h2>
+          <h2>
+          <small>Lugares Disponibles</small> <span class="badge">{{ lugaresDisponibles }}</span>
+          </h2>
         </div>
       </div>
     </div>
@@ -50,3 +57,30 @@
 <template name="paxTeamDetail">
   <img src="https://graph.facebook.com/{{ user.services.facebook.id }}/picture" class="headerTinymanPhoto js-check-out"  alt="{{ user.profile.nombre }}" title="{{ user.profile.nombre }}" data-profile="{{ user._id }}">
 </template>
+
+<template name="newTeam">
+  <div class="panel-group" id="new-team-accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading bg-primary" data-toggle="collapse" data-parent="#new-team-accordion" data-target="#new-team-form">
+        <h4 class="panel-title">
+          Crear Nuevo Equipo
+        </h4>
+      </div>
+      <div id="new-team-form" class="panel-collapse collapse">
+        <div class="panel-body">
+          <p class="alert alert-danger">
+           Recordá que si el equipo no llega al mínimo de 3 jugadores anotados, no podrá participar de la búsqueda.
+          </p>
+          <div class="js-team alert alert-info" role="form">
+            <div class="form-group">
+              <input id="teamId" type="text" class="form-control" placeholder="Ingrese el nombre del equipo">
+            </div>
+            <button type="button" class="btn btn-success btn-sm js-add-team">
+              <span class="glyphicon glyphicon-plus"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </template>

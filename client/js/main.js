@@ -1,6 +1,5 @@
 Meteor.subscribe('userData');
 Meteor.subscribe('allUsersData');
-Meteor.subscribe('teams');
 
 Deps.autorun(function(){
 
@@ -13,6 +12,9 @@ Deps.autorun(function(){
 });
 Deps.autorun(function(){
   Meteor.subscribe('busquedas', Meteor.user());
+});
+Deps.autorun(function(){
+  Meteor.subscribe('teams', Session.get('busqueda-active'), Meteor.user());
 });
 Deps.autorun(function(){
   Meteor.subscribe('roomsAndBuses', Session.get('event-active'), Meteor.user());
@@ -97,6 +99,7 @@ var setBusquedaOptions = function(){
   //Verifica que haya un evento activo y lo setea
   if(Busquedas.find({active:true}).count() == 1){
   var busqueda = Busquedas.findOne({active:true});
+    Session.set('busqueda', busqueda);
     Session.set('busqueda-active', busqueda._id);
     Session.set('busqueda-inProgress', busqueda.live);
   } else {
@@ -106,13 +109,13 @@ var setBusquedaOptions = function(){
 };
 
 //Global rules
-Router.before(mustBeSignedIn, {except: ['home']});
-Router.before(setEventOptions, {only: ['viajesHome', 'roomsList', 'busesList']});
-Router.before(setBusquedaOptions, {only: ['tesoroHome', 'teamList']});
-Router.before(setProfileStatus, {only: ['viajesHome', 'tesoroHome', 'roomsList', 'busesList']});
-Router.before(mustBeOpen, {only: ['roomsList', 'busesList']});
-Router.before(mustBeAttending, {only: ['roomsList', 'busesList']});
-Router.before(mustBeAQuest, {only: ['teamList']});
+Router.onBeforeAction(mustBeSignedIn, {except: ['home']});
+Router.onBeforeAction(setEventOptions, {only: ['viajesHome', 'roomsList', 'busesList']});
+Router.onBeforeAction(setBusquedaOptions, {only: ['tesoroHome', 'teamList']});
+Router.onBeforeAction(setProfileStatus, {only: ['viajesHome', 'tesoroHome', 'roomsList', 'busesList']});
+Router.onBeforeAction(mustBeOpen, {only: ['roomsList', 'busesList']});
+Router.onBeforeAction(mustBeAttending, {only: ['roomsList', 'busesList']});
+Router.onBeforeAction(mustBeAQuest, {only: ['teamList']});
 
 Router.map(function () {
 
@@ -162,7 +165,7 @@ Router.map(function () {
     path: '/admin/edit/:_id',
     template: 'eventEdit',
     //Incluir verificacion de permisos
-    before: function (){
+    onBeforeAction: function (){
       Session.set('edit-event', this.params._id);
     }
   });
@@ -178,7 +181,7 @@ Router.map(function () {
     path: '/admin/tesoro/:_id',
     template: 'busquedaEdit',
     //Incluir verificacion de permisos
-    before: function (){
+    onBeforeAction: function (){
       Session.set('edit-busqueda', this.params._id);
     }
   });

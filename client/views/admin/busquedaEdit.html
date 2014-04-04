@@ -3,7 +3,6 @@
     <div id="evento-header">
       {{> busquedaData}}
     </div>
-
     <div class="row">
       <p>
         Some text here?
@@ -12,31 +11,43 @@
 
     <div class="row" id="alert-container">
     </div>    
-
     <div class="row">
       <p>
-        <div class="make-switch js-event-active-switch" data-on="success" data-off="danger" data-on-label="SI" data-off-label="NO">
-          <input type="checkbox" checked={{ busqueda.active }}>
-        </div> Búsqueda Activa
+        {{#if busqueda.active }}
+          <button type="button" class="btn btn-success btn-sm js-event-active-toggle" data-toggle='{{busqueda.active}}'>
+            <span class="glyphicon glyphicon-ok"></span>
+          </button>
+        {{ else }}
+          <button type="button" class="btn btn-danger btn-sm js-event-active-toggle" data-toggle='{{busqueda.active}}'>
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        {{/if}}
+        Búsqueda Activa
       </p>
       <p>
-        <div class="make-switch js-event-live-switch" data-on="success" data-off="danger" data-on-label="SI" data-off-label="NO">
-          <input type="checkbox" checked={{ busqueda.live }}>
-        </div> Búsqueda en Progreso
+        {{#if busqueda.live }}
+          <button type="button" class="btn btn-success btn-sm js-event-live-toggle" data-toggle='{{busqueda.live}}'>
+            <span class="glyphicon glyphicon-ok"></span>
+          </button>
+        {{ else }}
+          <button type="button" class="btn btn-danger btn-sm js-event-live-toggle" data-toggle='{{busqueda.live}}'>
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        {{/if}}
+        Búsqueda en Progreso
       </p>
     </div>
   </div>
-
   <div class="form-no-label">
-
+    <div class="well">
+      {{> busquedaEquiposList}}
+    </div>
     <div class="well">
       {{> busquedaRutasList}}
     </div>
-
     <div class="well">
       {{> busquedaNodosList}}
     </div>
-
     <div class="container">
       <div class="row">
         <div class="col-sm-12">
@@ -45,13 +56,12 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <template name="busquedaData">
   <div class="row">
     <div class="col-sm-4">
-      <h3>{{ busqueda.id }}</h3>
+      <h3>{{ busqueda.id }} - Test</h3>
     </div>
     <div class="col-sm-4 col-sm-offset-4">
       <h3 class="hidden-sm hidden-xs"></h3>
@@ -60,9 +70,24 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <div class="alert alert-info">{{ evento.description}}</div>
+      <div class="alert alert-info">{{ busqueda.descripcion}}</div>
     </div>
   </div>
+</template>
+
+<template name="busquedaEquiposList">
+  <h3>Equipos</h3>
+  {{#if hasEquipos}}
+    <div class="panel-group" id="edit-equipo-accordion">
+      {{#each equipos}}
+        {{> equipoShow}}
+      {{/each}}
+    </div>
+  {{else}}
+    <div class="alert alert-danger">
+      <p>No hay equipos cargados</p>
+    </div>
+  {{/if}}
 </template>
 
 <template name="busquedaNodosList">
@@ -188,15 +213,31 @@
 <template name="busquedaRutasList">
   <h3>Rutas</h3>
   {{#if hasRoutes}}
-    {{#each routes}}
-      {{> routeEdit}}
-    {{/each}}
+    <div class="panel-group" id="edit-route-accordion">
+      {{#each routes}}
+        {{> routeEdit}}
+      {{/each}}
+    </div>
   {{else}}
     <div class="alert alert-danger">
       <p>No hay rutas cargadas</p>
     </div>
   {{/if}}
-  {{> routeNew}}
+
+  <div class="panel-group" id="new-route-accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading bg-primary" data-toggle="collapse" data-parent="#new-route-accordion" data-target="#new-route-form">
+        <h4 class="panel-title">
+          Nueva Ruta
+        </h4>
+      </div>
+      <div id="new-route-form" class="panel-collapse collapse">
+        <div class="panel-body">
+          {{> routeNew}}
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <template name="routeNew">
@@ -234,4 +275,76 @@
       <span class="glyphicon glyphicon-minus"></span>
     </button>
   </div>
+</template>
+
+<template name="equipoShow">
+    <div class="panel panel-default">
+      <div class="panel-heading bg-info" data-toggle="collapse" data-target="#edit-team-form-{{this._id}}">
+        <h4 class="panel-title">
+          {{ this.id }}
+          <div class="pull-right">
+            <small>Integrantes</small> <span class="badge">{{this.pax.length}}</span>
+          </div>
+        </h4>
+      </div>
+      <div id="edit-team-form-{{this._id}}" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="js-team" data-team="{{this._id}}">
+            <div class="row">
+              <div class="col-sm-6">
+                <form class="form-horizontal">
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Id</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control js-team-id" placeholder="Ingrese el nombre del equipo" value="{{ this.id }}">
+                    </div>
+                    <label class="control-label col-sm-4">Owner</label>
+                    <div class="col-sm-8">
+                      <p class="form-control-static">
+                        {{ owner }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Handicap</label>
+                    <div class="col-sm-8">
+                      <input type="number" class="form-control js-team-handicap" placeholder="Ingrese el handicap en minutos" value="{{ this.handicap }}">
+                    </div>
+                    <label class="control-label col-sm-4">Ruta</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control js-team-route" placeholder="-- SELECT PENDIENTE --" value="{{ this.route }}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">DNF</label>
+                    <div class="col-sm-8">
+                      <textarea rows="3" class="form-control js-team-dnf" placeholder="Ingrese el motivo de la descalificacion" >{{ this.dnf }}</textarea>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-6">
+                {{#each this.pax }}
+                  {{> paxTeam}}
+                {{/each}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <button type="button" class="btn btn-warning btn-sm js-update-team">
+                  <span class="glyphicon glyphicon-save"></span>
+                </button>
+                <button type="button" class="btn btn-danger btn-sm js-team-remove">
+                  <span class="glyphicon glyphicon-minus"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</template>
+
+<template name="paxTeam">
+  <img src="https://graph.facebook.com/{{ user.services.facebook.id }}/picture" class="headerTinymanPhoto"  alt="{{ user.profile.nombre }}" title="{{ user.profile.nombre }}" data-profile="{{ user._id }}">
 </template>

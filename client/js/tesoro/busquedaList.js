@@ -65,7 +65,9 @@ if (Meteor.isClient) {
         date: $('#busquedaDate').val(),
         routes: [],
         active: false,
-        live: false
+        live: false,
+        cupoMax: parseInt($('#busquedaCupoMax').val()),
+        cupoMin: parseInt($('#busquedaCupoMin').val()),
       };
       var response = Meteor.call('busquedaAddNew', Meteor.user(), busquedaData, function (error, result){
         if (error) {
@@ -77,6 +79,8 @@ if (Meteor.isClient) {
       $('#busquedaId').val('');
       $('#busquedaDesc').val('');
       $('#busquedaDate').val('');
+      $('#busquedaCupoMax').val('');
+      $('#busquedaCupoMin').val('');
     },
 
   });
@@ -107,6 +111,10 @@ Meteor.methods({
       if(!busquedaData.id || busquedaData.id == ''){ return false; }
       if(!busquedaData.descripcion  || busquedaData.descripcion == '' ){ return false; }
       if(!busquedaData.date || busquedaData.date == '' ){ return false; }
+      if(isNaN(busquedaData.cupoMin) || busquedaData.cupoMin == '') { return false ;}
+      if(isNaN(busquedaData.cupoMax) || busquedaData.cupoMax == '') { return false ;}
+      if(busquedaData.cupoMax < busquedaData.cupoMin){ return false; }
+
       Busquedas.insert(busquedaData);
     }
   },

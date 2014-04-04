@@ -32,10 +32,6 @@ Meteor.publish('userData', function(){
   return Meteor.users.find({_id:this.userId});
 });
 
-Meteor.publish('teams', function(){
-  return Equipos.find();
-});
-
 //Pasar usuario para filtrar datos que se envian de acuerdo a perfil
 Meteor.publish('nodos', function(userId){
   if (Roles.userIsInRole(userId, ['super-admin', 'admin'])){
@@ -56,6 +52,7 @@ Meteor.publish('allUsersData', function(){
     fields: {
       '_id': 1,
       'profile.nombre': 1,
+      'profile.name': 1,
       'services.facebook.id': 1
     }
   });
@@ -70,6 +67,21 @@ Meteor.publish('busquedas', function(userId){
   if (Roles.userIsInRole(userId, ['user'])){
     //Solo activa
     return Busquedas.find({active:true});
+  }
+  //console.log('User:Role:none');
+  this.stop();
+  return;
+});
+
+Meteor.publish('teams', function(busquedaId, userId){
+  if (Roles.userIsInRole(userId, ['super-admin', 'admin'])){
+    //Todas
+    return Equipos.find();
+  }
+
+  if (Roles.userIsInRole(userId, ['user'])){
+    //Solo activa
+    return Equipos.find( {'busquedaId': busquedaId });
   }
   //console.log('User:Role:none');
   this.stop();

@@ -7,50 +7,119 @@ var Trunc = function(string, n, useWordBoundary){
 
 Meteor.methods({
 
-  addNewTeam: function(tId, user){
-    Meteor.call('userHasTeam',tId, user, function (error, result){
+  isTeamValid: function(teamData){
+    if(teamData) {
+      if(!teamData.id || teamData.id == ''){ return false; }
+      //Verifico que no exista otro equipo con el mismo nombre
+      var existeTeam = Equipos.find({'id': teamData.id}).count();
+      if(existeTeam != 0) { return false; }
+      return true;
+    }
+    return false;
+  },
 
-      //Verifico que tenga los permisos necesarios para agregar eventos
-      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
-        var evento = Meteor.call('getEventInfo', tId);
+  addNewTeam: function(bId, user, tId){
+    var teamData = {
+      id: tId,
+      pax: [user._id],
+      dnf: false,
+      routeId: '',
+      respuestas: [],
+      busquedaId: bId,
+      handicap: 0,
+      owner: user._id
+    };
 
-        //Se utiliza el ID del evento como _ID para la DB
-        evento._id = evento.id;
-
-        //El evento que se gestiona en el sitio
-        evento.active = false;
-        
-        //Evento disponible para registrarse
-        evento.registracion = false;
-        
-        //Funcionalidades del evento activas (chismografo, etc)
-        evento.chismografo = false;
-
-        //Lista de chismes, micros y habitaciones vacias
-        evento.micros = [];
-        evento.habitaciones = [];
-        evento.chismes = [];
-
-        if (evento.description){
-          evento.shortDescripcion = Trunc(evento.description,200,true);
-        }
-
-        //Se usa update con {upsert:true} para evitar errores por claves duplicadas en caso de multiples clicks
-        Eventos.update({ _id:evento._id}, evento, {upsert:true});
+    Meteor.call('isTeamValid',teamData, function (error, result){
+      if (result) {
+        Meteor.call('userInTeam', bId, user._id, function (error, result){
+          if(typeof result != 'undefined' && !result){
+            Equipos.insert(teamData);
+          } else {
+            console.log('Error:addNewTeam:userInTeam: '+ error);
+          }
+        });
       } else {
-        if(error){
-          console.log('Error:userHasEvento: ' + error);
-        } else {
-          console.log('Error:addNewEvent: not allowed');
-        }
-
+        console.log('Error:addNewTeam:isTeamValid: not valid');
       }
     });
   },
 
   removeTeam: function(tId, user){
+    if(tId) {
+      var isOwner = Equipos.find({
+        '_id' : tId,
+        'owner' : user._id
+      }).count() != 0;
+
+      if (isOwner || Roles.userIsInRole(user, ['admin','super-admin'])) {
+        Equipos.remove({ _id: tId.toString() });
+      } else {
+        console.log('Error:removeTeam: not allowed');
+      }
+    }
   },
 
   updateTeam: function(tId, user){
   },
+
+  teamCheckIn: function(tId, user){
+    //Veririco que se hayan pasado todos los parametros
+    if(tId && user){
+      var team = Equipos.findOne( { '_id': tId } );
+
+      Meteor.call('userInTeam', team.busquedaId, user._id, function (error, result){
+        if(typeof result != 'undefined' && !result){
+          //Verifico el equipo tenga cupo disponible
+          Meteor.call('teamIsAvailable',tId, function (error, result){
+            if(result){
+              Equipos.update( { '_id': tId }, { $addToSet: { 'pax': user._id } } );
+            } else {
+              console.log('Error:teamCheckIn:teamIsAvailable: '+ error);
+            }
+          });
+        } else {
+          console.log('Error:teamCheckIn:userInTeam: '+ error);
+        }
+
+      });
+
+    } else {
+      console.log('Error:teamCheckIn: faltan parametros');
+    }
+
+
+  },
+
+  teamIsAvailable: function(tId){
+    var team = Equipos.findOne( { '_id': tId } );
+    var busqueda = Busquedas.findOne( {'_id': team.busquedaId} );
+    return busqueda.cupoMax - team.pax.length > 0;
+  },
+
+  userInTeam: function(bId, userId){
+    var inTeam = Equipos.find({
+      'busquedaId' : bId,
+      'pax' : userId
+    }).count();
+
+    if (inTeam == 0) { return false; } else { return true; };
+  },
+
+  teamCheckOut: function(tId, userId){
+    if(tId && Meteor.user()._id == userId){
+      var isOwner = Equipos.find({
+        '_id' : tId,
+        'owner' : userId
+      }).count();
+
+      if (isOwner == 0) {
+        Equipos.update( { '_id': tId }, { $pull: { 'pax': Meteor.user()._id } } );
+      } else {
+        console.log('Error:teamCheckOut: user is owner');
+      }
+    }
+  },
+
+
 });
