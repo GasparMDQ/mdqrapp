@@ -24,7 +24,6 @@
               <h2><strong>{{ this.id }}</strong> <small>{{ this.descripcion }}</small>
                 {{#if isOwner }}
                   <div class="btn-group">
-                    <button type="button" class="btn btn-warning js-team-edit"><span class="glyphicon glyphicon-pencil"></span></button>
                     <button type="button" class="btn btn-danger js-team-remove"><span class="glyphicon glyphicon-remove"></span></button>
                   </div>
                 {{/if}}
@@ -69,7 +68,7 @@
       <div id="new-team-form" class="panel-collapse collapse">
         <div class="panel-body">
           <p class="alert alert-danger">
-           Recordá que si el equipo no llega al mínimo de 3 jugadores anotados, no podrá participar de la búsqueda.
+           Recordá que si el equipo no llega al mínimo de {{cupoMinimo}} jugadores anotados, no podrá participar de la búsqueda.
           </p>
           <div class="js-team alert alert-info" role="form">
             <div class="form-group">

@@ -30,6 +30,10 @@ if (Meteor.isClient) {
     return this.owner == Meteor.user()._id;
   };
 
+  Template.newTeam.cupoMinimo = function () {
+    return Session.get('busqueda').cupoMin;
+  };
+
   Template.teamDetail.lugaresDisponibles = function () {
     return Session.get('busqueda').cupoMax - this.pax.length;
   };
