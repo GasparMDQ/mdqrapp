@@ -27,7 +27,8 @@ Meteor.methods({
       respuestas: [],
       busquedaId: bId,
       handicap: 0,
-      owner: user._id
+      owner: user._id,
+      pago: false
     };
 
     Meteor.call('isTeamValid',teamData, function (error, result){
@@ -121,5 +122,22 @@ Meteor.methods({
     }
   },
 
+  unSetPagoTeam: function(tId, user){
+    if(tId || Roles.userIsInRole(user, ['admin','super-admin'])){
+      Equipos.update(
+        { _id:tId},
+        { $set: { 'pago': false }}
+      );
+    }
+  },
+
+  setPagoTeam: function(tId, user){
+    if(tId || Roles.userIsInRole(user, ['admin','super-admin'])){
+      Equipos.update(
+        { _id:tId},
+        { $set: { 'pago': true }}
+      );
+    }
+  },
 
 });

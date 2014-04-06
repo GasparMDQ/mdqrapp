@@ -282,6 +282,19 @@ if (Meteor.isClient) {
       }
     },
 
+    'click .js-team-pago-toggle': function (e) {
+      var data = $(e.currentTarget).data('toggle');
+      if (data){
+        var response = Meteor.call('unSetPagoTeam', $(e.target).closest('div.js-team').data('team'), Meteor.user(), function (error, result){
+          if (error) { alert(error.message); }
+        });
+      } else {
+        var response = Meteor.call('setPagoTeam', $(e.target).closest('div.js-team').data('team'), Meteor.user(), function (error, result){
+          if (error) { alert(error.message); }
+        });
+      }
+    },
+
   });
 
   //Stubs
@@ -318,7 +331,26 @@ if (Meteor.isClient) {
       if(nId){
         Nodos.remove({ _id: nId.toString() });
       }
-    }
+    },
+
+    unSetPagoTeam: function(tId, user){
+      if(tId){
+        Equipos.update(
+          { _id:tId},
+          { $set: { 'pago': false }}
+        );
+      }
+    },
+
+    setPagoTeam: function(tId, user){
+      if(tId){
+        Equipos.update(
+          { _id:tId},
+          { $set: { 'pago': true }}
+        );
+      }
+    },
+    
   });
 
 }

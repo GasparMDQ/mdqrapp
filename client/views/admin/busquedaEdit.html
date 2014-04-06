@@ -321,6 +321,20 @@
                       <textarea rows="3" class="form-control js-team-dnf" placeholder="Ingrese el motivo de la descalificacion" >{{ this.dnf }}</textarea>
                     </div>
                   </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Pago</label>
+                    <div class="col-sm-8">
+                      {{#if this.pago}}
+                        <button type="button" class="btn btn-success btn-sm js-team-pago-toggle" data-toggle='{{this.pago}}'>
+                          <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                      {{ else }}
+                        <button type="button" class="btn btn-danger btn-sm js-team-pago-toggle" data-toggle='{{this.pago}}'>
+                          <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                      {{/if}}
+                    </div>
+                  </div>
                 </form>
               </div>
               <div class="col-sm-6">

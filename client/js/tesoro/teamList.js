@@ -144,7 +144,8 @@ Meteor.methods({
             respuestas: [],
             busquedaId: bId,
             handicap: 0,
-            owner: user._id
+            owner: user._id,
+            pago: false
           };
           Equipos.insert(teamData);
         } else {
@@ -160,7 +161,7 @@ Meteor.methods({
 
   removeTeam: function(tId, user){
     if(tId){
-      Rooms.remove({ _id: tId.toString() });
+      Equipos.remove({ _id: tId.toString() });
     }
   },
 

@@ -19,36 +19,41 @@
     <div class="col-sm-10 col-sm-offset-1">
       <div class="row">
         <div class="col-sm-5">
-          <div class="row">
-            <div class="col-md-12">
-              <h2><strong>{{ this.id }}</strong> <small>{{ this.descripcion }}</small>
-                {{#if isOwner }}
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-danger js-team-remove"><span class="glyphicon glyphicon-remove"></span></button>
-                  </div>
-                {{/if}}
-              </h2>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              {{#each this.pax }}
-                {{> paxTeamDetail}}
-              {{/each}}
-              {{#if canJoin }}
-                <div class="btn-group">
-                  <button type="button" class="btn btn-default js-check-in"><span class="glyphicon glyphicon-plus"></span></button>
-                </div>
-              {{/if }}
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-4 col-sm-offset-3">
           <h2>
-          <small>Lugares Disponibles</small> <span class="badge">{{ lugaresDisponibles }}</span>
+            {{#if isOwner }}
+              <div class="btn-group">
+                <button type="button" class="btn {{#if this.pago }}btn-success{{else}}btn-danger{{/if}}" title="{{ pagoTitle }}{{#if this.pago }}Pago Completado{{else}}Pago Incompleto{{/if}}"><span class="glyphicon glyphicon-usd"></span></button>
+              </div>
+            {{/if}}
+            <strong>{{ this.id }}</strong> <small>{{ this.descripcion }}</small>
+          </h2>
+        </div>
+
+        <div class="col-sm-5 col-sm-offset-2">
+          <h2>
+            <small>Lugares Disponibles</small> <span class="badge">{{ lugaresDisponibles }}</span>
+            {{#if isOwner }}
+              <div class="btn-group">
+                <button type="button" class="btn btn-danger js-team-remove" title="Eliminar equipo"><span class="glyphicon glyphicon-remove"></span></button>
+              </div>
+            {{/if}}
           </h2>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          {{#each this.pax }}
+            {{> paxTeamDetail}}
+          {{/each}}
+          {{#if canJoin }}
+            <div class="btn-group">
+              <button type="button" class="btn btn-default js-check-in"><span class="glyphicon glyphicon-plus"></span></button>
+            </div>
+          {{/if }}
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
