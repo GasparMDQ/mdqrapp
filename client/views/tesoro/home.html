@@ -7,7 +7,7 @@
 </template>
 
 <template name="homeStarted">
-Arrancó!
+  Arrancó!
 </template>
 
 <template name="homeNotStartedTesoro">
@@ -21,7 +21,7 @@ Arrancó!
       </div>
     {{ else }}
       <div class="row">
-        <p>Por el momento hay búsqueda del tesoro activa</p>
+        <p>Por el momento no hay búsqueda del tesoro activa</p>
       </div>
     {{/if}}
     <div class="row">
@@ -42,7 +42,11 @@ Arrancó!
     </div>
     <div class="row">
       <p class="bg-info tesoro-p">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget augue quis diam fringilla vehicula. Suspendisse potenti. In cursus ligula quis blandit varius.
+        {{busqueda.descripcion}}
+        {{#if busqueda.facebookEvent}}
+          Más información en nuestro 
+          <a href="https://www.facebook.com/events/{{busqueda.facebookEvent}}">evento en facebook</a>.
+        {{/if}}
       </p>
     </div>
   </div>
