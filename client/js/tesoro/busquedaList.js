@@ -68,6 +68,8 @@ if (Meteor.isClient) {
         live: false,
         cupoMax: parseInt($('#busquedaCupoMax').val()),
         cupoMin: parseInt($('#busquedaCupoMin').val()),
+        facebookEvent: $('#busquedaFaceId').val(),
+        publicScoreboard: false,
       };
       var response = Meteor.call('busquedaAddNew', Meteor.user(), busquedaData, function (error, result){
         if (error) {
@@ -81,6 +83,7 @@ if (Meteor.isClient) {
       $('#busquedaDate').val('');
       $('#busquedaCupoMax').val('');
       $('#busquedaCupoMin').val('');
+      $('#busquedaFaceId').val('');
     },
 
   });

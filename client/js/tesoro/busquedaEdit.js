@@ -68,6 +68,7 @@ if (Meteor.isClient) {
 
   Template.busquedaEdit.events({
     'click .js-event-active-toggle': function (e) {
+      e.preventDefault();
       var data = $(e.currentTarget).data('toggle');
       if (data){
         var response = Meteor.call('unSetActiveBusqueda', Session.get('edit-busqueda'), Meteor.user(), function (error, result){
@@ -80,6 +81,7 @@ if (Meteor.isClient) {
       }
     },
     'click .js-event-live-toggle': function (e) {
+      e.preventDefault();
       var data = $(e.currentTarget).data('toggle');
       if (data){
         var response = Meteor.call('unSetLiveBusqueda', Session.get('edit-busqueda'), Meteor.user(), function (error, result){
@@ -282,7 +284,30 @@ if (Meteor.isClient) {
       }
     },
 
+    'click .js-update-team' : function (e) {
+      var updateBtn = $(e.target).closest('div.js-team').find('button.js-update-team').first();
+      e.preventDefault();
+      var teamData = {
+        _id: $(e.target).closest('div.js-team').data('team'),
+        id: $(e.target).closest('div.js-team').find('input.js-team-id').val(),
+        handicap: parseInt($(e.target).closest('div.js-team').find('input.js-team-handicap').val()),
+        route: $(e.target).closest('div.js-team').find('input.js-team-route').val(),
+        dnf: $(e.target).closest('div.js-team').find('textarea.js-team-dnf').val(),
+      };
+
+      updateBtn.prop('disabled', true);
+      var response = Meteor.call('updateTeam', $(e.target).closest('div.js-team').data('team'), Meteor.user(), teamData, function (error, result){
+        if (error) {
+          alert(error.message);
+        } else {
+          alert('Los datos se grabaron correctamente');
+        }
+        updateBtn.prop('disabled', false);
+      });
+    },
+
     'click .js-team-pago-toggle': function (e) {
+      e.preventDefault();
       var data = $(e.currentTarget).data('toggle');
       if (data){
         var response = Meteor.call('unSetPagoTeam', $(e.target).closest('div.js-team').data('team'), Meteor.user(), function (error, result){
@@ -351,6 +376,23 @@ if (Meteor.isClient) {
       }
     },
     
+    updateTeam: function(tId, user, teamData){
+      if(tId && teamData){
+        if(!teamData.id || teamData.id == ''){ return false; }
+        if(isNaN(teamData.handicap)){ return false; }
+
+        Equipos.update(
+          { _id:teamData._id},
+          { $set: {
+            'id': teamData.id,
+            'handicap': teamData.handicap,
+            'route': teamData.route,
+            'dnf': teamData.dnf
+          }}
+        );
+      }
+    },
+
   });
 
 }

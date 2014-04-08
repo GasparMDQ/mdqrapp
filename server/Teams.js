@@ -61,7 +61,27 @@ Meteor.methods({
     }
   },
 
-  updateTeam: function(tId, user){
+  updateTeam: function(tId, user, teamData){
+    if(tId && teamData){
+      if(!teamData.id || teamData.id == ''){ return false; }
+      if(isNaN(teamData.handicap)){ return false; }
+
+      if(Roles.userIsInRole(user, ['admin','super-admin'])){
+        Equipos.update(
+          { _id:teamData._id},
+          { $set: {
+            'id': teamData.id,
+            'handicap': teamData.handicap,
+            'route': teamData.route,
+            'dnf': teamData.dnf
+          }}
+        );
+      } else {
+        console.log('Error:updateTeam: not allowed');
+      }
+    } else {
+      console.log('Error:updateTeam: invalid data');
+    }
   },
 
   teamCheckIn: function(tId, user){

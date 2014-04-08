@@ -360,5 +360,10 @@
 </template>
 
 <template name="paxTeam">
-  <img src="https://graph.facebook.com/{{ user.services.facebook.id }}/picture" class="headerTinymanPhoto"  alt="{{ user.profile.nombre }}" title="{{ user.profile.nombre }}" data-profile="{{ user._id }}">
+  <div class="row">
+    <div class="col-sm-12">
+      <img src="https://graph.facebook.com/{{ user.services.facebook.id }}/picture" class="headerTinymanPhoto"  alt="{{ user.profile.name }}" title="{{ user.profile.name }}" data-profile="{{ user._id }}">
+      {{ user.profile.name }}
+    </div>
+  </div>
 </template>
