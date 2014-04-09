@@ -28,7 +28,8 @@ Meteor.methods({
       busquedaId: bId,
       handicap: 0,
       owner: user._id,
-      pago: false
+      pago: false,
+      bonus: 0
     };
 
     Meteor.call('isTeamValid',teamData, function (error, result){
@@ -63,8 +64,9 @@ Meteor.methods({
 
   updateTeam: function(tId, user, teamData){
     if(tId && teamData){
-      if(!teamData.id || teamData.id == ''){ return false; }
-      if(isNaN(teamData.handicap)){ return false; }
+      if(!teamData.id || teamData.id == ''){ throw new Meteor.Error(400, 'Debe indicar un nombre para el equipo'); }
+      if(isNaN(teamData.handicap)){ throw new Meteor.Error(400, 'El handicap debe ser un número'); }
+      if(isNaN(teamData.bonus)){ throw new Meteor.Error(400, 'El bonus debe ser un número'); }
 
       if(Roles.userIsInRole(user, ['admin','super-admin'])){
         Equipos.update(
@@ -73,7 +75,8 @@ Meteor.methods({
             'id': teamData.id,
             'handicap': teamData.handicap,
             'route': teamData.route,
-            'dnf': teamData.dnf
+            'dnf': teamData.dnf,
+            'bonus': teamData.bonus
           }}
         );
       } else {

@@ -145,7 +145,8 @@ Meteor.methods({
             busquedaId: bId,
             handicap: 0,
             owner: user._id,
-            pago: false
+            pago: false,
+            bonus: 0
           };
           Equipos.insert(teamData);
         } else {

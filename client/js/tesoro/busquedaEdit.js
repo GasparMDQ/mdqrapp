@@ -291,6 +291,7 @@ if (Meteor.isClient) {
         _id: $(e.target).closest('div.js-team').data('team'),
         id: $(e.target).closest('div.js-team').find('input.js-team-id').val(),
         handicap: parseInt($(e.target).closest('div.js-team').find('input.js-team-handicap').val()),
+        bonus: parseInt($(e.target).closest('div.js-team').find('input.js-team-bonus').val()),
         route: $(e.target).closest('div.js-team').find('input.js-team-route').val(),
         dnf: $(e.target).closest('div.js-team').find('textarea.js-team-dnf').val(),
       };
@@ -380,6 +381,7 @@ if (Meteor.isClient) {
       if(tId && teamData){
         if(!teamData.id || teamData.id == ''){ return false; }
         if(isNaN(teamData.handicap)){ return false; }
+        if(isNaN(teamData.bonus)){ return false; }
 
         Equipos.update(
           { _id:teamData._id},
@@ -387,7 +389,8 @@ if (Meteor.isClient) {
             'id': teamData.id,
             'handicap': teamData.handicap,
             'route': teamData.route,
-            'dnf': teamData.dnf
+            'dnf': teamData.dnf,
+            'bonus': teamData.bonus
           }}
         );
       }
