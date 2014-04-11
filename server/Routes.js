@@ -50,7 +50,7 @@ Meteor.methods({
     if(rId && routeData){
       Meteor.call('isRouteValid', routeData, function (error, result){
         if (result && Roles.userIsInRole(user, ['admin','super-admin'])) {
-          Route.update(
+          Routes.update(
             { _id:routeData._id},
             { $set: {
               'id': routeData.id,
