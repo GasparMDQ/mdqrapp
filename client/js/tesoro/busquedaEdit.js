@@ -54,6 +54,84 @@ if (Meteor.isClient) {
     return url;
   };
 
+  Template.busquedaEdit.mapInitUrl = function () {
+    var url="/nomap.gif";
+    if(Session.get('edit-busqueda')) {
+      var busqueda = Busquedas.findOne({_id: Session.get('edit-busqueda')});
+      if(typeof busqueda != 'undefined' && busqueda.initLatitude && busqueda.initLongitude) {
+        url="http://maps.googleapis.com/maps/api/staticmap?size=300x300&zoom=17&markers=color:red%7C"+busqueda.initLatitude+","+busqueda.initLongitude+"&key=AIzaSyD65xdO0lXLeF2lzjuN0qBqc6RgjYgK6Pc&sensor=false";
+      }
+    }
+    return url;
+  };
+
+  Template.busquedaEdit.mapEndUrl = function () {
+    var url="/nomap.gif";
+    if(Session.get('edit-busqueda')) {
+      var busqueda = Busquedas.findOne({_id: Session.get('edit-busqueda')});
+      if(typeof busqueda != 'undefined' && busqueda.endLatitude && busqueda.endLongitude) {
+        url="http://maps.googleapis.com/maps/api/staticmap?size=300x300&zoom=17&markers=color:red%7C"+busqueda.endLatitude+","+busqueda.endLongitude+"&key=AIzaSyD65xdO0lXLeF2lzjuN0qBqc6RgjYgK6Pc&sensor=false";
+      }
+    }
+    return url;
+  };
+
+  Template.nodoRouteShow.nodo = function () {
+    return Nodos.findOne({_id: this.valueOf() });
+  };  
+
+  Template.nodoRouteShow.isFirst = function (data) {
+    return data.nodos.indexOf(this.valueOf()) == 0;
+  };  
+
+  Template.nodoRouteShow.isLast = function (data) {
+    return data.nodos.indexOf(this.valueOf()) == data.nodos.length-1;
+  };  
+
+  Template.nodoRouteShow.indexOfNodo = function (data) {
+    return data.nodos.indexOf(this.valueOf());
+  };
+
+  Template.routeEdit.nodosNoUsados = function (data) {
+    return Nodos.find({_id: {$nin: data}},{sort: { 'id': 1}});
+  };
+
+  Template.routeEdit.distancia = function () {
+    var distancia = 0;
+
+    if(Session.get('edit-busqueda')) {
+      var currentNode, lastNode;
+      var busqueda = Busquedas.findOne({_id: Session.get('edit-busqueda')});
+      if(
+          typeof busqueda != 'undefined' &&
+          busqueda.initLatitude &&
+          busqueda.initLongitude &&
+          busqueda.endLatitude &&
+          busqueda.endLongitude
+        ) {
+
+          if(this.nodos.length == 0){
+            distancia = distanceBetweenNodes(
+              {'latitude':busqueda.initLatitude, 'longitude': busqueda.initLongitude },
+              {'latitude':busqueda.endLatitude, 'longitude': busqueda.endLongitude }
+            );
+          } else {
+            lastNode = {'latitude':busqueda.initLatitude, 'longitude': busqueda.initLongitude };
+            for (var i=0;i<this.nodos.length;i++) {
+              currentNode = Nodos.findOne({_id: this.nodos[i]});
+              if(currentNode.latitude!=0 && currentNode.longitude !=0){
+                distancia += distanceBetweenNodes(currentNode, lastNode);
+                lastNode = currentNode;
+              }
+            }
+            distancia += distanceBetweenNodes(lastNode, {'latitude':busqueda.endLatitude, 'longitude': busqueda.endLongitude });
+          }
+      }
+    }
+
+    return distancia.toFixed(2);
+  };
+
   Template.equipoShow.owner = function () {
     var ownerItem = Meteor.users.findOne({'_id': this.owner.toString()});
     if(ownerItem && ownerItem.profile) {
@@ -93,6 +171,39 @@ if (Meteor.isClient) {
         });
       }
     },
+
+    'click .js-update-busqueda-inicio' : function (e) {
+      e.preventDefault();
+      var updateData = {
+        latitude: parseFloat($(e.target).closest('.js-busqueda-inicio').find('input.js-busqueda-inicio-latitud').val()),
+        longitude: parseFloat($(e.target).closest('.js-busqueda-inicio').find('input.js-busqueda-inicio-longitud').val()),
+      };
+
+      var response = Meteor.call('updateBusquedaInit', Session.get('edit-busqueda'), Meteor.user(), updateData, function (error, result){
+        if (error) {
+          alert(error.message);
+        } else {
+          alert('Los datos se grabaron correctamente');
+        }
+      });
+    },
+
+    'click .js-update-busqueda-final' : function (e) {
+      e.preventDefault();
+      var updateData = {
+        latitude: parseFloat($(e.target).closest('.js-busqueda-final').find('input.js-busqueda-final-latitud').val()),
+        longitude: parseFloat($(e.target).closest('.js-busqueda-final').find('input.js-busqueda-final-longitud').val()),
+      };
+
+      var response = Meteor.call('updateBusquedaEnd', Session.get('edit-busqueda'), Meteor.user(), updateData, function (error, result){
+        if (error) {
+          alert(error.message);
+        } else {
+          alert('Los datos se grabaron correctamente');
+        }
+      });
+    },
+
   });
 
   Template.nodoNew.events({
@@ -136,35 +247,34 @@ if (Meteor.isClient) {
 
   Template.routeNew.events({
     'click .js-add-route' : function (e) {
-      var updateBtn = $(e.target).closest('div.js-route').find('button.js-add-route').first();
+      var addBtn = $(e.target).closest('div.js-route').find('button.js-add-route').first();
       e.preventDefault();
-      updateBtn.prop('disabled', true);
+      addBtn.prop('disabled', true);
       var routeData = {
         id: $('#routeId').val(),
-        descripcion: $('#routeDesc').val(),
-        cupo: parseInt($('#routeQty').val()),
         busquedaId : Session.get('edit-busqueda'),
-        pax: []
+        nodos: []
       };
       var response = Meteor.call('routeAddNew', Session.get('edit-busqueda'), Meteor.user(), routeData, function (error, result){
         if (error) {
           alert(error.message);
         } else {
         }
-        updateBtn.prop('disabled', false);
+        addBtn.prop('disabled', false);
       });
       $('#routeId').val('');
-      $('#routeDesc').val('');
-      $('#routeQty').val('');
     },
   });
 
   Template.nodoEdit.events({
     'click .js-remove-nodo' : function (e) {
       e.preventDefault();
-      var confirmation = confirm('Desea eliminar esta pregunta?');
+      var nodeId = $(e.target).closest('div.js-nodo').data('nodo');
+      var nodo = Nodos.findOne({_id: nodeId});
+
+      var confirmation = confirm('Desea eliminar la pregunta "'+nodo.id+'"?');
       if (confirmation == true ) {
-        var response = Meteor.call('removeNodo', $(e.target).closest('div.js-nodo').data('nodo'), Session.get('edit-busqueda'), Meteor.user(), function (error, result){
+        var response = Meteor.call('removeNodo', nodeId, Session.get('edit-busqueda'), Meteor.user(), function (error, result){
           if (error) {
             alert(error.message);
           }
@@ -224,11 +334,17 @@ if (Meteor.isClient) {
   Template.routeEdit.events({
     'click .js-remove-route' : function (e) {
       e.preventDefault();
-      var response = Meteor.call('removeRoute', $(e.target).closest('div.js-route').data('route'), Session.get('edit-busqueda'), Meteor.user(), function (error, result){
-        if (error) {
-          alert(error.message);
-        }
-      });
+      var routeId = $(e.target).closest('div.js-route').data('route');
+      var route = Routes.findOne({_id: routeId});
+
+      var confirmation = confirm('Desea eliminar la ruta "'+route.id+'"?');
+      if (confirmation == true ) {
+        var response = Meteor.call('removeRoute', routeId, Session.get('edit-busqueda'), Meteor.user(), function (error, result){
+          if (error) {
+            alert(error.message);
+          }
+        });
+      }
     },
     
     'click .js-update-route' : function (e) {
@@ -239,9 +355,6 @@ if (Meteor.isClient) {
       var routeData = {
         _id: $(e.target).closest('div.js-route').data('route'),
         id: $(e.target).closest('div.js-route').find('input.js-route-id').val(),
-        descripcion: $(e.target).closest('div.js-route').find('input.js-route-desc').val(),
-        cupo: parseInt($(e.target).closest('div.js-route').find('input.js-route-qty').val()),
-        busquedaId : Session.get('edit-busqueda')
       };
 
       updateBtn.prop('disabled', true);
@@ -267,6 +380,20 @@ if (Meteor.isClient) {
           );
         }
       });
+    },
+
+    'click .js-add-node': function (e){
+      e.preventDefault();
+      var routeId = $(e.target).closest('div.js-route').data('route');
+      var nodeId = $(e.currentTarget).closest('div.js-new-node-route').find(':selected').data("id");
+      var route = Routes.findOne({_id: routeId});
+      
+      route.nodos.push(nodeId);
+      
+      var response = Meteor.call('routeNodeSave', routeId, Meteor.user(), route.nodos, function (error, result){
+        if (error) { alert(error.message); }
+      });
+  
     },
 
   });
@@ -323,78 +450,56 @@ if (Meteor.isClient) {
 
   });
 
-  //Stubs
-  Meteor.methods({
-    nodoAddNew: function(nId, user, nodoData){
-      if(nId && nodoData){
-        if(!nodoData.id || nodoData.id == ''){ return false; }
-        if(!nodoData.question  || nodoData.question == '' ){ return false; }
-        if(isNaN(nodoData.answer)){ return false; }
-        Nodos.insert(nodoData);
-      }
-    },
+  Template.nodoRouteShow.events({
+    'click .js-move-node-up': function (e){
+      e.preventDefault();
+      var routeId = $(e.target).closest('div.js-route').data('route');
+      var nodeId = $(e.target).closest('div.js-route-node').data('nodo');
+      var route = Routes.findOne({_id: routeId});
+      var nodeIdx = route.nodos.indexOf(nodeId);
 
-    updateNodo: function(nId, user, nodoData){
-      if(nId && nodoData){
-        if(!nodoData.id || nodoData.id == ''){ return false; }
-        if(!nodoData.question  || nodoData.question == '' ){ return false; }
-        if(isNaN(nodoData.answer)){ return false; }
+      //Disable UP buttons
+      route.nodos.splice(nodeIdx,1);
+      route.nodos.splice(nodeIdx-1,0,nodeId);
 
-        Nodos.update(
-          { _id:nodoData._id},
-          { $set: {
-            'id': nodoData.id,
-            'question': nodoData.question,
-            'answer': nodoData.answer,
-            'lowOffset': nodoData.lowOffset,
-            'highOffset': nodoData.highOffset
-          }}
-        );
-      }
-    },
-
-    removeNodo: function(nId, bId, user){
-      if(nId){
-        Nodos.remove({ _id: nId.toString() });
-      }
-    },
-
-    unSetPagoTeam: function(tId, user){
-      if(tId){
-        Equipos.update(
-          { _id:tId},
-          { $set: { 'pago': false }}
-        );
-      }
-    },
-
-    setPagoTeam: function(tId, user){
-      if(tId){
-        Equipos.update(
-          { _id:tId},
-          { $set: { 'pago': true }}
-        );
-      }
+      var response = Meteor.call('routeNodeSave', routeId, Meteor.user(), route.nodos, function (error, result){
+        if (error) { alert(error.message); }
+      });
     },
     
-    updateTeam: function(tId, user, teamData){
-      if(tId && teamData){
-        if(!teamData.id || teamData.id == ''){ return false; }
-        if(isNaN(teamData.handicap)){ return false; }
-        if(isNaN(teamData.bonus)){ return false; }
+    'click .js-move-node-down': function (e){
+      e.preventDefault();
+      var routeId = $(e.target).closest('div.js-route').data('route');
+      var nodeId = $(e.target).closest('div.js-route-node').data('nodo');
+      var route = Routes.findOne({_id: routeId});
+      var nodeIdx = route.nodos.indexOf(nodeId);
 
-        Equipos.update(
-          { _id:teamData._id},
-          { $set: {
-            'id': teamData.id,
-            'handicap': teamData.handicap,
-            'route': teamData.route,
-            'dnf': teamData.dnf,
-            'bonus': teamData.bonus
-          }}
-        );
-      }
+      route.nodos.splice(nodeIdx,1);
+      route.nodos.splice(nodeIdx+1,0,nodeId);
+
+      var response = Meteor.call('routeNodeSave', routeId, Meteor.user(), route.nodos, function (error, result){
+        if (error) { alert(error.message); }
+      });
     },
+    
+    'click .js-remove-node': function (e){
+      e.preventDefault();
+      var routeId = $(e.target).closest('div.js-route').data('route');
+      var nodeId = $(e.target).closest('div.js-route-node').data('nodo');
+      var route = Routes.findOne({_id: routeId});
+      var nodeIdx = route.nodos.indexOf(nodeId);
+
+      route.nodos.splice(nodeIdx,1);
+
+      var response = Meteor.call('routeNodeSave', routeId, Meteor.user(), route.nodos, function (error, result){
+        if (error) { alert(error.message); }
+      });
+    },
+
+  });  
+
+  //Stubs
+  Meteor.methods({
 
   });
 

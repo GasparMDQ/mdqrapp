@@ -56,9 +56,9 @@ if (Meteor.isClient) {
     },
 
     'click .js-add-busqueda' : function (e) {
-      var updateBtn = $(e.target).closest('div.js-busqueda').find('button.js-add-busqueda').first();
+      var addBtn = $(e.target).closest('div.js-busqueda').find('button.js-add-busqueda').first();
       e.preventDefault();
-      updateBtn.prop('disabled', true);
+      addBtn.prop('disabled', true);
       var busquedaData = {
         id: $('#busquedaId').val(),
         descripcion: $('#busquedaDesc').val(),
@@ -75,8 +75,9 @@ if (Meteor.isClient) {
         if (error) {
           alert(error.message);
         } else {
+          $('#new-busqueda-form').collapse('hide');
         }
-        updateBtn.prop('disabled', false);
+        addBtn.prop('disabled', false);
       });
       $('#busquedaId').val('');
       $('#busquedaDesc').val('');

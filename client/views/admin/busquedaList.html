@@ -77,22 +77,39 @@
 </template>
 
 <template name="busquedaNew">
-  <div class="js-busqueda alert alert-warning">
-    <h4>Nueva Búsqueda</h4>
-    <div class="form-group">
-      <input id="busquedaId" type="text" class="form-control" placeholder="Ingrese el identificador">
-      <input id="busquedaDesc" type="text" class="form-control" placeholder="Ingrese la descripcion">
-      <input id="busquedaDate" type="datetime-local" class="form-control" placeholder="Ingrese la fecha de realización">
+
+  <div class="panel-group" id="new-busqueda-accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading bg-primary" data-toggle="collapse" data-parent="#new-busqueda-accordion" data-target="#new-busqueda-form">
+        <h4 class="panel-title">
+          Nueva Búsqueda
+        </h4>
+      </div>
+      <div id="new-busqueda-form" class="panel-collapse collapse">
+        <div class="panel-body">
+
+          <div class="js-busqueda alert alert-warning">
+            <div class="form-group">
+              <input id="busquedaId" type="text" class="form-control" placeholder="Ingrese el identificador">
+              <input id="busquedaDesc" type="text" class="form-control" placeholder="Ingrese la descripcion">
+              <input id="busquedaDate" type="datetime-local" class="form-control" placeholder="Ingrese la fecha de realización">
+            </div>
+            <div class="form-group">
+              <input id="busquedaCupoMin" type="number" min="1" class="form-control" placeholder="Ingrese el cupo mínimo por equipo">
+              <input id="busquedaCupoMax" type="number" min="1" class="form-control" placeholder="Ingrese el cupo máximo por equipo">
+            </div>
+            <div class="form-group">
+              <input id="busquedaFaceId" type="text" class="form-control" placeholder="Ingrese el Id del evento en Facebook">
+            </div>
+            <button type="button" class="btn btn-success btn-sm js-add-busqueda">
+              <span class="glyphicon glyphicon-plus"></span>
+            </button>
+          </div>
+
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <input id="busquedaCupoMin" type="number" min="1" class="form-control" placeholder="Ingrese el cupo mínimo por equipo">
-      <input id="busquedaCupoMax" type="number" min="1" class="form-control" placeholder="Ingrese el cupo máximo por equipo">
-    </div>
-    <div class="form-group">
-      <input id="busquedaFaceId" type="text" class="form-control" placeholder="Ingrese el Id del evento en Facebook">
-    </div>
-    <button type="button" class="btn btn-success btn-sm js-add-busqueda">
-      <span class="glyphicon glyphicon-plus"></span>
-    </button>
   </div>
+
+
 </template>

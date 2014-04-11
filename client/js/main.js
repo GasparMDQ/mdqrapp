@@ -8,7 +8,7 @@ Deps.autorun(function(){
   Meteor.subscribe('events', Meteor.user());
 });
 Deps.autorun(function(){
-  Meteor.subscribe('nodos', Meteor.user());
+  Meteor.subscribe('nodosAndRoutes', Meteor.user(), Session.get('busqueda'));
 });
 Deps.autorun(function(){
   Meteor.subscribe('busquedas', Meteor.user());
@@ -191,24 +191,4 @@ Router.map(function () {
     template: 'teamList',
   });  
 
-});
-
-// Handlebars Global Helpers
-UI.registerHelper('formatDate', function (datetime, format) {
-  if(datetime){
-    var DateFormats = {
-           short: "DD/MM/YYYY HH:mm",
-           long: "dddd DD.MM.YYYY HH:mm"
-    };
-
-    if (moment) {
-      f = DateFormats[format];
-      return moment(datetime).format(f);
-    }
-    else {
-      return datetime;
-    }
-  } else {
-    return 'sin información';
-  }
 });

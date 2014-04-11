@@ -96,76 +96,9 @@ if (Meteor.isClient) {
   });
 
 
-//Stubs
-Meteor.methods({
-  teamCheckIn: function(tId, user){
-    if(tId){
-      var reservas = Equipos.find({'pax': user._id}).count();
-      if (reservas == 0){
-        Equipos.update( { '_id': tId }, { $addToSet: { 'pax': user._id } } );
-      } else {
-        var team = Equipos.findOne({'pax': user._id});
-        alert('Ya se esta en el equipo ' + team.id);
-      }
-    }
-  },
+  //Stubs
+  Meteor.methods({
 
-  teamCheckOut: function(tId, userId){
-    if(tId && Meteor.user()._id == userId){
-      var isOwner = Equipos.find({
-        '_id' : tId,
-        'owner' : userId
-      }).count();
-
-      if (isOwner == 0) {
-        Equipos.update( { '_id': tId }, { $pull: { 'pax': Meteor.user()._id } } );
-      } else {
-        alert('Eres el dueño del equipo. Para salir del mismo debes borrarlo.');
-      }
-    }
-  },
-
-  addNewTeam: function(bId, user, tId){
-    if(tId != ''){
-      var existeTeam = Equipos.find({'id': tId}).count();
-
-      var inTeam = Equipos.find({
-        'busquedaId' : bId,
-        'pax' : user._id
-      }).count();
-
-      if (inTeam == 0) {
-        if(existeTeam == 0) {
-          var teamData = {
-            id: tId,
-            pax: [user._id],
-            dnf: false,
-            routeId: '',
-            respuestas: [],
-            busquedaId: bId,
-            handicap: 0,
-            owner: user._id,
-            pago: false,
-            bonus: 0
-          };
-          Equipos.insert(teamData);
-        } else {
-          alert('Ya existe un equipo con el nombre ' + tId);
-        }
-      } else {
-        alert('No podes crear un equipo porque ya estás en otro');
-      };
-    } else {
-      alert('Debes ingresar un nombre para tu equipo');
-    }
-  },
-
-  removeTeam: function(tId, user){
-    if(tId){
-      Equipos.remove({ _id: tId.toString() });
-    }
-  },
-
-});
+  });
 
 }

@@ -32,16 +32,34 @@ Meteor.publish('userData', function(){
   return Meteor.users.find({_id:this.userId});
 });
 
-//Pasar usuario para filtrar datos que se envian de acuerdo a perfil
-Meteor.publish('nodos', function(userId){
+Meteor.publish('nodosAndRoutes', function(userId, busqueda){
   if (Roles.userIsInRole(userId, ['super-admin', 'admin'])){
     //Todos
-    return Nodos.find();
+    return [
+      Routes.find(),
+      Nodos.find()
+    ];
   }
 
   if (Roles.userIsInRole(userId, ['user'])){
-    //Ver si es necesario devolver algo en caso de solo ser un usuario
-    //return Nodos.find({active:true});
+    //Se envian los valores de la busqueda activa
+    if(typeof busqueda != 'undefined'){
+      if(busqueda.publicScoreboard){
+        return [
+          Routes.find({'busquedaId': busqueda._id}),
+          Nodos.find({},{
+            fields: {
+              '_id': 1,
+              'answer': 1,
+              'lowOffset': 1,
+              'highOffset': 1
+            }
+          })
+          ];
+      } else {
+        return Routes.find({'busquedaId': busqueda._id});
+      }
+    }
   }
   this.stop();
   return;

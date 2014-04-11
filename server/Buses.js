@@ -1,4 +1,3 @@
-
 Meteor.methods({
   isBusValid: function(busData){
     if(busData) {

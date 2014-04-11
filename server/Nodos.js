@@ -64,7 +64,7 @@ Meteor.methods({
             if(!result) {
               console.log('Error:isNodoValid: nodoData not valid');
             } else {
-              console.log('Error:nodoAddNew: not allowed');
+              console.log('Error:updateNodo: not allowed');
             }
           }
         }
@@ -76,7 +76,7 @@ Meteor.methods({
     if(nId && Roles.userIsInRole(user, ['admin','super-admin'])) {
       Nodos.remove({ _id: nId.toString() });
     } else {
-      console.log('Error:removeRoom: not allowed');
+      console.log('Error:removeNodo: not allowed');
     }
   },
 });
