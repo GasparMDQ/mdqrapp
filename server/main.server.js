@@ -43,7 +43,7 @@ Meteor.publish('nodosAndRoutes', function(userId, busqueda){
 
   if (Roles.userIsInRole(userId, ['user'])){
     //Se envian los valores de la busqueda activa
-    if(typeof busqueda != 'undefined'){
+    if(typeof busqueda != 'undefined' && busqueda !== null ){
       if(busqueda.publicScoreboard){
         return [
           Routes.find({'busquedaId': busqueda._id}),

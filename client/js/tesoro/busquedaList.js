@@ -91,38 +91,6 @@ if (Meteor.isClient) {
 
 //Stubs
 Meteor.methods({
-  setActiveBusqueda: function(bId, user){
-    if(bId){
-      Busquedas.update({ _id: { $ne: bId.toString() }}, { $set: { active: false }}, {multi: true});
-      Busquedas.update({ _id: bId.toString() }, { $set: { active: true }});
-    }
-  },
-
-  unSetActiveBusqueda: function(bId, user){
-    if(bId){
-      Busquedas.update({ _id: bId.toString() }, { $set: { active: false }});
-    }
-  },
-
-  removeBusqueda: function(bId, user){
-    if(bId){
-      Busquedas.remove({ _id: bId.toString() });
-    }
-  },
-
-  busquedaAddNew: function(user, busquedaData){
-    if(busquedaData){
-      if(!busquedaData.id || busquedaData.id == ''){ return false; }
-      if(!busquedaData.descripcion  || busquedaData.descripcion == '' ){ return false; }
-      if(!busquedaData.date || busquedaData.date == '' ){ return false; }
-      if(isNaN(busquedaData.cupoMin) || busquedaData.cupoMin == '') { return false ;}
-      if(isNaN(busquedaData.cupoMax) || busquedaData.cupoMax == '') { return false ;}
-      if(busquedaData.cupoMax < busquedaData.cupoMin){ return false; }
-
-      Busquedas.insert(busquedaData);
-    }
-  },
-
 
 });
 

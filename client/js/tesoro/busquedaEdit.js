@@ -172,6 +172,20 @@ if (Meteor.isClient) {
       }
     },
 
+    'click .js-event-scoreBoard-toggle': function (e) {
+      e.preventDefault();
+      var data = $(e.currentTarget).data('toggle');
+      if (data){
+        var response = Meteor.call('setScoreBoardBusqueda', Session.get('edit-busqueda'), Meteor.user(), !data, function (error, result){
+          if (error) { alert(error.message); }
+        });
+      } else {
+        var response = Meteor.call('setScoreBoardBusqueda', Session.get('edit-busqueda'), Meteor.user(), !data, function (error, result){
+          if (error) { alert(error.message); }
+        });
+      }
+    },
+
     'click .js-update-busqueda-inicio' : function (e) {
       e.preventDefault();
       var updateData = {

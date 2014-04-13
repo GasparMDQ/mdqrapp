@@ -110,6 +110,18 @@
         {{/if}}
         Búsqueda en Progreso
       </p>
+      <p>
+        {{#if busqueda.publicScoreboard }}
+          <button type="button" class="btn btn-success btn-sm js-event-scoreBoard-toggle" data-toggle='{{busqueda.publicScoreboard}}'>
+            <span class="glyphicon glyphicon-ok"></span>
+          </button>
+        {{ else }}
+          <button type="button" class="btn btn-danger btn-sm js-event-scoreBoard-toggle" data-toggle='{{busqueda.publicScoreboard}}'>
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        {{/if}}
+        Tablero de puntuación Público
+      </p>
     </div>
   </div>
   <hr>  

@@ -1,4 +1,3 @@
-
 Meteor.methods({
   isBusquedaValid: function(busquedaData){
     if(busquedaData) {
@@ -62,9 +61,18 @@ Meteor.methods({
     }
   },
 
+  setScoreBoardBusqueda: function(bId, user, value){
+    if(Roles.userIsInRole(user, ['super-admin', 'admin'])){
+      Busquedas.update({ _id: bId.toString() }, { $set: { publicScoreboard: value }});
+      return true;
+    } else {
+      console.log('Error:unSetScoreBoardBusqueda: not allowed');
+    }
+  },
+
   setActiveBusqueda: function(bId, user){
     //Verifico que tenga los permisos necesarios para activar eventos
-    if(Roles.userIsInRole(user, ['super-admin', 'admin'])){
+    if(Roles.userIsInRole(user, ['super-admin', 'admin']) && bId){
       Busquedas.update({ _id: { $ne: bId.toString() }}, { $set: { active: false }}, {multi: true});
       Busquedas.update({ _id: bId.toString() }, { $set: { active: true }});
       return true;
@@ -83,7 +91,7 @@ Meteor.methods({
         }
       });
     } else {
-      console.log('Error:setLiveBusqueda: not allowed');
+      console.log('Error:unSetActiveBusqueda: not allowed');
     }
   },
 
