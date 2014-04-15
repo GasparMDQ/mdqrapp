@@ -140,6 +140,13 @@ if (Meteor.isClient) {
     return 'no-data';
   };
 
+  Template.equipoShow.ruta = function (data) {
+    if(data){
+      return Routes.findOne({'_id': data}).id;
+    }
+    return 'sin asignar';
+  };
+
   Template.paxTeam.user = function () {
     return Meteor.users.findOne({'_id': this.toString()});
   };

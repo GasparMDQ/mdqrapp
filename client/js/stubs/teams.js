@@ -106,5 +106,109 @@ if (Meteor.isClient) {
       }
     },
 
+    teamSetRoute: function(tId, user, routeData){
+      if(tId){
+        var equipo = Equipos.findOne({
+          '_id' : tId,
+        });
+        var ruta = Routes.findOne({
+          'id': routeData.id,
+          'busquedaId': routeData.busquedaId
+        });
+        if (ruta) {
+          Equipos.update(
+            { _id:tId},
+            { $set: {
+              'routeId': ruta._id,
+            }}
+          );
+        }
+      }
+    },
+
+    teamAddAnswer: function(tId, user, answerData){
+      /*
+        Verificar:
+        - Que los datos vengan completos y sean validos
+        - Que el usuario pertenezca al equipo
+        - Que la pregunta pertenezca a la ruta del equipo
+        - Que no exista una respuesta para la misma pregunta
+        - Que la hora de respuesta no sea mayor a la de finalización del juego
+        - Que la hora de respuesta no sea inferior a la de comienzo del juego (opcional)
+        - 
+      */
+
+      var datosValidos = true;
+
+      if(typeof answerData == 'undefined') { datosValidos = false; }
+      if(answerData.id == '') { datosValidos = false; }
+      if(isNaN(answerData.respuesta)) { datosValidos = false; }
+      if(answerData.user != user._id) { datosValidos = false; }
+      if(tId == '') { datosValidos = false; }
+
+      var inTeam = Equipos.find({'_id' : tId,'pax' : answerData.user }).count();
+      if(inTeam == 0) { datosValidos = false; }
+
+      var equipo = Equipos.findOne({'_id' : tId });
+      var rutaId = equipo.routeId;
+
+      var inRoute = Routes.find({'_id' : rutaId,'nodos' : answerData.id }).count();
+      if(inRoute == 0) { datosValidos = false; }
+
+      var idNodos = [];
+      for (var i=0; i<equipo.respuestas.length; i++) {
+        idNodos.push(equipo.respuestas[i].id);
+      }
+      var hasRespuesta = idNodos.indexOf(answerData.id) != -1;
+      if(hasRespuesta) { datosValidos = false; }
+
+      var busqueda = Busquedas.findOne({'_id': equipo.busquedaId });
+      var horaRespuesta = moment(answerData.timeStamp);
+      var horaInicio = moment(busqueda.begin, 'YYYY-MM-DDTHH:mm');
+      var horaFin = moment(busqueda.end, 'YYYY-MM-DDTHH:mm');
+
+
+      if(horaRespuesta.isAfter(horaFin)) { datosValidos = false; }
+      if(horaRespuesta.isBefore(horaInicio)) { datosValidos = false; }
+
+      if(datosValidos){
+        Equipos.update( { '_id': tId }, { $addToSet: { 'respuestas': answerData } } );
+      }
+
+
+      //DELETE vvvvv
+      /*
+      if(tId != ''){
+        var existeTeam = Equipos.find({'id': tId}).count();
+
+
+        if (inTeam == 0) {
+          if(existeTeam == 0) {
+            var teamData = {
+              id: tId,
+              pax: [user._id],
+              dnf: false,
+              routeId: '',
+              respuestas: [],
+              busquedaId: tId,
+              handicap: 0,
+              owner: user._id,
+              pago: false,
+              bonus: 0
+            };
+            Equipos.insert(teamData);
+          } else {
+            alert('Ya existe un equipo con el nombre ' + tId);
+          }
+        } else {
+          alert('No podes crear un equipo porque ya estás en otro');
+        };
+      } else {
+        alert('Debes ingresar un nombre para tu equipo');
+      }
+      */
+    },
+
+
   });
 };

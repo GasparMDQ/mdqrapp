@@ -62,7 +62,8 @@ if (Meteor.isClient) {
       var busquedaData = {
         id: $('#busquedaId').val(),
         descripcion: $('#busquedaDesc').val(),
-        date: $('#busquedaDate').val(),
+        begin: $('#busquedaBegin').val(),
+        end: $('#busquedaEnd').val(),
         routes: [],
         active: false,
         live: false,
@@ -81,7 +82,8 @@ if (Meteor.isClient) {
       });
       $('#busquedaId').val('');
       $('#busquedaDesc').val('');
-      $('#busquedaDate').val('');
+      $('#busquedaBegin').val('');
+      $('#busquedaEnd').val('');
       $('#busquedaCupoMax').val('');
       $('#busquedaCupoMin').val('');
       $('#busquedaFaceId').val('');

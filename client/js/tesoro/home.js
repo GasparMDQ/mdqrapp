@@ -26,12 +26,62 @@ if (Meteor.isClient) {
   };
 
   Template.homeNotStartedTesoro.hasTeam = function () {
-    return false;
+    return userHasTeam();
   };
+
 
   Template.homeNotStartedTesoro.isProfileComplete = function () {
     //Verificar que el usuario tenga sus campos obligatorios completos
     return Session.get('profile-complete');
   };
 
+  Template.homeStarted.hasAlertas = function () {
+    if(!userHasTeam()) { return true };
+    if(!teamPago()) { return true };
+    if(!teamReachQuota()) { return true };
+    return false;
+  };
+
+  Template.homeStarted.alertas = function () {
+    var data=[];
+    if(!userHasTeam()) { data.push('No estás inscripto en ningún equipo.'); };
+    if(userHasTeam() && !teamPago()) { data.push('Tu equipo no pagó la inscripción.'); };
+    if(userHasTeam() && !teamReachQuota()) { data.push('El equipo en el que estás inscripto no alcanzó la cantidad de jugadores mínimos requeridos.'); };
+    return data;
+  };
+
+  var teamPago = function (){
+    if(Meteor.user() && userHasTeam()){
+      var equipo = Equipos.findOne({
+        'busquedaId' : Session.get('busqueda-active'),
+        'pax' : Meteor.user()._id
+      });
+      return equipo.pago;
+    }
+    return false;
+  };
+  
+  var teamReachQuota = function (){
+    if(Meteor.user() && userHasTeam()){
+      var equipo = Equipos.findOne({
+        'busquedaId' : Session.get('busqueda-active'),
+        'pax' : Meteor.user()._id
+      });
+      var busqueda = Session.get('busqueda');
+      return equipo.pax.length>=busqueda.cupoMin && equipo.pax.length<=busqueda.cupoMax;
+    }
+    return false;
+  };
+
+  var userHasTeam = function () {
+    if(Meteor.user()){
+      var isMember = Equipos.find({
+        'busquedaId' : Session.get('busqueda-active'),
+        'pax' : Meteor.user()._id
+      }).count();
+      if (isMember != 0) { return true; }
+    }
+    return false;
+  };
+  
 }

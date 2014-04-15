@@ -1,6 +1,6 @@
 if (Meteor.isClient) {
   Meteor.methods({
-    updateBusquedaInit: function(bId, user, updateData){
+    updateBusquedaLocInit: function(bId, user, updateData){
       if(bId && updateData){
         if(isNaN(updateData.latitude)){ return false; }
         if(isNaN(updateData.longitude)){ return false; }
@@ -17,7 +17,7 @@ if (Meteor.isClient) {
       }
     },
 
-    updateBusquedaEnd: function(bId, user, updateData){
+    updateBusquedaLocEnd: function(bId, user, updateData){
       if(bId && updateData){
         if(isNaN(updateData.latitude)){ return false; }
         if(isNaN(updateData.longitude)){ return false; }
@@ -57,7 +57,8 @@ if (Meteor.isClient) {
       if(busquedaData){
         if(!busquedaData.id || busquedaData.id == ''){ return false; }
         if(!busquedaData.descripcion  || busquedaData.descripcion == '' ){ return false; }
-        if(!busquedaData.date || busquedaData.date == '' ){ return false; }
+        if(!busquedaData.begin || busquedaData.begin == '' ){ return false; }
+        if(!busquedaData.end || busquedaData.end == '' ){ return false; }
         if(isNaN(busquedaData.cupoMin) || busquedaData.cupoMin == '') { return false ;}
         if(isNaN(busquedaData.cupoMax) || busquedaData.cupoMax == '') { return false ;}
         if(busquedaData.cupoMax < busquedaData.cupoMin){ return false; }

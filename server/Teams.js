@@ -163,4 +163,84 @@ Meteor.methods({
     }
   },
 
+  teamSetRoute: function(tId, user, routeData){
+    if(tId){
+      var equipo = Equipos.findOne({
+        '_id' : tId,
+        'pax' : user._id
+      });
+
+      var ruta = Routes.findOne({
+        'id': routeData.id,
+        'busquedaId': routeData.busquedaId
+      });
+
+      if (typeof equipo != 'undefined'){
+        if(equipo.routeId != ''){
+          throw new Meteor.Error(403,'Ya tiene ruta asignada');
+        }
+        if(typeof ruta != 'undefined'){
+          Equipos.update(
+            { _id:tId},
+            { $set: {
+              'routeId': ruta._id,
+            }}
+          );
+        } else {
+          throw new Meteor.Error(404,'No existe la ruta '+routeData.id);
+        }
+      } else {
+        throw new Meteor.Error(403,'Error de validación de usuario');
+      }
+    }
+  },
+
+    teamAddAnswer: function(tId, user, answerData){
+      /*
+        Verificar:
+        - Que los datos vengan completos y sean validos
+        - Que el usuario pertenezca al equipo
+        - Que la pregunta pertenezca a la ruta del equipo
+        - Que no exista una respuesta para la misma pregunta
+        - Que la hora de respuesta no sea mayor a la de finalización del juego
+        - Que la hora de respuesta no sea inferior a la de comienzo del juego (opcional)
+        - 
+      */
+      if(typeof answerData == 'undefined') { throw new Meteor.Error(42,'Error'); }
+      if(answerData.id == '') { throw new Meteor.Error(42,'Id Missing'); }
+      if(isNaN(answerData.respuesta)) { throw new Meteor.Error(0,'La respuesta debe ser un número'); }
+      if(answerData.user != user._id) { throw new Meteor.Error(500,'User Error'); }
+      if(tId == '') { throw new Meteor.Error(42,'tId Error'); }
+
+      var inTeam = Equipos.find({'_id' : tId,'pax' : answerData.user }).count();
+      if(inTeam == 0) { throw new Meteor.Error(0,'El usuario no pertenece al equipo'); }
+
+      var equipo = Equipos.findOne({'_id' : tId });
+      var rutaId = equipo.routeId;
+
+      var inRoute = Routes.find({'_id' : rutaId,'nodos' : answerData.id }).count();
+      if(inRoute == 0) { throw new Meteor.Error(0,'La pregunta no pertenece a la ruta'); }
+
+      var idNodos = [];
+      for (var i=0; i<equipo.respuestas.length; i++) {
+        idNodos.push(equipo.respuestas[i].id);
+      }
+      var hasRespuesta = idNodos.indexOf(answerData.id) != -1;
+      if(hasRespuesta) { throw new Meteor.Error(0,'La pregunta ya fue respondida por el equipo'); }
+
+      var busqueda = Busquedas.findOne({'_id': equipo.busquedaId });
+      var horaRespuesta = moment(answerData.timeStamp);
+      var horaInicio = moment(busqueda.begin, 'YYYY-MM-DDTHH:mm');
+      var horaFin = moment(busqueda.end, 'YYYY-MM-DDTHH:mm');
+
+
+      if(horaRespuesta.isAfter(horaFin)) { throw new Meteor.Error(403,'Búsqueda finalizada. No se pueden agregar respuestas.'); }
+      if(horaRespuesta.isBefore(horaInicio)) { throw new Meteor.Error(403,'La búsqueda aun no comenzó. No se pueden agregar respuestas.'); }
+
+      //Si no generó ningun error, agrego las respuestas al set
+      Equipos.update( { '_id': tId }, { $addToSet: { 'respuestas': answerData } } );
+  
+    },
+
+
 });

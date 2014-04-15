@@ -7,7 +7,17 @@
 </template>
 
 <template name="homeStarted">
-  Arrancó!
+  {{#if hasAlertas}}
+    {{#each alertas}}
+      <div class="alert alert-danger">
+        <h4>
+          <span class="glyphicon glyphicon-warning-sign"></span> <strong>{{ this }}</strong>
+        </h4>
+      </div>
+    {{/each}}
+  {{else}}
+    {{> statusBusqueda}}
+  {{/if}}
 </template>
 
 <template name="homeNotStartedTesoro">
@@ -27,7 +37,7 @@
     <div class="row">
       <div class="col-sm-4 col-sm-offset-1">
         <p>
-          <a class="btn btn-lg btn-block {{#if hasTeam }}btn-success{{else}}btn-primary{{/if}}{{#unless busquedaActive }} disabled{{/unless}}" href="{{pathFor 'teamList'}}">
+          <a class="btn btn-lg btn-block {{#if hasTeam}}btn-success{{else}}btn-primary{{/if}}{{#unless busquedaActive}} disabled{{/unless}}" href="{{pathFor 'teamList'}}">
             <span class="glyphicon glyphicon-ok"></span> Elegí tu equipo
           </a>
         </p>          

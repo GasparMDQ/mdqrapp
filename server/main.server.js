@@ -50,6 +50,7 @@ Meteor.publish('nodosAndRoutes', function(userId, busqueda){
           Nodos.find({},{
             fields: {
               '_id': 1,
+              'id': 1,
               'answer': 1,
               'lowOffset': 1,
               'highOffset': 1
@@ -57,7 +58,15 @@ Meteor.publish('nodosAndRoutes', function(userId, busqueda){
           })
           ];
       } else {
-        return Routes.find({'busquedaId': busqueda._id});
+        return [
+          Routes.find({'busquedaId': busqueda._id}),
+          Nodos.find({},{
+            fields: {
+              '_id': 1,
+              'id': 1
+            }
+          })
+          ];
       }
     }
   }

@@ -111,11 +111,11 @@ var setBusquedaOptions = function(){
 //Global rules
 Router.onBeforeAction(mustBeSignedIn, {except: ['home']});
 Router.onBeforeAction(setEventOptions, {only: ['viajesHome', 'roomsList', 'busesList']});
-Router.onBeforeAction(setBusquedaOptions, {only: ['tesoroHome', 'teamList']});
+Router.onBeforeAction(setBusquedaOptions, {only: ['tesoroHome', 'teamList', 'tesoroTeamHistory']});
 Router.onBeforeAction(setProfileStatus, {only: ['viajesHome', 'tesoroHome', 'roomsList', 'busesList']});
 Router.onBeforeAction(mustBeOpen, {only: ['roomsList', 'busesList']});
 Router.onBeforeAction(mustBeAttending, {only: ['roomsList', 'busesList']});
-Router.onBeforeAction(mustBeAQuest, {only: ['teamList']});
+Router.onBeforeAction(mustBeAQuest, {only: ['teamList', 'tesoroTeamHistory']});
 
 Router.map(function () {
 
@@ -187,8 +187,13 @@ Router.map(function () {
   });
 
   this.route('teamList', {
-    path: '/tesoro/teams',
+    path: '/tesoro/equipos',
     template: 'teamList',
+  });  
+
+  this.route('tesoroTeamHistory', {
+    path: '/tesoro/respuestas',
+    template: 'tesoroTeamHistory',
   });  
 
 });
