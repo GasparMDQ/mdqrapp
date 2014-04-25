@@ -33,6 +33,12 @@ if (Meteor.isClient) {
     };
   };
 
+  Template.busquedaEquiposList.equiposCount = function () {
+    if(Session.get('edit-busqueda')) {
+      return Equipos.find({'busquedaId': Session.get('edit-busqueda')}, {sort: { 'id': 1}}).count();
+    };
+  };
+
   Template.busquedaRutasList.hasRoutes = function () {
     if(Session.get('edit-busqueda')) {
       var routesCount = Routes.find({'busquedaId': Session.get('edit-busqueda')}, {sort: { 'id': 1}}).count();

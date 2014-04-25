@@ -30,7 +30,7 @@ if (Meteor.isClient) {
           { $set: {
             'id': teamData.id,
             'handicap': teamData.handicap,
-            'route': teamData.route,
+            'routeId': teamData.route,
             'dnf': teamData.dnf,
             'bonus': teamData.bonus
           }}

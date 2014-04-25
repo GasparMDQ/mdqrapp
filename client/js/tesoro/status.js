@@ -83,6 +83,16 @@ if (Meteor.isClient) {
     return '100';
   };
 
+  Template.statusBusqueda.hasStarted = function () {
+    var busqueda = Session.get('busqueda');
+    if (moment && busqueda) {
+      var now = Session.get('time');
+      var horaBegin = moment(busqueda.begin, 'YYYY-MM-DDTHH:mm');
+      return horaBegin.isBefore(now);
+    }
+    return false;
+  };
+
   Template.statusBusqueda.respuestasTotal = function () {
     var equipo = getEquipo(Meteor.user());
     if(equipo) {
@@ -114,6 +124,20 @@ if (Meteor.isClient) {
       }
     }
     return false;
+  };
+
+  Template.statusBusqueda.horaComienzo = function () {
+    var busqueda = Session.get('busqueda');
+    if (moment && busqueda) {
+      var now = Session.get('time');
+      var horaBegin = moment(busqueda.begin, 'YYYY-MM-DDTHH:mm');
+      if(now && horaBegin.isAfter(now)){
+        return horaBegin.fromNow();
+      } else {
+        return '--:--:--';
+      }
+    }
+    return '#error#';
   };
 
   Template.statusBusqueda.countDown = function () {
@@ -175,14 +199,19 @@ if (Meteor.isClient) {
         id: $('#routeId').val(),
         busquedaId: Session.get('busqueda-active')
       };
-      var response = Meteor.call('teamSetRoute', getEquipo(Meteor.user())._id, Meteor.user(), routeData, function (error, result){
-        if (error) {
-          alert(error.message);
-        } else {
-        }
+      var confirmation = confirm('Esta seguro que desea ingresar la ruta número "'+routeData.id+'"?');
+      if (confirmation == true ) {
+        var response = Meteor.call('teamSetRoute', getEquipo(Meteor.user())._id, Meteor.user(), routeData, function (error, result){
+          if (error) {
+            alert(error.message);
+          } else {
+          }
+          addBtn.prop('disabled', false);
+        });
+        $('#routeId').val('');
+      } else {
         addBtn.prop('disabled', false);
-      });
-      $('#routeId').val('');
+      }
     },
 
     'click .js-cargar-respuesta' : function (e) {

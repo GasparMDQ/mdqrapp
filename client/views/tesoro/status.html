@@ -9,72 +9,91 @@
 
 <template name="statusBusqueda">
   {{> encabezadoStatus}}
-  <div class="row">
-    <div class="col-sm-12">
-      {{#if hasRoute}}
-        <h3>
-          <span class="glyphicon glyphicon-envelope"></span>
-          <strong>{{sobre.id}}</strong> <small>Ingrese su respuesta</small>
-        </h3>
-        <div class="form-horizontal js-respuesta" role="form" data-id="{{sobre._id}}">
-          <div class="form-group">
-            <div class="col-sm-12">
-              <input type="number" class="form-control" id="respuestaId" placeholder="Respuesta">
-            </div>
-          </div> 
-          <div class="form-group">
-            <div class="col-sm-12">
-              <button type="button" class="btn btn-success btn-block js-cargar-respuesta">Enviar Respuesta</button>
-            </div>
-          </div>
-        </div>
-      {{else}}
-        <h3>
-          Ingrese la ruta elegida
-        </h3>
-        <div class="form-horizontal js-ruta" role="form">
-          <div class="form-group">
-            <div class="col-sm-12">
-              <input type="number" class="form-control" id="routeId" placeholder="Número de Ruta">
-            </div>
-          </div> 
-          <div class="form-group">
-            <div class="col-sm-12">
-              <button type="button" class="btn btn-success btn-block js-cargar-ruta">Enviar Ruta</button>
-            </div>
-          </div>
-        </div>
-      {{/if}}
-    </div>
-  </div>
+  {{#if hasStarted}}
 
-  {{#if hasRoute}}
+    <!--  Desde aca -->
     <div class="row">
       <div class="col-sm-12">
-        <div class="progress progress-striped">
-        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{porcentajeBusqueda}}" aria-valuemin="0" aria-valuemax="100" style="width: {{porcentajeBusqueda}}%">
-          <strong>
-            {{respuestasTotal}}/{{preguntasTotal}}
-          </strong>
+        {{#if hasRoute}}
+          <h3>
+            <span class="glyphicon glyphicon-envelope"></span>
+            <strong>{{sobre.id}}</strong> <small>Ingrese su respuesta</small>
+          </h3>
+          <div class="form-horizontal js-respuesta" role="form" data-id="{{sobre._id}}">
+            <div class="form-group">
+              <div class="col-sm-12">
+                <input type="number" class="form-control" id="respuestaId" placeholder="Respuesta">
+              </div>
+            </div> 
+            <div class="form-group">
+              <div class="col-sm-12">
+                <button type="button" class="btn btn-success btn-block js-cargar-respuesta">Enviar Respuesta</button>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <h3>
+            Ingrese la <strong>ruta</strong> elegida
+          </h3>
+          <div class="form-horizontal js-ruta" role="form">
+            <div class="form-group">
+              <div class="col-sm-12">
+                <input type="number" class="form-control" id="routeId" placeholder="Número de Ruta">
+              </div>
+            </div> 
+            <div class="form-group">
+              <div class="col-sm-12">
+                <button type="button" class="btn btn-success btn-block js-cargar-ruta">Enviar Ruta</button>
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+
+    {{#if hasRoute}}
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="progress progress-striped">
+          <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{porcentajeBusqueda}}" aria-valuemin="0" aria-valuemax="100" style="width: {{porcentajeBusqueda}}%">
+            <strong>
+              {{respuestasTotal}}/{{preguntasTotal}}
+            </strong>
+          </div>
+        </div>
         </div>
       </div>
+    {{/if}}
+
+    <div class="alert {{#if hasTimeRemaining}}alert-info{{else}}alert-danger{{/if}} text-center">
+      <h4><span class="glyphicon glyphicon-time"></span> {{#if hasTimeRemaining}}Finaliza en {{ countDown }}{{else}}<strong>Búsqueda Finalizada</strong>{{/if}}
+      </h4>
+      <p class="text-center"><small><span class="glyphicon glyphicon-warning-sign"></span> El tiempo restante es aproximado y se calcula en función de la hora de su dispositivo. Verifique que la misma sea correcta.</small></p>
+    </div>  
+    <div class="row">
+      <div class="col-xs-6">
+        <button type="button" class="btn btn-primary btn-block">Ayuda</button>
+      </div>
+      <div class="col-xs-6">
+        <a href="{{pathFor 'tesoroTeamHistory'}}" class="btn btn-primary btn-block {{#unless hasRoute}}disabled{{/unless}}">Respuestas anteriores</a>
       </div>
     </div>
+    <!--  Hasta aca -->
+  {{else}}
+    <div class="alert alert-success">
+      <h3 class="text-center">
+        <span class="glyphicon glyphicon-ok"></span>
+        <strong>Tu equipo cumple con todos los requisitos para participar</strong>
+      </h3>
+    </div>
+    <div class="alert alert-warning">
+      <h3 class="text-center">
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        La búsqueda del tesoro comienza <strong>{{ horaComienzo }}</strong>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+      </h3>
+    </div>
   {{/if}}
-
-  <div class="alert {{#if hasTimeRemaining}}alert-info{{else}}alert-danger{{/if}} text-center">
-    <h4><span class="glyphicon glyphicon-time"></span> {{#if hasTimeRemaining}}Finaliza en {{ countDown }}{{else}}<strong>Búsqueda Finalizada</strong>{{/if}}
-    </h4>
-    <p class="text-center"><small><span class="glyphicon glyphicon-warning-sign"></span> El tiempo restante es aproximado y se calcula en función de la hora de su dispositivo. Verifique que la misma sea correcta.</small></p>
-  </div>  
-  <div class="row">
-    <div class="col-xs-6">
-      <button type="button" class="btn btn-primary btn-block">Ayuda</button>
-    </div>
-    <div class="col-xs-6">
-      <a href="{{pathFor 'tesoroTeamHistory'}}" class="btn btn-primary btn-block {{#unless hasRoute}}disabled{{/unless}}">Respuestas anteriores</a>
-    </div>
-  </div>
 </template>
 
 <template name="tesoroTeamHistory">

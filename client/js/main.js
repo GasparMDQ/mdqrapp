@@ -54,6 +54,12 @@ var mustBeAttending = function(){
   }
 };
 
+var mustNotBeAQuestInProgress = function(){
+  if(Session.get('busqueda-inProgress')){
+    this.redirect('tesoroHome'); 
+  }
+};
+
 var mustBeAQuest = function(){
   if(!Session.get('busqueda-active')){
     this.redirect('tesoroHome'); 
@@ -115,6 +121,7 @@ Router.onBeforeAction(setBusquedaOptions, {only: ['tesoroHome', 'teamList', 'tes
 Router.onBeforeAction(setProfileStatus, {only: ['viajesHome', 'tesoroHome', 'roomsList', 'busesList']});
 Router.onBeforeAction(mustBeOpen, {only: ['roomsList', 'busesList']});
 Router.onBeforeAction(mustBeAttending, {only: ['roomsList', 'busesList']});
+Router.onBeforeAction(mustNotBeAQuestInProgress, {only: ['teamList']});
 Router.onBeforeAction(mustBeAQuest, {only: ['teamList', 'tesoroTeamHistory']});
 
 Router.map(function () {

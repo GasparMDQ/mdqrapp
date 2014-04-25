@@ -164,7 +164,7 @@
 </template>
 
 <template name="busquedaEquiposList">
-  <h3>Equipos</h3>
+  <h3>Equipos <span class="badge">{{equiposCount}}</span></h3> 
   {{#if hasEquipos}}
     <div class="panel-group" id="edit-equipo-accordion">
       {{#each equipos}}
