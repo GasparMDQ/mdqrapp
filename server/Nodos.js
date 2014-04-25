@@ -75,7 +75,13 @@ Meteor.methods({
 
   removeNodo: function(nId, bId, user){
     if(nId && Roles.userIsInRole(user, ['admin','super-admin'])) {
-      Nodos.remove({ _id: nId.toString() });
+      //Check si el nodo esta en uso
+      var rutasConNodo = Routes.find({'nodos': nId}).count() > 0;
+      if (!rutasConNodo) {
+        Nodos.remove({ _id: nId.toString() });
+      } else {
+        throw new Meteor.Error(403,'Nodo en uso');
+      }
     } else {
       console.log('Error:removeNodo: not allowed');
     }

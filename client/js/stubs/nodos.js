@@ -30,7 +30,9 @@ if (Meteor.isClient) {
     },
 
     removeNodo: function(nId, bId, user){
-      if(nId){
+      //Check si el nodo esta en uso
+      var rutasConNodo = Routes.find({'nodos': nId}).count() > 0;
+      if(nId && !rutasConNodo){
         Nodos.remove({ _id: nId.toString() });
       }
     },
