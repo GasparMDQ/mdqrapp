@@ -204,9 +204,14 @@ Meteor.methods({
         - Que no exista una respuesta para la misma pregunta
         - Que la hora de respuesta no sea mayor a la de finalización del juego
         - Que la hora de respuesta no sea inferior a la de comienzo del juego (opcional)
-        - 
       */
       if(typeof answerData == 'undefined') { throw new Meteor.Error(42,'Error'); }
+
+      /*
+        Marco la hora de respuesta del servidor
+      */
+      answerData.timeStamp = new Date().getTime();
+
       if(answerData.id == '') { throw new Meteor.Error(42,'Id Missing'); }
       if(isNaN(answerData.respuesta)) { throw new Meteor.Error(0,'La respuesta debe ser un número'); }
       if(answerData.user != user._id) { throw new Meteor.Error(500,'User Error'); }

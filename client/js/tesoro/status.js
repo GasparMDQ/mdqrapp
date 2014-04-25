@@ -126,6 +126,35 @@ if (Meteor.isClient) {
     return false;
   };
 
+  Template.statusBusqueda.hasAllAnswersOrTimeUp = function () {
+    var equipo = getEquipo(Meteor.user());
+    if(equipo) {
+      if(typeof equipo.routeId != 'undefined' && equipo.routeId != '') {
+        var preguntas = getPreguntas(equipo.routeId);
+        if(preguntas){
+          return preguntas.length == equipo.respuestas.length;
+        }
+      }
+    }
+    return false;
+  };
+
+  Template.statusBusqueda.direccionFin = function () {
+    var busqueda = Session.get('busqueda');
+    if (busqueda) {
+      return busqueda.endDescripcion;
+    }
+    return "#error#";
+  };
+
+  Template.statusBusqueda.direccionInicio = function () {
+    var busqueda = Session.get('busqueda');
+    if (busqueda) {
+      return busqueda.initDescripcion;
+    }
+    return "#error#";
+  };
+
   Template.statusBusqueda.horaComienzo = function () {
     var busqueda = Session.get('busqueda');
     if (moment && busqueda) {

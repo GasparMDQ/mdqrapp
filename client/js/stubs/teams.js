@@ -174,39 +174,6 @@ if (Meteor.isClient) {
       if(datosValidos){
         Equipos.update( { '_id': tId }, { $addToSet: { 'respuestas': answerData } } );
       }
-
-
-      //DELETE vvvvv
-      /*
-      if(tId != ''){
-        var existeTeam = Equipos.find({'id': tId}).count();
-
-
-        if (inTeam == 0) {
-          if(existeTeam == 0) {
-            var teamData = {
-              id: tId,
-              pax: [user._id],
-              dnf: false,
-              routeId: '',
-              respuestas: [],
-              busquedaId: tId,
-              handicap: 0,
-              owner: user._id,
-              pago: false,
-              bonus: 0
-            };
-            Equipos.insert(teamData);
-          } else {
-            alert('Ya existe un equipo con el nombre ' + tId);
-          }
-        } else {
-          alert('No podes crear un equipo porque ya estás en otro');
-        };
-      } else {
-        alert('Debes ingresar un nombre para tu equipo');
-      }
-      */
     },
 
 

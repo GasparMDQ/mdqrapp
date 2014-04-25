@@ -134,7 +134,8 @@ Meteor.methods({
           { _id:bId},
           { $set: {
             'initLatitude': updateData.latitude,
-            'initLongitude': updateData.longitude
+            'initLongitude': updateData.longitude,
+            'initDescripcion': updateData.descripcion
           }}
         );
       }
@@ -153,7 +154,8 @@ Meteor.methods({
           { _id:bId},
           { $set: {
             'endLatitude': updateData.latitude,
-            'endLongitude': updateData.longitude
+            'endLongitude': updateData.longitude,
+            'endDescripcion': updateData.descripcion
           }}
         );
       }

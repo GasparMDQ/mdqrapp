@@ -12,44 +12,58 @@
   {{#if hasStarted}}
 
     <!--  Desde aca -->
-    <div class="row">
-      <div class="col-sm-12">
-        {{#if hasRoute}}
-          <h3>
-            <span class="glyphicon glyphicon-envelope"></span>
-            <strong>{{sobre.id}}</strong> <small>Ingrese su respuesta</small>
-          </h3>
-          <div class="form-horizontal js-respuesta" role="form" data-id="{{sobre._id}}">
-            <div class="form-group">
-              <div class="col-sm-12">
-                <input type="number" class="form-control" id="respuestaId" placeholder="Respuesta">
-              </div>
-            </div> 
-            <div class="form-group">
-              <div class="col-sm-12">
-                <button type="button" class="btn btn-success btn-block js-cargar-respuesta">Enviar Respuesta</button>
-              </div>
-            </div>
+    {{#if hasAllAnswersOrTimeUp}}
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="alert alert-success">
+            <h3 class="text-center">Ya respondiste todas las preguntas!</h3>
           </div>
-        {{else}}
-          <h3>
-            Ingrese la <strong>ruta</strong> elegida
-          </h3>
-          <div class="form-horizontal js-ruta" role="form">
-            <div class="form-group">
-              <div class="col-sm-12">
-                <input type="number" class="form-control" id="routeId" placeholder="Número de Ruta">
-              </div>
-            </div> 
-            <div class="form-group">
-              <div class="col-sm-12">
-                <button type="button" class="btn btn-success btn-block js-cargar-ruta">Enviar Ruta</button>
-              </div>
-            </div>
+          <div class="alert alert-info">
+            <p  class="text-center">Dirigite a <strong>{{ direccionFin }}</strong> dondé se les puntuarán los bonus.</p>
           </div>
-        {{/if}}
+        </div>
       </div>
-    </div>
+    {{else}}
+      <div class="row">
+        <div class="col-sm-12">
+          {{#if hasRoute}}
+            <h3>
+              <span class="glyphicon glyphicon-envelope"></span>
+              <strong>{{sobre.id}}</strong> <small>Ingrese su respuesta</small>
+            </h3>
+            <div class="form-horizontal js-respuesta" role="form" data-id="{{sobre._id}}">
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <input type="number" class="form-control" id="respuestaId" placeholder="Respuesta">
+                </div>
+              </div> 
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <button type="button" class="btn btn-success btn-block js-cargar-respuesta">Enviar Respuesta</button>
+                </div>
+              </div>
+            </div>
+          {{else}}
+            <h3>
+              Ingrese la <strong>ruta</strong> elegida
+            </h3>
+            <div class="form-horizontal js-ruta" role="form">
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <input type="number" class="form-control" id="routeId" placeholder="Número de Ruta">
+                </div>
+              </div> 
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <button type="button" class="btn btn-success btn-block js-cargar-ruta">Enviar Ruta</button>
+                </div>
+              </div>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+    {{/if}}
+    <!--  Hasta aca -->
 
     {{#if hasRoute}}
       <div class="row">
@@ -78,7 +92,6 @@
         <a href="{{pathFor 'tesoroTeamHistory'}}" class="btn btn-primary btn-block {{#unless hasRoute}}disabled{{/unless}}">Respuestas anteriores</a>
       </div>
     </div>
-    <!--  Hasta aca -->
   {{else}}
     <div class="alert alert-success">
       <h3 class="text-center">
@@ -88,9 +101,7 @@
     </div>
     <div class="alert alert-warning">
       <h3 class="text-center">
-        <span class="glyphicon glyphicon-warning-sign"></span>
-        La búsqueda del tesoro comienza <strong>{{ horaComienzo }}</strong>
-        <span class="glyphicon glyphicon-warning-sign"></span>
+        La búsqueda del tesoro comienza <strong>{{ horaComienzo }}</strong> en <strong>{{ direccionInicio }}</strong>
       </h3>
     </div>
   {{/if}}

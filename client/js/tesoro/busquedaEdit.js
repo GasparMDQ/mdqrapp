@@ -130,6 +130,7 @@ if (Meteor.isClient) {
                 lastNode = currentNode;
               }
             }
+            //Se comenta ya que la busqueda termina al ingresar la ultima pregunta y no al llegar al lugar de reagrupe
             distancia += distanceBetweenNodes(lastNode, {'latitude':busqueda.endLatitude, 'longitude': busqueda.endLongitude });
           }
       }
@@ -204,6 +205,7 @@ if (Meteor.isClient) {
       var updateData = {
         latitude: parseFloat($(e.target).closest('.js-busqueda-inicio').find('input.js-busqueda-inicio-latitud').val()),
         longitude: parseFloat($(e.target).closest('.js-busqueda-inicio').find('input.js-busqueda-inicio-longitud').val()),
+        descripcion: $(e.target).closest('.js-busqueda-inicio').find('input.js-busqueda-inicio-descripcion').val(),
       };
 
       var response = Meteor.call('updateBusquedaLocInit', Session.get('edit-busqueda'), Meteor.user(), updateData, function (error, result){
@@ -220,6 +222,7 @@ if (Meteor.isClient) {
       var updateData = {
         latitude: parseFloat($(e.target).closest('.js-busqueda-final').find('input.js-busqueda-final-latitud').val()),
         longitude: parseFloat($(e.target).closest('.js-busqueda-final').find('input.js-busqueda-final-longitud').val()),
+        descripcion: $(e.target).closest('.js-busqueda-final').find('input.js-busqueda-final-descripcion').val(),
       };
 
       var response = Meteor.call('updateBusquedaLocEnd', Session.get('edit-busqueda'), Meteor.user(), updateData, function (error, result){
