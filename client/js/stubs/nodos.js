@@ -22,7 +22,8 @@ if (Meteor.isClient) {
             'question': nodoData.question,
             'answer': nodoData.answer,
             'lowOffset': nodoData.lowOffset,
-            'highOffset': nodoData.highOffset
+            'highOffset': nodoData.highOffset,
+            'zona': nodoData.zona,
           }}
         );
       }

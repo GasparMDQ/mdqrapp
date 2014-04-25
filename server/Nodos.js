@@ -55,6 +55,7 @@ Meteor.methods({
               'highOffset': nodoData.highOffset,
               'latitude': nodoData.latitude,
               'longitude': nodoData.longitude,
+              'zona': nodoData.zona,
             }}
           );
         } else {

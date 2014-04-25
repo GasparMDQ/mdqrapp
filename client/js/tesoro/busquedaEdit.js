@@ -206,7 +206,7 @@ if (Meteor.isClient) {
         longitude: parseFloat($(e.target).closest('.js-busqueda-inicio').find('input.js-busqueda-inicio-longitud').val()),
       };
 
-      var response = Meteor.call('updateBusquedaInit', Session.get('edit-busqueda'), Meteor.user(), updateData, function (error, result){
+      var response = Meteor.call('updateBusquedaLocInit', Session.get('edit-busqueda'), Meteor.user(), updateData, function (error, result){
         if (error) {
           alert(error.message);
         } else {
@@ -222,7 +222,7 @@ if (Meteor.isClient) {
         longitude: parseFloat($(e.target).closest('.js-busqueda-final').find('input.js-busqueda-final-longitud').val()),
       };
 
-      var response = Meteor.call('updateBusquedaEnd', Session.get('edit-busqueda'), Meteor.user(), updateData, function (error, result){
+      var response = Meteor.call('updateBusquedaLocEnd', Session.get('edit-busqueda'), Meteor.user(), updateData, function (error, result){
         if (error) {
           alert(error.message);
         } else {
@@ -246,7 +246,8 @@ if (Meteor.isClient) {
         highOffset: parseInt($('#nodoHighOffset').val()),
         busquedaId : Session.get('edit-busqueda'),
         longitude : parseFloat($('#nodoLongitude').val()),
-        latitude : parseFloat($('#nodoLatitude').val())
+        latitude : parseFloat($('#nodoLatitude').val()),
+        zona: $('#nodoZona').val(),
       };
 
       //En caso de no haber ingresado valores, el offset se setea en 0
@@ -269,6 +270,7 @@ if (Meteor.isClient) {
       $('#nodoHighOffset').val('');
       $('#nodoLongitude').val('');
       $('#nodoLatitude').val('');
+      $('#nodoZona').val('');
     },
   });
 
@@ -324,6 +326,7 @@ if (Meteor.isClient) {
         highOffset: parseInt($(e.target).closest('div.js-nodo').find('input.js-nodo-highOffset').val()),
         latitude: parseFloat($(e.target).closest('div.js-nodo').find('input.js-nodo-latitude').val()),
         longitude: parseFloat($(e.target).closest('div.js-nodo').find('input.js-nodo-longitude').val()),
+        zona: $(e.target).closest('div.js-nodo').find('input.js-nodo-zona').val(),
       };
 
       //En caso de no haber ingresado valores, el offset se setea en 0
