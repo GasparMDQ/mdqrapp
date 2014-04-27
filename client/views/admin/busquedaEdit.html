@@ -510,6 +510,18 @@
                         </button>
                       {{/if}}
                     </div>
+                    <label class="control-label col-sm-4">Finalizó Búsqueda</label>
+                    <div class="col-sm-8">
+                      {{#if this.routeEnd}}
+                        <button type="button" class="btn btn-success btn-sm js-team-routeEnd-toggle" data-toggle='{{this.routeEnd}}'>
+                          <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                      {{ else }}
+                        <button type="button" class="btn btn-danger btn-sm js-team-routeEnd-toggle" data-toggle='{{this.routeEnd}}'>
+                          <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                      {{/if}}
+                    </div>
                   </div>
                 </form>
               </div>

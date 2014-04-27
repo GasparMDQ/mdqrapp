@@ -481,6 +481,22 @@ if (Meteor.isClient) {
       }
     },
 
+    'click .js-team-routeEnd-toggle': function (e) {
+      e.preventDefault();
+      var data = $(e.currentTarget).data('toggle');
+      if (data){
+        /*
+        var response = Meteor.call('unSetPagoTeam', $(e.target).closest('div.js-team').data('team'), Meteor.user(), function (error, result){
+          if (error) { alert(error.message); }
+        });
+        */
+      } else {
+        var response = Meteor.call('setFinishTeam', $(e.target).closest('div.js-team').data('team'), Meteor.user(), function (error, result){
+          if (error) { alert(error.message); }
+        });
+      }
+    },
+
   });
 
   Template.nodoRouteShow.events({

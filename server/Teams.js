@@ -163,6 +163,15 @@ Meteor.methods({
     }
   },
 
+  setFinishTeam: function(tId, user){
+    if(tId || Roles.userIsInRole(user, ['admin','super-admin'])){
+      Equipos.update(
+        { _id:tId},
+        { $set: { 'routeEnd': new Date().getTime() }}
+      );
+    }
+  },
+
   teamSetRoute: function(tId, user, routeData){
     if(tId){
       var equipo = Equipos.findOne({

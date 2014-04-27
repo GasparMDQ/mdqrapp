@@ -19,6 +19,15 @@ if (Meteor.isClient) {
       }
     },
     
+    setFinishTeam: function(tId, user){
+      if(tId){
+        Equipos.update(
+          { _id:tId},
+          { $set: { 'routeEnd': new Date().getTime() }}
+        );
+      }
+    },
+    
     updateTeam: function(tId, user, teamData){
       if(tId && teamData){
         if(!teamData.id || teamData.id == ''){ return false; }

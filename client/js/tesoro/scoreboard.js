@@ -42,27 +42,45 @@ if (Meteor.isClient) {
 
   var getPuntaje = function (equipo){
     var puntaje = 0;
+    if(equipo.dnf){ return -1; }
+
     for(var i = 0; i<equipo.respuestas.length;i++){
       if(getPreguntaCorrecta(equipo, i+1)){ //Se pasa idx +1 porque la funcion usa el indice legible
         puntaje++;
       }
     }
+    puntaje+=equipo.bonus;
     return puntaje;
   };
 
   var getTotalTiempo = function (equipo){
     if(moment && equipo && equipo.respuestas.length>0){
-      var horaInicio = moment(equipo.routeBegin);
-      var horaRespuesta = moment(equipo.respuestas[equipo.respuestas.length-1].timeStamp);
+      if(equipo.dnf){
+        return 'DNF';
+      }
+      var horaInicio = moment(equipo.routeBegin-(equipo.handicap*60000));
+      var horaRespuesta;
+      if('routeEnd' in equipo && equipo.routeEnd){
+        horaRespuesta = moment(equipo.routeEnd);
+      } else {
+        horaRespuesta = moment(equipo.respuestas[equipo.respuestas.length-1].timeStamp);
+      }
 
       return horaRespuesta.subtract(horaInicio).format('HH:mm:ss');
     }
-    return "xx:xx:xx";
+    return 'xx:xx:xx';
   };
 
   var getTotalTiempoInt = function (equipo){
     if(equipo && equipo.respuestas.length>0){
-      return equipo.respuestas[equipo.respuestas.length-1].timeStamp - equipo.routeBegin
+      if(equipo.dnf){
+        return new Date().getTime();
+      }
+      if('routeEnd' in equipo && equipo.routeEnd){
+        return equipo.routeEnd - equipo.routeBegin;
+      } else {
+        return equipo.respuestas[equipo.respuestas.length-1].timeStamp - equipo.routeBegin;
+      }
     }
     return null;
   };
@@ -72,7 +90,10 @@ if (Meteor.isClient) {
     if(ruta && equipo && equipo.respuestas.length>=idxPregunta){
       var pregunta = getNode(ruta.nodos[idxPregunta-1]);
       if (pregunta){
-        if(equipo.respuestas[idxPregunta-1].respuesta == pregunta.answer){
+        if(
+          equipo.respuestas[idxPregunta-1].respuesta >= pregunta.answer - pregunta.lowOffset
+          && equipo.respuestas[idxPregunta-1].respuesta <= pregunta.answer + pregunta.highOffset
+        ){
           return true;
         }
       }
@@ -93,7 +114,7 @@ if (Meteor.isClient) {
     },
 
     equipos : function () {
-      var equipos = Equipos.find().fetch();
+      var equipos = Equipos.find({'pago': true}).fetch();
       for (var i=0; i<equipos.length; i++){
         equipos[i].puntaje = getPuntaje(equipos[i]);
         equipos[i].tiempoTotal = getTotalTiempo(equipos[i]);
@@ -116,12 +137,12 @@ if (Meteor.isClient) {
       if (equipo && equipo.respuestas.length>=idxPregunta){
         var response = getPreguntaCorrecta(equipo, idxPregunta);
         if(response){
-          return "success";
+          return 'success';
         } else {
-          return "danger";
+          return 'danger';
         }
       }
-      return "";
+      return '';
     },
 
     preguntaIdSobre : function (equipo, idxPregunta) {
@@ -132,14 +153,14 @@ if (Meteor.isClient) {
           return pregunta.id;
         }
       }
-      return "sin ruta";
+      return 'sin ruta';
     },
 
     preguntaRespuesta : function (equipo, idxPregunta) {
       if(equipo && equipo.respuestas.length>=idxPregunta){
         return equipo.respuestas[idxPregunta-1].respuesta;
       }
-      return "--";
+      return '--';
     },
 
     preguntaTiempo : function (equipo, idxPregunta) {
@@ -149,7 +170,7 @@ if (Meteor.isClient) {
 
         return horaRespuesta.subtract(horaInicio).format('HH:mm:ss');
       }
-      return "xx:xx:xx";
+      return 'xx:xx:xx';
     },
 
   });
