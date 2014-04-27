@@ -30,7 +30,7 @@ if (Meteor.isClient) {
           { $set: {
             'id': teamData.id,
             'handicap': teamData.handicap,
-            'routeId': teamData.route,
+            //'routeId': teamData.route,
             'dnf': teamData.dnf,
             'bonus': teamData.bonus
           }}
@@ -120,6 +120,7 @@ if (Meteor.isClient) {
             { _id:tId},
             { $set: {
               'routeId': ruta._id,
+              'routeBegin': new Date().getTime(),
             }}
           );
         }

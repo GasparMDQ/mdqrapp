@@ -51,7 +51,7 @@ if (Meteor.isClient) {
   Template.statusBusqueda.sobre = function () {
     var equipo = getEquipo(Meteor.user());
     if(equipo) {
-      if(typeof equipo.routeId != 'undefined' && equipo.routeId != '') {
+      if(typeof equipo.routeId != 'undefined' && equipo.routeId ) {
         var nodeIdx, i;
         var preguntas = getPreguntas(equipo.routeId);
         var respuestas = equipo.respuestas;
@@ -72,7 +72,7 @@ if (Meteor.isClient) {
   Template.statusBusqueda.porcentajeBusqueda = function () {
     var equipo = getEquipo(Meteor.user());
     if(equipo) {
-      if(typeof equipo.routeId != 'undefined' && equipo.routeId != '') {
+      if(typeof equipo.routeId != 'undefined' && equipo.routeId ) {
         var preguntas = getPreguntas(equipo.routeId);
         if(preguntas && preguntas.length!=0){
           return equipo.respuestas.length / preguntas.length * 100;
@@ -105,7 +105,7 @@ if (Meteor.isClient) {
   Template.statusBusqueda.preguntasTotal = function () {
     var equipo = getEquipo(Meteor.user());
     if(equipo) {
-      if(typeof equipo.routeId != 'undefined' && equipo.routeId != '') {
+      if(typeof equipo.routeId != 'undefined' && equipo.routeId ) {
         var preguntas = getPreguntas(equipo.routeId);
         if(preguntas){
           return preguntas.length;
@@ -119,7 +119,7 @@ if (Meteor.isClient) {
   Template.statusBusqueda.hasRoute = function () {
     var equipo = getEquipo(Meteor.user());
     if(equipo) {
-      if(typeof equipo.routeId != 'undefined' && equipo.routeId != '') {
+      if(typeof equipo.routeId != 'undefined' && equipo.routeId ) {
         return true;
       }
     }
@@ -129,7 +129,7 @@ if (Meteor.isClient) {
   Template.statusBusqueda.hasAllAnswersOrTimeUp = function () {
     var equipo = getEquipo(Meteor.user());
     if(equipo) {
-      if(typeof equipo.routeId != 'undefined' && equipo.routeId != '') {
+      if(typeof equipo.routeId != 'undefined' && equipo.routeId ) {
         var preguntas = getPreguntas(equipo.routeId);
         if(preguntas){
           return preguntas.length == equipo.respuestas.length;

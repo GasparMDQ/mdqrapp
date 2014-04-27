@@ -74,7 +74,7 @@ Meteor.methods({
           { $set: {
             'id': teamData.id,
             'handicap': teamData.handicap,
-            'routeId': teamData.route,
+            //'routeId': teamData.route,
             'dnf': teamData.dnf,
             'bonus': teamData.bonus
           }}
@@ -176,7 +176,7 @@ Meteor.methods({
       });
 
       if (typeof equipo != 'undefined'){
-        if(equipo.routeId != ''){
+        if(equipo.routeId){
           throw new Meteor.Error(403,'Ya tiene ruta asignada');
         }
         if(typeof ruta != 'undefined'){
@@ -184,6 +184,7 @@ Meteor.methods({
             { _id:tId},
             { $set: {
               'routeId': ruta._id,
+              'routeBegin': new Date().getTime(),
             }}
           );
         } else {

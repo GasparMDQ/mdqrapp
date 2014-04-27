@@ -39,6 +39,7 @@ if (Meteor.isClient) {
     if(!userHasTeam()) { return true };
     if(!teamPago()) { return true };
     if(!teamReachQuota()) { return true };
+    if(teamDNF()) { return true };
     return false;
   };
 
@@ -47,7 +48,19 @@ if (Meteor.isClient) {
     if(!userHasTeam()) { data.push('No estás inscripto en ningún equipo.'); };
     if(userHasTeam() && !teamPago()) { data.push('Tu equipo no pagó la inscripción.'); };
     if(userHasTeam() && !teamReachQuota()) { data.push('El equipo en el que estás inscripto no alcanzó la cantidad de jugadores mínimos requeridos.'); };
+    if(userHasTeam() && teamDNF()) { data.push('El equipo está descalificado.'); };
     return data;
+  };
+
+  var teamDNF = function (){
+    if(Meteor.user() && userHasTeam()){
+      var equipo = Equipos.findOne({
+        'busquedaId' : Session.get('busqueda-active'),
+        'pax' : Meteor.user()._id
+      });
+      return equipo.dnf;
+    }
+    return false;
   };
 
   var teamPago = function (){

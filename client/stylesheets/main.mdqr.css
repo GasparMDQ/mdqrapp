@@ -92,10 +92,17 @@ textarea {
 }
 
 .panel-heading.bg-success {
-background-color: #dff0d8;
+  background-color: #dff0d8;
 }
 
 #map-canvas {
 /*  height: 300px;  */
 /*  width: 100%;    */
+}
+
+.table-responsive {
+  width: 100%;
+  margin-bottom: 15px;
+  overflow-x: scroll;
+  overflow-y: hidden;
 }

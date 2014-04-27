@@ -452,7 +452,7 @@ if (Meteor.isClient) {
         id: $(e.target).closest('div.js-team').find('input.js-team-id').val(),
         handicap: parseInt($(e.target).closest('div.js-team').find('input.js-team-handicap').val()),
         bonus: parseInt($(e.target).closest('div.js-team').find('input.js-team-bonus').val()),
-        route: $(e.target).closest('div.js-team').find('input.js-team-route').val(),
+        //route: $(e.target).closest('div.js-team').find('input.js-team-route').val(),
         dnf: $(e.target).closest('div.js-team').find('textarea.js-team-dnf').val(),
       };
 
