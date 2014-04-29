@@ -117,12 +117,12 @@ var setBusquedaOptions = function(){
 //Global rules
 Router.onBeforeAction(mustBeSignedIn, {except: ['home']});
 Router.onBeforeAction(setEventOptions, {only: ['viajesHome', 'roomsList', 'busesList']});
-Router.onBeforeAction(setBusquedaOptions, {only: ['tesoroHome', 'teamList', 'tesoroTeamHistory', 'tesoroScoreBoard']});
+Router.onBeforeAction(setBusquedaOptions, {only: ['tesoroHome', 'teamList', 'tesoroTeamHistory', 'tesoroScoreBoard', 'tesoroTeamHelp']});
 Router.onBeforeAction(setProfileStatus, {only: ['viajesHome', 'tesoroHome', 'roomsList', 'busesList']});
 Router.onBeforeAction(mustBeOpen, {only: ['roomsList', 'busesList']});
 Router.onBeforeAction(mustBeAttending, {only: ['roomsList', 'busesList']});
 Router.onBeforeAction(mustNotBeAQuestInProgress, {only: ['teamList']});
-Router.onBeforeAction(mustBeAQuest, {only: ['teamList', 'tesoroTeamHistory']});
+Router.onBeforeAction(mustBeAQuest, {only: ['teamList', 'tesoroTeamHistory', 'tesoroTeamHelp']});
 
 Router.map(function () {
 
@@ -201,6 +201,11 @@ Router.map(function () {
   this.route('tesoroTeamHistory', {
     path: '/tesoro/respuestas',
     template: 'tesoroTeamHistory',
+  });  
+
+  this.route('tesoroTeamHelp', {
+    path: '/tesoro/ayuda',
+    template: 'tesoroTeamHelp',
   });  
 
   this.route('tesoroScoreBoard', {

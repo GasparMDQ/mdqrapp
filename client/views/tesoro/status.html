@@ -1,8 +1,13 @@
 <template name="encabezadoStatus">
   <div class="row">
-    <div class="col-sm-12">
-      <p class="pull-left"><small>Equipo</small> {{equipo.id}}</p>
-      <p class="pull-right">Búsqueda del Tesoro {{busqueda.id}}</p>
+    <div class="col-xs-6">
+      <p class="text-left">
+        <small>Equipo</small> {{equipo.id}}<br>
+        <small>Handicap</small> {{equipo.handicap}} <small>minutos</small>
+      </p>
+    </div>
+    <div class="col-xs-6">
+      <p class="text-right">Búsqueda del Tesoro {{busqueda.id}}</p>
     </div>
   </div>
 </template>
@@ -82,11 +87,15 @@
     <div class="alert {{#if hasTimeRemaining}}alert-info{{else}}alert-danger{{/if}} text-center">
       <h4><span class="glyphicon glyphicon-time"></span> {{#if hasTimeRemaining}}Finaliza en {{ countDown }}{{else}}<strong>Búsqueda Finalizada</strong>{{/if}}
       </h4>
-      <p class="text-center"><small><span class="glyphicon glyphicon-warning-sign"></span> El tiempo restante es aproximado y se calcula en función de la hora de su dispositivo. Verifique que la misma sea correcta.</small></p>
+      {{#if hasTimeRemaining}}
+        <p class="text-center"><small><span class="glyphicon glyphicon-warning-sign"></span> El tiempo restante es aproximado y se calcula en función de la hora de su dispositivo. Verifique que la misma sea correcta.</small></p>
+      {{else}}
+        <p  class="text-center">Diríjanse a <strong>{{ direccionFin }}</strong> donde se les puntuarán los bonus.</p>
+      {{/if}}
     </div>  
     <div class="row">
       <div class="col-xs-6">
-        <button type="button" class="btn btn-primary btn-block">Ayuda</button>
+        <a href="{{pathFor 'tesoroTeamHelp'}}" class="btn btn-primary btn-block">Ayuda</a>
       </div>
       <div class="col-xs-6">
         <a href="{{pathFor 'tesoroTeamHistory'}}" class="btn btn-primary btn-block {{#unless hasRoute}}disabled{{/unless}}">Respuestas anteriores</a>
@@ -147,4 +156,36 @@
     <td>{{usuario this.user}}</td>
     <td>{{hora this.timeStamp}}</td>
   </tr>
+</template>
+
+<template name="tesoroTeamHelp">
+  {{> encabezadoStatus}}  
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>Ayuda</h3>
+      <hr>
+      <p>
+        En caso de problema con los siguientes puntos, comunicarse al <strong>223.574.0019</strong>
+        <ul>
+          <li>Problema al ingresar la ruta</li>
+          <li>Problema al ingresar una respuesta</li>
+          <li>Fallo en la aplicación (mensajes de error)</li>
+        </ul>
+      </p>
+      <p>
+        Ante duda con las preguntas, utilizar el principio de la <em>navaja de Ockham</em>
+      </p>
+      <div class="alert alert-danger">
+        Otro tipo de consultas <strong>NO</strong> serán contestadas
+      </div>
+      <hr>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <a href="{{pathFor 'tesoroHome'}}" class="btn btn-primary btn-block">Volver</a>
+    </div>
+  </div>
 </template>

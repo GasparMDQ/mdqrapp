@@ -133,6 +133,10 @@ if (Meteor.isClient) {
       return equipos;
     },
 
+    busqueda : function () {
+      return Session.get('busqueda');
+    },
+
     preguntaEstado : function (equipo, idxPregunta) {
       if (equipo && equipo.respuestas.length>=idxPregunta){
         var response = getPreguntaCorrecta(equipo, idxPregunta);
