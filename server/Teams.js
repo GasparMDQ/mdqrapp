@@ -249,8 +249,8 @@ Meteor.methods({
       var horaFin = moment(busqueda.end, 'YYYY-MM-DDTHH:mm');
 
 
-      if(horaRespuesta.isAfter(horaFin)) { throw new Meteor.Error(403,'Búsqueda finalizada. No se pueden agregar respuestas.'); }
-      if(horaRespuesta.isBefore(horaInicio)) { throw new Meteor.Error(403,'La búsqueda aun no comenzó. No se pueden agregar respuestas.'); }
+      //if(horaRespuesta.isAfter(horaFin)) { throw new Meteor.Error(403,'Búsqueda finalizada. No se pueden agregar respuestas.'); }
+      //if(horaRespuesta.isBefore(horaInicio)) { throw new Meteor.Error(403,'La búsqueda aun no comenzó. No se pueden agregar respuestas.'); }
 
       //Si no generó ningun error, agrego las respuestas al set
       Equipos.update( { '_id': tId }, { $addToSet: { 'respuestas': answerData } } );
