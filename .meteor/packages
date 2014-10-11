@@ -5,14 +5,15 @@
 
 standard-app-packages
 insecure
-bootstrap-3
 accounts-facebook
 accounts-ui
-iron-router
 npm
-roles
-mongo-ext
-publish-with-relations
-bootstrap-3-switch
-moment
-jquery-ui-bootstrap
+alanning:roles@1.2.8
+alethes:mongo-ext@0.1.0
+mrt:publish-with-relations@0.1.5
+mrt:bootstrap-3-switch@0.0.3
+mrt:moment@2.6.0
+mrt:jquery-ui-bootstrap@0.1.2
+mizzao:bootstrap-3
+iron:router
+
