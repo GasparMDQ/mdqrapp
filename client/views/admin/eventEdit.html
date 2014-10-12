@@ -10,7 +10,7 @@
           <span class="glyphicon glyphicon-refresh"></span> Recargar datos de Facebook
         </button>
         <img src="/loading.gif" class="loading-indicator" id="event-refresh"/>
-        <a href="#" type="button" class="btn btn-info pull-right" disabled="disabled"><span class="glyphicon glyphicon-list"></span> Reporte del Evento</a>
+        <a class="btn btn-info pull-right" href="{{pathFor 'reportEvent' _id=evento._id}}"><span class="glyphicon glyphicon-list"></span> Reporte del Evento</a>
       </p>
     </div>
 
@@ -53,7 +53,7 @@
           </button>
         {{/if}}
         Chismógrafo
-        <a  href="#" type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-exclamation-sign"></span> Filtrar</a>
+        <a href="#" type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-exclamation-sign"></span> Filtrar</a>
       </p>
     </div>
   </div>
@@ -193,5 +193,11 @@
     <button type="button" class="btn btn-danger btn-sm js-remove-bus">
       <span class="glyphicon glyphicon-minus"></span>
     </button>
+  </div>
+</template>
+
+<template name="eventReport">
+  <div class="alert alert-danger">
+    <p>No hay micros cargados</p>
   </div>
 </template>

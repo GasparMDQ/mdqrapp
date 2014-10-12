@@ -5,8 +5,6 @@
 
 standard-app-packages
 insecure
-accounts-facebook
-accounts-ui
 npm
 alanning:roles@1.2.8
 alethes:mongo-ext@0.1.0
@@ -16,4 +14,7 @@ mrt:moment@2.6.0
 mrt:jquery-ui-bootstrap@0.1.2
 mizzao:bootstrap-3
 iron:router
+accounts-ui
+accounts-facebook
+service-configuration
 
