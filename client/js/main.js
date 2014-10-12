@@ -177,15 +177,6 @@ Router.map(function () {
     }
   });
 
-  this.route('reportEvent', {
-    path: '/admin/edit/report/:_id',
-    template: 'eventReport',
-    //Incluir verificacion de permisos
-    onBeforeAction: function (){
-      Session.set('edit-event', this.params._id);
-    }
-  });
-
   this.route('busquedaList', {
     path: '/admin/tesoro',
     template: 'busquedaAdminHome',
@@ -221,5 +212,14 @@ Router.map(function () {
     path: '/tesoro/posiciones',
     template: 'tesoroScoreBoard',
   });  
+
+  this.route('reportEvent', {
+    path: '/admin/edit/report/:_id',
+    template: 'eventReport',
+    //Incluir verificacion de permisos
+    onBeforeAction: function (){
+      Session.set('edit-event', this.params._id);
+    }
+  });
 
 });

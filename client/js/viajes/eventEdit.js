@@ -130,6 +130,7 @@ if (Meteor.isClient) {
         });
       }
     },
+
   });
 
   Template.roomEdit.events({

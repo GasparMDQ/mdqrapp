@@ -1,0 +1,12 @@
+{
+  "packages": {
+    "bootstrap-3": {},
+    "iron-router": {},
+    "roles": {},
+    "mongo-ext": {},
+    "publish-with-relations": {},
+    "bootstrap-3-switch": {},
+    "moment": {},
+    "jquery-ui-bootstrap": {}
+  }
+}
