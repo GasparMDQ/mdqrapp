@@ -1,5 +1,8 @@
 Meteor.subscribe('userData');
-Meteor.subscribe('allUsersData');
+
+Deps.autorun(function(){
+  Meteor.subscribe('allUsersData', Meteor.user());
+});
 
 Deps.autorun(function(){
 

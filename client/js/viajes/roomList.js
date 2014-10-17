@@ -9,7 +9,7 @@ if (Meteor.isClient) {
   };
 
   Template.roomDetail.plazasDisponibles = function () {
-    return this.cupo - this.pax.length;
+    return this.cupo - this.pax.length < 0 ? 0:this.cupo - this.pax.length;
   };
 
   Template.paxRoomDetail.user = function () {

@@ -38,7 +38,14 @@ Meteor.methods({
 
           //Verifico que tenga los permisos necesarios para agregar eventos
           if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
-            Buses.update({ _id:busData._id}, busData);;
+            Buses.update(
+              { _id:busData._id},
+              { $set: {
+                'id': busData.id,
+                'descripcion': busData.descripcion,
+                'cupo': busData.cupo
+              }}
+            );
           } else {
             if(error){
               console.log('Error:userHasEvento: ' + error);

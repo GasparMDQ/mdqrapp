@@ -74,15 +74,27 @@ Meteor.publish('nodosAndRoutes', function(userId, busqueda){
   return;
 });
 
-Meteor.publish('allUsersData', function(){
-  return Meteor.users.find({},{
-    fields: {
-      '_id': 1,
-      'profile.nombre': 1,
-      'profile.name': 1,
-      'services.facebook.id': 1
-    }
-  });
+Meteor.publish('allUsersData', function(userId){
+  if (Roles.userIsInRole(userId, ['super-admin', 'admin'])){
+    //Con perfil completo
+    return Meteor.users.find({},{
+      fields: {
+        '_id': 1,
+        'profile': 1,
+        'services.facebook.id': 1
+      }
+    });
+  } else {
+    return Meteor.users.find({},{
+      fields: {
+        '_id': 1,
+        'profile.nombre': 1,
+        'profile.name': 1,
+        'services.facebook.id': 1
+      }
+    });
+  }
+
 });
 
 Meteor.publish('busquedas', function(userId){

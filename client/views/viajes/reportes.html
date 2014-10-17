@@ -1,0 +1,42 @@
+<template name="eventReport">
+  <h3>
+    Reporte del evento: {{ evento.name }}
+  </h3>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Documento</th>
+        <th>Teléfono</th>
+        <th>Contacto de Emergencia</th>
+        <th>Obra Social</th>
+        <th>Micro</th>
+        <th>Habitación</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each pax }}
+        {{> paxReportDetail}}
+      {{/each}}
+    </tbody>
+  </table>
+</template>
+
+
+<template name="paxReportDetail">
+  <tr>
+    <td>
+      <img src="https://graph.facebook.com/{{ user.services.facebook.id }}/picture" class="headerTinymanPhoto js-check-out"  alt="{{ user.profile.nombre }}" title="{{ user.profile.nombre }}" data-profile="{{ user._id }}">
+    </td>
+    <td>{{ user.profile.nombre }}</td>
+    <td>{{ user.profile.apellido }}</td>
+    <td>{{ user.profile.documento }}</td>
+    <td>{{ user.profile.telefono }}</td>
+    <td>{{ user.profile.telefonoEmergencia }}</td>
+    <td>{{ user.profile.obraSocial }}</td>
+    <td>{{ busDescripcion }}</td>
+    <td>{{ roomDescripcion }}</td>
+  </tr>
+</template>
