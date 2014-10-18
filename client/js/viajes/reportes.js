@@ -24,13 +24,13 @@ if (Meteor.isClient) {
         'eventId': Session.get('edit-event'),
         'pax': {$in : [this.toString()]}
       });
-    if(typeof bus != 'undefined'){ return bus.descripcion; } else { return "---"; }
+    if(typeof bus != 'undefined'){ return bus.id; } else { return "---"; }
   };
   Template.paxReportDetail.roomDescripcion= function () {
     var room = Rooms.findOne({
         'eventId': Session.get('edit-event'),
         'pax': {$in : [this.toString()]}
       });
-    if(typeof room != 'undefined'){ return room.descripcion; } else { return "---"; }
+    if(typeof room != 'undefined'){ return room.id; } else { return "---"; }
   };
 }
