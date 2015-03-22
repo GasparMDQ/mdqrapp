@@ -114,7 +114,7 @@ if (Meteor.isClient) {
     },
 
     equipos : function () {
-      var equipos = Equipos.find({'pago': true}).fetch();
+      var equipos = Equipos.find({'busquedaId' : Session.get('busqueda-active'),'pago': true}).fetch();
       for (var i=0; i<equipos.length; i++){
         equipos[i].puntaje = getPuntaje(equipos[i]);
         equipos[i].tiempoTotal = getTotalTiempo(equipos[i]);
