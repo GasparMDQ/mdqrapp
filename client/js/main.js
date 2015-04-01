@@ -193,7 +193,7 @@ Router.map(function () {
     //Incluir verificacion de permisos
     onBeforeAction: function (){
       Session.set('edit-busqueda', this.params._id);
-      Session.set('busqueda', this.params._id);
+      Session.set('busqueda', {'_id': this.params._id});
     }
   });
 
