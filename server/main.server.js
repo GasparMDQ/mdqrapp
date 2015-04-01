@@ -33,11 +33,19 @@ Meteor.publish('userData', function(){
 });
 
 Meteor.publish('nodosAndRoutes', function(userId, busqueda){
-  if (Roles.userIsInRole(userId, ['super-admin', 'admin'])){
+  if (Roles.userIsInRole(userId, ['super-admin'])){
     //Todos
     return [
       Routes.find(),
       Nodos.find()
+    ];
+  }
+
+  if (Roles.userIsInRole(userId, ['admin'])){
+    //Todos los de la busqueda actual
+    return [
+      Routes.find({'busquedaId': busqueda._id}),
+      Nodos.find({'busquedaId': busqueda._id})
     ];
   }
 
