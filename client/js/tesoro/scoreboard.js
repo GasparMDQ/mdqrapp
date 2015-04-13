@@ -104,7 +104,7 @@ if (Meteor.isClient) {
 
   Template.tesoroScoreBoard.helpers({
     totalPreguntas : function (parent) {
-      var cantidad = 16; //@todo Parametrizar dentro de la búsqueda
+      var cantidad = 22; //@todo Parametrizar dentro de la búsqueda
       var response = [];
       //console.log(parent);
       for (var i=0;i<cantidad;i++){
