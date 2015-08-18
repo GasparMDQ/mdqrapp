@@ -1,126 +1,79 @@
-var Trunc = function(string, n, useWordBoundary){
-  var toLong = string.length>n,
-  s_ = toLong ? string.substr(0,n-1) : string;
-  s_ = useWordBoundary && toLong ? s_.substr(0,s_.lastIndexOf(' ')) : s_;
-  return  toLong ? s_ + ' ...' : s_;
+var validateEvent = function(evento) {
+    var response = { isValid: true, errors: []};
+
+    if(evento.name === '') { response.errors.push('Debe ingresar un nombre al evento'); }
+    if(evento.shortDescripcion === '') { response.errors.push('Debe ingresar una descripcion'); }
+    if(evento.description === '') { response.errors.push('Debe ingresar la informacion del evento'); }
+    if(evento.start_time === '') { response.errors.push('Debe ingresar la fecha y hora de comienzo'); }
+    if(evento.end_time === '') { response.errors.push('Debe ingresar la fecha y hora de finalizacion'); }
+    if(evento.costo === '') { response.errors.push('Debe ingresar el costo del evento'); }
+
+    response.isValid = response.errors.length === 0;
+    return response;
 };
 
 Meteor.methods({
-  refreshUserAttendingEvents: function(user){
-    //En caso de que el evento exista, se debe refrescar el owner
-    //y los admins del mismo!!
-    //@todo
-    var results = Meteor.call('getUserAttendingEvents',user);
-    var data = new Object(null);
-    var addData = false;
-
-    Meteor.users.update({_id:user._id}, {$set: {"eventos": []}}, {upsert: true});
-
-    for (var i = 0; i < results.data.length; i++) {
-      if(user.services.facebook.id == results.data[i].owner.id) {
-        addData = true;
-      } else {
-        for (var j = 0; j < results.data[i].admins.data.length; j++) {
-          if(user.services.facebook.id == results.data[i].admins.data[j].id) {
-            addData = true;
-          }
-        };
-      }
-
-      if(addData){
-        data._id = results.data[i].id;
-        data.name = results.data[i].name;
-        data.startTime = results.data[i].start_time;
-        Meteor.users.update({_id:user._id}, {$addToSet: {"eventos": data}});
-        addData=false;
-      }
-    };
-  },
-
-  addNewEvent: function(eId, user){
-    Meteor.call('userHasEvento',eId, user, function (error, result){
-
-      //Verifico que tenga los permisos necesarios para agregar eventos
-      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
-        var evento = Meteor.call('getEventInfo', eId);
-
-        //Se utiliza el ID del evento como _ID para la DB
-        evento._id = evento.id;
-
-        //El evento que se gestiona en el sitio
-        evento.active = false;
-        
-        //Evento disponible para registrarse
-        evento.registracion = false;
-        
-        //Funcionalidades del evento activas (chismografo, etc)
-        evento.chismografo = false;
-
-        //Lista de chismes, micros y habitaciones vacias
-        evento.micros = [];
-        evento.habitaciones = [];
-        evento.chismes = [];
-
-        if (evento.description){
-          evento.shortDescripcion = Trunc(evento.description,200,true);
+    addNewEvent: function(evento, user){
+        var e = validateEvent(evento);
+        if(!e.isValid){
+            throw new Meteor.Error("not-valid","Campos incompletos",
+              e.errors.join("\r\n"));
         }
-
-        //Se usa update con {upsert:true} para evitar errores por claves duplicadas en caso de multiples clicks
-        Eventos.update({ _id:evento._id}, evento, {upsert:true});
-      } else {
-        if(error){
-          console.log('Error:userHasEvento: ' + error);
+        //Verifico que tenga los permisos necesarios para agregar eventos
+        if(Roles.userIsInRole(user, ['admin','super-admin'])){
+            //Se usa update con {upsert:true} para evitar errores por claves duplicadas en caso de multiples clicks
+            eId = Eventos.insert(evento);
+            return eId;
         } else {
-          console.log('Error:addNewEvent: not allowed');
+            console.log('Error:addNewEvent: not allowed');
+            throw new Meteor.Error("not-allowed",
+              "El usuario no tiene permisos para crear eventos");
         }
+    },
 
-      }
-    });
-  },
+    setActiveEvent: function(eId, user){
+        Meteor.call('userHasEvento',eId, user, function (error, result){
+            //Verifico que tenga los permisos necesarios para activar eventos
+            if(
+                (result && Roles.userIsInRole(user, ['admin'])) ||
+                Roles.userIsInRole(user, ['super-admin'])
+            ){
+                Eventos.update({ _id: { $ne: eId.toString() }}, { $set: { active: false }}, {multi: true});
+                Eventos.update({ _id: eId.toString() }, { $set: { active: true }});
+            } else {
+                console.log('Error:setActiveEvent: ' + error);
+            }
+        });
+    },
 
-  setActiveEvent: function(eId, user){
-    Meteor.call('userHasEvento',eId, user, function (error, result){
-      //Verifico que tenga los permisos necesarios para activar eventos
-      if(
-        (result && Roles.userIsInRole(user, ['admin'])) ||
-        Roles.userIsInRole(user, ['super-admin'])
-       ){
-        Eventos.update({ _id: { $ne: eId.toString() }}, { $set: { active: false }}, {multi: true});
-        Eventos.update({ _id: eId.toString() }, { $set: { active: true }});
-      } else {
-        console.log('Error:setActiveEvent: ' + error);
-      }
-    });
-  },
+    unSetActiveEvent: function(eId, user){
+        Meteor.call('userHasEvento',eId, user, function (error, result){
+            //Verifico que tenga los permisos necesarios para desactivar eventos
+            if(
+                (result && Roles.userIsInRole(user, ['admin'])) ||
+                Roles.userIsInRole(user, ['super-admin'])
+            ){
+                Eventos.update({ _id: eId.toString() }, { $set: { active: false }});
+            } else {
+                console.log('Error:unSetActiveEvent: ' + error);
+            }
+        });
+    },
 
-  unSetActiveEvent: function(eId, user){
-    Meteor.call('userHasEvento',eId, user, function (error, result){
-      //Verifico que tenga los permisos necesarios para desactivar eventos
-      if(
-        (result && Roles.userIsInRole(user, ['admin'])) ||
-        Roles.userIsInRole(user, ['super-admin'])
-       ){
-        Eventos.update({ _id: eId.toString() }, { $set: { active: false }});
-      } else {
-        console.log('Error:unSetActiveEvent: ' + error);
-      }
-    });
-  },
-
-  removeEvent: function(eId, user){
-    Meteor.call('userHasEvento',eId, user, function (error, result){
-      //Verifico que tenga los permisos necesarios para borrar eventos
-      if(
-        (result && Roles.userIsInRole(user, ['admin'])) ||
-        Roles.userIsInRole(user, ['super-admin'])
-       ){
-        Rooms.remove({ eventId: eId.toString() });
-        Eventos.remove({ _id: eId.toString() });
-      } else {
-        console.log('Error:removeEvent: ' + error);
-      }
-    });
-  },
+    removeEvent: function(eId, user){
+        Meteor.call('userHasEvento',eId, user, function (error, result){
+            //Verifico que tenga los permisos necesarios para borrar eventos
+            if(
+                (result && Roles.userIsInRole(user, ['admin'])) ||
+                Roles.userIsInRole(user, ['super-admin'])
+            ){
+                Rooms.remove({ eventId: eId.toString() });
+                Eventos.remove({ _id: eId.toString() });
+            } else {
+                console.log('Error:removeEvent: ' + error);
+            }
+        });
+    },
 
   setRegisterEvent: function(eId, user){
     Meteor.call('userHasEvento',eId, user, function (error, result){

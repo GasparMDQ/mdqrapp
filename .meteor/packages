@@ -3,16 +3,20 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-standard-app-packages
-insecure
-bootstrap-3
 accounts-facebook
+meteor-platform
+insecure
+iron:router
+twbs:bootstrap
+fortawesome:fontawesome
+msavin:mongol
+alanning:roles
+less
+mike:mocha
 accounts-ui
-iron-router
-npm
-roles
-mongo-ext
-publish-with-relations
-bootstrap-3-switch
-moment
-jquery-ui-bootstrap
+underscore
+webapp
+random
+momentjs:moment
+mrt:bootstrap-switch
+stevezhu:fbgraph

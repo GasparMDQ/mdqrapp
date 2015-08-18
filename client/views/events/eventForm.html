@@ -1,0 +1,114 @@
+<template name="eventForm">
+  <div class="container">
+    <div id="evento-header">
+      {{> eventData this}}
+    </div>
+
+    <div class="row" id="alert-container">
+    </div>
+
+    <div class="row">
+      <p>
+        {{#if this.active }}
+          <button type="button" class="btn btn-success btn-sm js-event-active-toggle" data-toggle='{{this.active}}'>
+            <span class="glyphicon glyphicon-ok"></span>
+          </button>
+        {{ else }}
+          <button type="button" class="btn btn-danger btn-sm js-event-active-toggle" data-toggle='{{this.active}}'>
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        {{/if}}
+        Evento Activo
+      </p>
+      <p>
+        {{#if this.registracion }}
+          <button type="button" class="btn btn-success btn-sm js-event-register-toggle" data-toggle='{{this.registracion}}'>
+            <span class="glyphicon glyphicon-ok"></span>
+          </button>
+        {{ else }}
+          <button type="button" class="btn btn-danger btn-sm js-event-register-toggle" data-toggle='{{this.registracion}}'>
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        {{/if}}
+        Registración
+      </p>
+      <p>
+        {{#if this.chismografo }}
+          <button type="button" class="btn btn-success btn-sm js-event-chismografo-toggle" data-toggle='{{this.chismografo}}'>
+            <span class="glyphicon glyphicon-ok"></span>
+          </button>
+        {{ else }}
+          <button type="button" class="btn btn-danger btn-sm js-event-chismografo-toggle" data-toggle='{{this.chismografo}}'>
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        {{/if}}
+        Chismógrafo
+        <a href="#" type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-exclamation-sign"></span> Filtrar</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="form-inline form-no-label">
+    <div class="well">
+      {{> eventRoomsList this.habitaciones }}
+    </div>
+
+    <div class="well">
+      {{> eventBusList this.micros }}
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <a class="btn btn-warning pull-right" href="{{pathFor 'admin'}}">Volver</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>
+
+<template name="eventData">
+  <div class="row">
+    <div class="col-sm-4">
+      <h3>{{ this.name }}</h3>
+    </div>
+    <div class="col-sm-4 col-sm-offset-4">
+      <h3 class="hidden-sm hidden-xs"></h3>
+      {{ formatDate this.start_time "short"}} - {{ formatDate this.end_time "short"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Descripcion
+                </a>
+              </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                {{ this.shortDescripcion }}
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingTwo">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Info
+                </a>
+              </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+              <div class="panel-body">
+                {{ this.description }}
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</template>
