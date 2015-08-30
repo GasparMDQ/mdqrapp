@@ -9,7 +9,7 @@ if (Meteor.isClient) {
             return _.indexOf(Meteor.user().eventos, this._id) >= 0;
         },
 
-        seniaPaga: function () {
+        totalPago: function () {
             return Meteor.user().pago;
         },
 
@@ -17,7 +17,7 @@ if (Meteor.isClient) {
             //Buscar si el usuario tiene una habitacion seleccionada en el evento activo
             var results = Rooms.findOne({
                 'pax': { $in: [Meteor.user()._id] },
-                'eventId': Session.get('event-active')
+                'eventId': this._id
             });
 
             if(results) {
@@ -30,7 +30,7 @@ if (Meteor.isClient) {
             //Buscar si el usuario tiene una habitacion seleccionada en el evento activo
             var results = Buses.findOne({
                 'pax': { $in: [Meteor.user()._id] },
-                'eventId': Session.get('event-active')
+                'eventId': this._id
             });
 
             if(results) {

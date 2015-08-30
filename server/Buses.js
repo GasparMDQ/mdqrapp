@@ -63,7 +63,7 @@ Meteor.methods({
 
     busCheckIn: function(bId, user, eId){
         //Veririco que se hayan pasado todos los parametros
-        if(bId && user && eId){
+        if(bId && user && user.pago && eId){
             // @todo Verifico que el usuario tenga el evento y haya pagado la seña
             // @todo Verificar que tenga el perfil completo
             //Verifico que el usuario no este en otro micro del mismo evento

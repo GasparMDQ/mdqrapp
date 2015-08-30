@@ -28,5 +28,24 @@ if (Meteor.isClient) {
                 Rooms.remove({ _id: rId.toString() });
             }
         },
+
+        roomCheckIn: function(rId, user, eId){
+            if(rId){
+                var reservas = Rooms.find({'pax': user._id, 'eventId': eId}).count();
+                if (reservas === 0){
+                    Rooms.update( { '_id': rId }, { $addToSet: { 'pax': user._id } } );
+                } else {
+                    var habitacion = Rooms.findOne({'pax': user._id, 'eventId': eId});
+                    alert('Ya se tiene seleccionada la habitación ' + habitacion.id);
+                }
+            }
+        },
+
+        roomCheckOut: function(rId, userId, eId){
+            if(rId && Meteor.user()._id == userId){
+                Rooms.update( { '_id': rId }, { $pull: { 'pax': Meteor.user()._id } } );
+            }
+        },
+
     });
 }

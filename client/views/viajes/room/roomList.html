@@ -2,9 +2,9 @@
   <h1>
     <strong>Lista de Habitaciones</strong>
   </h1>
-  {{#if habitaciones}}
+  {{#if habitaciones this}}
     <p class="text-info">Seleccioná la habitación donde quieras alojarte</p>
-    {{#each habitaciones}}
+    {{#each habitaciones this}}
       {{> roomDetail}}
     {{/each}}
   {{else}}

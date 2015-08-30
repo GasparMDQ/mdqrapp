@@ -19,7 +19,7 @@ var mustBeAdmin = function(){
 };
 
 var isAbleToChoose = function(){
-    if ( Eventos.find({active:true}).count() !== 1 || true !== Meteor.user().pago ) {
+    if ( Eventos.find({active:true}).count() !== 1 || true !== Meteor.user().pago || !Eventos.findOne({active:true}).registracion ) {
         this.redirect('viajesHome');
     }
     this.next();
@@ -111,11 +111,43 @@ Router.route('/profileEdit', function (){
     { name: 'profileEdit' }
 );
 
-Router.route('/habitaciones', function (){
-        this.render('roomsList', {});
+Router.route('/informacion', {
+    waitOn: function () {
+        return Meteor.subscribe('events', Meteor.user());
     },
-    { name: 'roomsList' }
-);
+    action: function () {
+        if (this.ready()) {
+            Session.set('event-active', Eventos.find({active:true}).count() == 1);
+            this.render('eventInfo', {
+                data: function () {
+                    return Eventos.findOne({active:true});
+                }
+            });
+        } else {
+            this.render('Loading');
+        }
+    },
+    name: 'eventInfo'
+});
+
+Router.route('/habitaciones', {
+    waitOn: function () {
+        return Meteor.subscribe('events', Meteor.user());
+    },
+    action: function () {
+        if (this.ready()) {
+            Session.set('event-active', Eventos.find({active:true}).count() == 1);
+            this.render('roomsList', {
+                data: function () {
+                    return Eventos.findOne({active:true});
+                }
+            });
+        } else {
+            this.render('Loading');
+        }
+    },
+    name: 'roomsList'
+});
 
 Router.route('/micros', {
     waitOn: function () {

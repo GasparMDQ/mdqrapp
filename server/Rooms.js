@@ -19,7 +19,7 @@ Meteor.methods({
                 } else {
                     console.log('Error:roomAddNew: not allowed');
                     throw new Meteor.Error("not-allowed",
-                      "El usuario no tiene permisos para agregar habitaciones");
+                    "El usuario no tiene permisos para agregar habitaciones");
                 }
             }
         });
@@ -41,7 +41,7 @@ Meteor.methods({
                 } else {
                     console.log('Error:updateRoom: not allowed');
                     throw new Meteor.Error("not-allowed",
-                      "El usuario no tiene permisos para modificar habitaciones");
+                    "El usuario no tiene permisos para modificar habitaciones");
                 }
             }
         });
@@ -54,37 +54,32 @@ Meteor.methods({
         } else {
             console.log('Error:removeRoom: ' + error);
             throw new Meteor.Error("not-allowed",
-              "El usuario no tiene permisos para borrar habitaciones");                    
+            "El usuario no tiene permisos para borrar habitaciones");
         }
     },
 
     roomCheckIn: function(rId, user, eId){
         //Veririco que se hayan pasado todos los parametros
-        if(rId && user && eId){
-            //Verifico que el usuario tenga el evento
-            Meteor.call('userAttendingEvento',eId, user, function (error, result){
-                if(result){
-                    //Verifico que el usuario no este en otra habitacion del mismo evento
-                    Meteor.call('userHasRoom',eId, user, function (error, result){
-                        //Verifico !result ya que necesito es necsario que NO tenga ya habitacion
-                        if(typeof result != 'undefined' && !result){
-                            //Verifico la habitacion tenga espacio disponible
-                            Meteor.call('roomIsAvailable',rId, function (error, result){
-                                if(result){
-                                    Rooms.update( { '_id': rId }, { $addToSet: { 'pax': user._id } } );
-                                } else {
-                                    console.log('Error:roomCheckIn:roomIsAvailable: '+ error);
-                                }
-                            });
+        if(rId && user && user.pago && eId){
+            // @todo Verifico que el usuario tenga el evento y haya pagado la seña
+            // @todo Verificar que tenga el perfil completo
+            //Verifico que el usuario no este en otra habitacion del mismo evento
+            Meteor.call('userHasRoom',eId, user, function (error, result){
+                //Verifico !result ya que necesito es necsario que NO tenga ya habitacion
+                if(typeof result != 'undefined' && !result){
+                    //Verifico la habitacion tenga espacio disponible
+                    Meteor.call('roomIsAvailable',rId, function (error, result){
+                        if(result){
+                            Rooms.update( { '_id': rId }, { $addToSet: { 'pax': user._id } } );
                         } else {
-                            console.log('Error:roomCheckIn:userHasRoom: '+ error);
+                            console.log('Error:roomCheckIn:roomIsAvailable: '+ error);
                         }
                     });
-
                 } else {
-                    console.log('Error:roomCheckIn:userAttendingEvento: '+ error);
+                    console.log('Error:roomCheckIn:userHasRoom: '+ error);
                 }
             });
+
         } else {
             console.log('Error:roomCheckIn: faltan parametros');
         }
@@ -92,14 +87,12 @@ Meteor.methods({
 
     roomCheckOut: function(rId, userId, eId){
         if(Meteor.user()._id === userId) {
-            Meteor.call('userAttendingEvento',eId, Meteor.user(), function (error, result){
-                //Verifico que tenga los permisos necesarios para realizar el checkOut el eventos
-                if(result && rId){
-                    Rooms.update( { '_id': rId }, { $pull: { 'pax': Meteor.user()._id } } );
-                } else {
-                    console.log('Error:roomCheckOut: ' + error);
-                }
-            });
+            //Verifico que tenga los permisos necesarios para realizar el checkOut el eventos
+            if(rId){
+                Rooms.update( { '_id': rId }, { $pull: { 'pax': Meteor.user()._id } } );
+            } else {
+                console.log('Error:roomCheckOut: ' + error);
+            }
         }
     },
 
