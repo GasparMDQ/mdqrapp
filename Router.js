@@ -1,8 +1,7 @@
-
 // Routing data
 Router.configure({
-  layoutTemplate: 'layout',
-  loadingTemplate: 'loader'
+    layoutTemplate: 'layout',
+    loadingTemplate: 'loader'
 });
 
 var mustBeSignedIn = function(){
@@ -19,19 +18,19 @@ var mustBeAdmin = function(){
     this.next();
 };
 
-var mustBeOpen = function(){
-    if(!Session.get('event-registracion')){
+var isAbleToChoose = function(){
+    if ( Eventos.find({active:true}).count() !== 1 || true !== Meteor.user().pago ) {
         this.redirect('viajesHome');
     }
     this.next();
 };
-
-var mustBeAttending = function(){
-    if(!Session.get('event-attending')){
-        this.redirect('viajesHome');
-    }
-    this.next();
-};
+//
+// var mustBeAttending = function(){
+//     if(!Session.get('event-attending')){
+//         this.redirect('viajesHome');
+//     }
+//     this.next();
+// };
 
 var setProfileStatus = function(){
     //Verifica el estado del perfil
@@ -45,52 +44,40 @@ var setProfileStatus = function(){
     this.next();
 };
 
-var setEventOptions = function(){
-    //Verifica que haya un evento activo y lo setea
-    if(Eventos.find({active:true}).count() == 1){
-        var evento = Eventos.findOne({active:true});
-        Session.set('event-active', evento._id);
-        Session.set('event-registracion', evento.registracion);
-        Session.set('event-chismografo', evento.chismografo);
+// var setEventOptions = function(){
+//     //Verifica que haya un evento activo y lo setea
+//     if(Eventos.find({active:true}).count() == 1){
+//         var evento = Eventos.findOne({active:true});
+//         Session.set('event-active', evento._id);
+//         Session.set('event-registracion', evento.registracion);
+//         Session.set('event-chismografo', evento.chismografo);
+//
+//         //Verifica que el usuario asista al evento activo
+//         Meteor.call('userAttendingEvento', Session.get('event-active'), Meteor.user(), function(error,result){
+//             if(!error){
+//                 Session.set('event-attending', result);
+//             } else {
+//                 Session.set('event-attending', false);
+//             }
+//         });
+//     } else {
+//         Session.set('event-active', false);
+//         Session.set('event-attending', false);
+//         Session.set('event-chismografo', false);
+//         Session.set('event-registracion', false);
+//     }
+//     this.next();
+// };
 
-        //Verifica que el usuario asista al evento activo
-        Meteor.call('userAttendingEvento', Session.get('event-active'), Meteor.user(), function(error,result){
-            if(!error){
-                Session.set('event-attending', result);
-            } else {
-                Session.set('event-attending', false);
-            }
-        });
-    } else {
-        Session.set('event-active', false);
-        Session.set('event-attending', false);
-        Session.set('event-chismografo', false);
-        Session.set('event-registracion', false);
-    }
-    this.next();
-};
-
-var setBusquedaOptions = function(){
-    //Verifica que haya un evento activo y lo setea
-    if(Busquedas.find({active:true}).count() == 1){
-        var busqueda = Busquedas.findOne({active:true});
-        Session.set('busqueda', busqueda);
-        Session.set('busqueda-active', busqueda._id);
-        Session.set('busqueda-inProgress', busqueda.live);
-    } else {
-        Session.set('busqueda-active', false);
-        Session.set('busqueda-inProgress', false);
-    }
-    this.next();
-};
 
 //Global rules
 Router.onBeforeAction(mustBeSignedIn, {except: ['home']});
-Router.onBeforeAction(setEventOptions, {only: ['viajesHome', 'roomsList', 'busesList']});
-Router.onBeforeAction(setProfileStatus, {only: ['viajesHome', 'tesoroHome', 'roomsList', 'busesList']});
-Router.onBeforeAction(mustBeOpen, {only: ['roomsList', 'busesList']});
-Router.onBeforeAction(mustBeAttending, {only: ['roomsList', 'busesList']});
 Router.onBeforeAction(mustBeAdmin, {only: ['admin', 'newEvent']});
+
+//Router.onBeforeAction(setEventOptions, {only: ['viajesHome', 'roomsList', 'busesList']});
+Router.onBeforeAction(setProfileStatus, {only: ['viajesHome', 'roomsList', 'busesList']});
+Router.onBeforeAction(isAbleToChoose, {only: ['roomsList', 'busesList']});
+//Router.onBeforeAction(mustBeAttending, {only: ['roomsList', 'busesList']});
 
 
 Router.route('/', function () {
@@ -99,11 +86,24 @@ Router.route('/', function () {
     { name: 'home' }
 );
 
-Router.route('/viaje', function () {
-        this.render('homeViajes', {});
+Router.route('/viaje', {
+    waitOn: function () {
+        return Meteor.subscribe('events', Meteor.user());
     },
-    { name: 'viajesHome' }
-);
+    action: function () {
+        if (this.ready()) {
+            Session.set('event-active', Eventos.find({active:true}).count() == 1);
+            this.render('homeViajes', {
+                data: function () {
+                    return Eventos.findOne({active:true});
+                }
+            });
+        } else {
+            this.render('Loading');
+        }
+    },
+    name: 'viajesHome'
+});
 
 Router.route('/profileEdit', function (){
         this.render('profileEdit', {});
@@ -117,11 +117,24 @@ Router.route('/habitaciones', function (){
     { name: 'roomsList' }
 );
 
-Router.route('/micros', function (){
-        this.render('busesList', {});
+Router.route('/micros', {
+    waitOn: function () {
+        return Meteor.subscribe('events', Meteor.user());
     },
-    { name: 'busesList' }
-);
+    action: function () {
+        if (this.ready()) {
+            Session.set('event-active', Eventos.find({active:true}).count() == 1);
+            this.render('busesList', {
+                data: function () {
+                    return Eventos.findOne({active:true});
+                }
+            });
+        } else {
+            this.render('Loading');
+        }
+    },
+    name: 'busesList'
+});
 
 Router.route('/eventos', {
     waitOn: function () {
@@ -170,23 +183,23 @@ Router.route('/eventos/edit/:_id', {
 /*
 Router.map(function () {
 
-  this.route('editEvent', {
-    path: '/admin/edit/:_id',
-    template: 'eventEdit',
-    //Incluir verificacion de permisos
-    onBeforeAction: function (){
-      Session.set('edit-event', this.params._id);
-    }
-  });
+this.route('editEvent', {
+path: '/admin/edit/:_id',
+template: 'eventEdit',
+//Incluir verificacion de permisos
+onBeforeAction: function (){
+Session.set('edit-event', this.params._id);
+}
+});
 
-  this.route('reportEvent', {
-    path: '/admin/edit/report/:_id',
-    template: 'eventReport',
-    //Incluir verificacion de permisos
-    onBeforeAction: function (){
-      Session.set('edit-event', this.params._id);
-    }
-  });
+this.route('reportEvent', {
+path: '/admin/edit/report/:_id',
+template: 'eventReport',
+//Incluir verificacion de permisos
+onBeforeAction: function (){
+Session.set('edit-event', this.params._id);
+}
+});
 
 });
 */

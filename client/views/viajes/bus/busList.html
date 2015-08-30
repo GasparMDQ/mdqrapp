@@ -2,9 +2,9 @@
   <h1>
     <strong>Lista de Micros</strong>
   </h1>
-  {{#if micros}}
+  {{#if micros this}}
     <p class="text-info">Seleccioná el micro donde quieras viajar</p>
-    {{#each micros}}
+    {{#each micros this}}
       {{> busDetail}}
     {{/each}}
   {{else}}

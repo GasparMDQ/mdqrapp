@@ -64,30 +64,25 @@ Meteor.methods({
     busCheckIn: function(bId, user, eId){
         //Veririco que se hayan pasado todos los parametros
         if(bId && user && eId){
-            //Verifico que el usuario tenga el evento
-            Meteor.call('userAttendingEvento',eId, user, function (error, result){
-                if(result){
-                    //Verifico que el usuario no este en otro micro del mismo evento
-                    Meteor.call('userHasBus',eId, user, function (error, result){
-                        //Verifico !result ya que necesito es necsario que NO tenga ya un micro
-                        if(typeof result != 'undefined' && !result){
-                            //Verifico el habitacion tenga espacio disponible
-                            Meteor.call('busIsAvailable',bId, function (error, result){
-                                if(result){
-                                    Buses.update( { '_id': bId }, { $addToSet: { 'pax': user._id } } );
-                                } else {
-                                    console.log('Error:busCheckIn:busIsAvailable: '+ error);
-                                }
-                            });
+            // @todo Verifico que el usuario tenga el evento y haya pagado la seña
+            // @todo Verificar que tenga el perfil completo
+            //Verifico que el usuario no este en otro micro del mismo evento
+            Meteor.call('userHasBus',eId, user, function (error, result){
+                //Verifico !result ya que necesito es necsario que NO tenga ya un micro
+                if(typeof result != 'undefined' && !result){
+                    //Verifico el habitacion tenga espacio disponible
+                    Meteor.call('busIsAvailable',bId, function (error, result){
+                        if(result){
+                            Buses.update( { '_id': bId }, { $addToSet: { 'pax': user._id } } );
                         } else {
-                            console.log('Error:busCheckIn:userHasBus: '+ error);
+                            console.log('Error:busCheckIn:busIsAvailable: '+ error);
                         }
                     });
-
                 } else {
-                    console.log('Error:busCheckIn:userAttendingEvento: '+ error);
+                    console.log('Error:busCheckIn:userHasBus: '+ error);
                 }
             });
+
         } else {
             console.log('Error:busCheckIn: faltan parametros');
         }
@@ -95,14 +90,12 @@ Meteor.methods({
 
     busCheckOut: function(bId, userId, eId){
         if(Meteor.user()._id === userId) {
-            Meteor.call('userAttendingEvento',eId, Meteor.user(), function (error, result){
-                //Verifico que tenga los permisos necesarios para realizar el checkOut el eventos
-                if(result && bId){
-                    Buses.update( { '_id': bId }, { $pull: { 'pax': Meteor.user()._id } } );
-                } else {
-                    console.log('Error:busCheckOut: ' + error);
-                }
-            });
+            //Verifico que tenga los permisos necesarios para realizar el checkOut el eventos
+            if(bId){
+                Buses.update( { '_id': bId }, { $pull: { 'pax': Meteor.user()._id } } );
+            } else {
+                console.log('Error:busCheckOut: ' + error);
+            }
         }
     },
 

@@ -1,79 +1,98 @@
 <template name="homeViajes">
-  <div class="jumbotron">
-    <div class="container">
-      <div class="row">
-        <h1>{{ greeting }}</h1>
-      </div>
-      {{#unless isEventSet }}
-        <div class="alert alert-block alert-danger">
-          Todavía no nos decidimos a dónde viajar!
-        </div>
-      {{ else }}
-        <div class="row">
-          <p>
-            Nuestro próximo viaje es a <strong>{{ destination }}</strong>
-          </p>
-        </div>
-      {{/unless}}
-      <div class="row">
-        <div class="col-sm-6">
-          <img src="https://graph.facebook.com/{{picId}}/picture?width=200&height=200" class="bigPhoto img-responsive">
-        </div>
-        <div class="col-sm-4 col-sm-offset-2">
-          <p>
-            <a class="btn btn-lg btn-block {{#if isProfileComplete }}btn-success{{else}}btn-primary{{/if}}" href="{{pathFor 'profileEdit'}}">
-              <span class="glyphicon glyphicon-ok"></span> Actualizá tu perfil
-            </a>
-          </p>
-          {{#if isEventSet}}
-            {{#if userAttendingEvent}}
-              {{#if isEventOpen}}
+    <div class="jumbotron">
+        <div class="container">
+            {{#unless isEventSet }}
+            <div class="alert alert-block alert-danger">
+                Todavía no nos decidimos a dónde viajar!
+            </div>
+            {{ else }}
+            <div class="row">
                 <p>
-                  {{#if isProfileComplete}}
-                    <a class="btn btn-lg btn-block {{#if isRoomSelected }}btn-success{{else}}btn-primary{{/if}}" href="{{pathFor 'roomsList'}}">
-                    <span class="glyphicon glyphicon-ok"></span> Elegí dónde dormir
-                    </a>
-                  {{else}}
-                    <a class="btn btn-default btn-lg btn-block" disabled="disabled">
-                  <span class="glyphicon glyphicon-ok"></span> Elegí dónde dormir
-                    </a>
-                  {{/if}}
+                    Nuestro próximo viaje es a <strong>{{ this.name }}</strong>
                 </p>
-                <p>
-                  {{#if isProfileComplete}}
-                    <a class="btn btn-lg btn-block {{#if isBusSelected }}btn-success{{else}}btn-primary{{/if}}" href="{{pathFor 'busesList'}}">
-                    <span class="glyphicon glyphicon-ok"></span> Elegí dónde viajar
-                    </a>
-                  {{else}}
-                    <a class="btn btn-default btn-lg btn-block" disabled="disabled">
-                    <span class="glyphicon glyphicon-ok"></span> Elegí dónde viajar
-                    </a>
-                  {{/if}}
-                </p>
-              {{/if}}
+            </div>
+            {{/unless}}
+            <div class="row">
+                <div class="col-sm-4">
+                    <p>
+                        <a class="btn btn-lg btn-block {{#if isProfileComplete }}btn-success{{else}}btn-warning{{/if}}" href="{{pathFor 'profileEdit'}}">
+                            <span class="glyphicon glyphicon-{{#if isProfileComplete }}ok{{else}}warning-sign{{/if}}"></span> Actualizá tu perfil
+                        </a>
+                    </p>
+                    {{#if isEventSet}}
+                        {{#if userAttendingEvent}}
+                            {{#if seniaPaga}}
+                                <p>
+                                    <button class="btn btn-lg btn-block btn-success" disabled="disabled">
+                                        <span class="glyphicon glyphicon-ok"></span> Seña pagada
+                                    </button>
+                                </p>
+                            {{else}}
+                                <p>
+                                    <button class="btn btn-lg btn-block btn-warning" disabled="disabled">
+                                        <span class="glyphicon glyphicon-warning-sign"></span> Esperando pago de seña
+                                    </button>
+                                </p>
+                            {{/if}}
+                            {{#if this.registracion}}
+                                <p>
+                                    {{#if isAbleToChoose}}
+                                    <a class="btn btn-lg btn-block {{#if isRoomSelected this }}btn-success{{else}}btn-primary{{/if}}" href="{{pathFor 'roomsList'}}">
+                                        <span class="glyphicon glyphicon-ok"></span> Elegí dónde dormir
+                                    </a>
+                                    {{else}}
+                                        <button class="btn btn-default btn-lg btn-block" disabled="disabled">
+                                            <span class="glyphicon glyphicon-minus"></span> Elegí dónde dormir
+                                        </button>
+                                    {{/if}}
+                                </p>
+                                <p>
+                                    {{#if isAbleToChoose}}
+                                        <a class="btn btn-lg btn-block {{#if isBusSelected this }}btn-success{{else}}btn-primary{{/if}}" href="{{pathFor 'busesList'}}">
+                                            <span class="glyphicon glyphicon-ok"></span> Elegí dónde viajar
+                                        </a>
+                                    {{else}}
+                                        <button class="btn btn-default btn-lg btn-block" disabled="disabled">
+                                            <span class="glyphicon glyphicon-minus"></span> Elegí dónde viajar
+                                        </button>
+                                    {{/if}}
+                                </p>
+                            {{/if}}
 
-              {{#if isEventEnabled}}
-                <p>
-                  <button class="btn btn-lg btn-block btn-success">
-                    <span class="glyphicon glyphicon-ok"></span> Chismógrafo!
-                  </button>
-                </p>
-              {{/if}}
+                            {{#if this.chismografo}}
+                                <p>
+                                    <button class="btn btn-lg btn-block btn-success">
+                                        <span class="glyphicon glyphicon-ok"></span> Chismógrafo!
+                                    </button>
+                                </p>
+                            {{/if}}
+                            <p>
+                                <button class="btn btn-lg btn-block btn-danger btn-no-asistir-evento">
+                                    <span class="glyphicon glyphicon-thumbs-down"></span> Bajarme del Viaje
+                                </button>
+                            </p>
+                        {{else}}
+                            <p>
+                                <button class="btn btn-lg btn-block btn-warning btn-asistir-evento">
+                                    <span class="glyphicon glyphicon-thumbs-up"></span> Quiero sumarme al viaje!
+                                </button>
+                            </p>
+                        {{/if}}
+                        <p>
+                            <button class="btn btn-lg btn-block btn-primary">
+                                <span class="glyphicon glyphicon-info-sign"></span> Información
+                            </button>
+                        </p>
+                    {{/if}}
+                </div>
+            </div>
+            {{#if isEventSet}}
+                {{#unless userAttendingEvent}}
+                    <p>
+                        No te lo podes perder!
+                    </p>
+                {{/unless}}
             {{/if}}
-          {{/if}}
         </div>
-      </div>
-      {{#if isEventSet}}
-        {{#if userAttendingEvent}}
-          <p>
-            No te lo podes perder!
-          </p>
-        {{ else }}
-          <p>
-            Debe indicar en Facebook que asistirá al evento para poder continuar con el registro
-          </p>
-        {{/if}}
-      {{/if}}
     </div>
-  </div>
 </template>
