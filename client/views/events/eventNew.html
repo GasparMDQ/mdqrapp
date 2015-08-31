@@ -1,0 +1,44 @@
+<template name="eventNew">
+    <div class="container">
+        <div class="row">
+            <h3>Nuevo evento</h3>
+        </div>
+        {{> eventNewForm}}
+        <br/>
+    </div>
+</template>
+
+<template name="eventNewForm">
+  <div class="row">
+    <div class="col-sm-12">
+        <form>
+          <div class="form-group">
+            <label for="nombreInput">Nombre</label>
+            <input type="text" class="form-control" id="nombreInput" placeholder="Nombre">
+          </div>
+          <div class="form-group">
+            <label for="descripcionInput">Descripcion</label>
+            <input type="text" class="form-control" id="descripcionInput" placeholder="Descripcion">
+          </div>
+          <div class="form-group">
+            <label for="infoText">Informacion</label>
+            <textarea id="infoText" class="form-control" rows="3"></textarea>
+            <p class="help-block">Example block-level help text here.</p>
+          </div>
+          <div class="form-group">
+            <label for="fechaInputStart">Inicio: Fecha y hora</label>
+            <input type="datetime-local" class="form-control" id="fechaInputStart">
+          </div>
+          <div class="form-group">
+            <label for="fechaInputEnd">Fin: Fecha y hora</label>
+            <input type="datetime-local" class="form-control" id="fechaInputEnd">
+          </div>
+          <div class="form-group">
+            <label for="costoInput">Costo</label>
+            <input type="number" class="form-control" id="costoInput" placeholder="Costo del Ticket">
+          </div>
+          <button type="submit" class="btn btn-default js-add-event">Grabar</button>
+        </form>
+    </div>
+  </div>
+</template>
