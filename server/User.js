@@ -59,7 +59,6 @@ Meteor.methods({
             'pax': { $in: [user._id] },
             'eventId': eId
         });
-
         if(results) {
             return true;
         }
