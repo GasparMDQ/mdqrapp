@@ -11,17 +11,19 @@
                         Nuestro próximo viaje es a <strong>{{ this.name }}</strong>
                     </p>
                 </div>
-                {{#unless seniaPaga}}
-                    <div class="alert alert-block alert-danger">
-                        Paga la seña para asegurarte un lugar en el viaje!
-                    </div>
-                {{else}}
-                    {{#unless totalPago}}
-                        <div class="alert alert-block alert-info">
-                            Completa el pago para poder elegir tu habitación y el lugar en el micro
+                {{#if userAttendingEvent}}
+                    {{#unless seniaPaga}}
+                        <div class="alert alert-block alert-danger">
+                            Paga la seña para asegurarte un lugar en el viaje!
                         </div>
+                    {{else}}
+                        {{#unless totalPago}}
+                            <div class="alert alert-block alert-info">
+                                Completa el pago para poder elegir tu habitación y el lugar en el micro
+                            </div>
+                        {{/unless}}
                     {{/unless}}
-                {{/unless}}
+                {{/if}}
             {{/unless}}
             <div class="row">
                 <div class="col-sm-12">
