@@ -10,7 +10,7 @@ var getFbPicture = function(accessToken) {
     throw result.error;
   }
   return result.data.picture.data.url;
-}
+};
 
 Accounts.onCreateUser(function(options, user) {
   user.eventos = [];
@@ -24,62 +24,20 @@ Accounts.onCreateUser(function(options, user) {
     user.profile = options.profile;
   }
   return user;
-})
+});
 
-Meteor.methods({});
+Accounts.onLogin(function(info) {
+    var user = info.user;
+    if(typeof user.profile !== 'undefined' && typeof user.id !== 'undefined') {
+        var picture = getFbPicture(user.services.facebook.accessToken);
+        if (user.profile.picture !== picture){
+            Meteor.users.update({_id: user._id}, {$set: {'profile.picture': picture}});
+        }
+    }
+});
 
 Meteor.publish('userData', function(){
   return Meteor.users.find({_id:this.userId});
-});
-
-Meteor.publish('nodosAndRoutes', function(userId, busqueda){
-  if (Roles.userIsInRole(userId, ['super-admin'])){
-    //Todos
-    return [
-      Routes.find(),
-      Nodos.find()
-    ];
-  }
-
-  if (Roles.userIsInRole(userId, ['admin'])){
-    //Todos los de la busqueda actual
-    return [
-      Routes.find({'busquedaId': busqueda._id}),
-      Nodos.find({'busquedaId': busqueda._id})
-    ];
-  }
-
-  if (Roles.userIsInRole(userId, ['user'])){
-    //Se envian los valores de la busqueda activa
-    if(typeof busqueda != 'undefined' && busqueda !== null ){
-      if(busqueda.publicScoreboard){
-        return [
-          Routes.find({'busquedaId': busqueda._id}),
-          Nodos.find({},{
-            fields: {
-              '_id': 1,
-              'id': 1,
-              'answer': 1,
-              'lowOffset': 1,
-              'highOffset': 1
-            }
-          })
-          ];
-      } else {
-        return [
-          Routes.find({'busquedaId': busqueda._id}),
-          Nodos.find({},{
-            fields: {
-              '_id': 1,
-              'id': 1
-            }
-          })
-          ];
-      }
-    }
-  }
-  this.stop();
-  return;
 });
 
 Meteor.publish('allUsersData', function(userId){
@@ -105,54 +63,24 @@ Meteor.publish('allUsersData', function(userId){
 
 });
 
-Meteor.publish('busquedas', function(userId){
-  if (Roles.userIsInRole(userId, ['super-admin', 'admin'])){
-    //Todas
-    return Busquedas.find();
-  }
-
-  if (Roles.userIsInRole(userId, ['user'])){
-    //Solo activa
-    return Busquedas.find({active:true});
-  }
-  //console.log('User:Role:none');
-  this.stop();
-  return;
-});
-
-Meteor.publish('teams', function(busquedaId, userId){
-  if (Roles.userIsInRole(userId, ['super-admin', 'admin'])){
-    //Todas
-    return Equipos.find();
-  }
-
-  if (Roles.userIsInRole(userId, ['user'])){
-    //Solo activa
-    return Equipos.find( {'busquedaId': busquedaId });
-  }
-  //console.log('User:Role:none');
-  this.stop();
-  return;
-});
-
 Meteor.publish('events', function(userId){
-  if (Roles.userIsInRole(userId, ['super-admin'])){
-    //Todos
-    return Eventos.find();
-  }
+    if (Roles.userIsInRole(userId, ['super-admin'])){
+        //Todos
+        return Eventos.find();
+    }
 
-  if (Roles.userIsInRole(userId, ['admin']) && userId.services && userId.services.facebook){
-    //Activo + los propios
-    return Eventos.find( {$or: [{active:true}, { 'owner.id': userId.services.facebook.id}, {'admins.data.id': userId.services.facebook.id}]} );
-  }
+    if (Roles.userIsInRole(userId, ['admin']) && userId.services && userId.services.facebook){
+        //Activo + los propios
+        return Eventos.find( {$or: [{active:true}, { 'owner.id': userId.services.facebook.id}, {'admins.data.id': userId.services.facebook.id}]} );
+    }
 
-  if (Roles.userIsInRole(userId, ['user'])){
-    //Solo activo
-    return Eventos.find({active:true});
-  }
-  //console.log('User:Role:none');
-  this.stop();
-  return;
+    if (Roles.userIsInRole(userId, ['user'])){
+        //Solo activo
+        return Eventos.find({active:true});
+    }
+    //console.log('User:Role:none');
+    this.stop();
+    return;
 });
 
 Meteor.publish('roomsAndBuses', function(eventId, userId){
@@ -162,7 +90,7 @@ Meteor.publish('roomsAndBuses', function(eventId, userId){
       Buses.find()
     ];
   }
-  
+
   if (eventId){
     return [
       Rooms.find( {'eventId': eventId }),

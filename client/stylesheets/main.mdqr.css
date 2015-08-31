@@ -52,6 +52,7 @@ code {
   border: 2px solid #222222;
   border-top: 2px solid #222222;
   -webkit-border-radius: 5px;
+  border-radius: 5px;
   margin: 3px 5px 3px 3px;
 }
 
@@ -85,24 +86,29 @@ textarea {
 
 .panel-heading.bg-primary {
   color: #fff;
-  background-color: #428bca;  
+  background-color: #428bca;
 }
 .panel-heading.bg-info {
-  background-color: #d9edf7; 
+  background-color: #d9edf7;
 }
 
 .panel-heading.bg-success {
   background-color: #dff0d8;
 }
 
-#map-canvas {
-/*  height: 300px;  */
-/*  width: 100%;    */
-}
 
 .table-responsive {
   width: 100%;
   margin-bottom: 15px;
   overflow-x: scroll;
   overflow-y: hidden;
+}
+
+.jumbotron {
+    background-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.la-ball-atom {
+    color: rgb(255, 192, 128);
 }

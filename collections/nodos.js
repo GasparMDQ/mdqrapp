@@ -1,1 +1,0 @@
-Nodos = new Meteor.Collection('nodos');

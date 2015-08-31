@@ -1,0 +1,34 @@
+<template name="home">
+  {{#if userLogged }}
+    {{> homeLogged}}
+  {{else}}
+    {{> homeAnonymous}}
+  {{/if}}
+</template>
+
+<template name="homeAnonymous">
+  <div class="jumbotron">
+    <div class="container">
+      <h1>Bienvenido!</h1>
+      <p>Utilice su cuenta de Facebook para ingresar a la aplicación</p>
+      <p></p>
+      <p>{{> loginButtons}}</p>
+    </div>
+  </div>
+</template>
+
+<template name="homeLogged">
+  <div class="jumbotron">
+    <div class="container">
+      <div class="row hidden-xs">
+        <h1>{{ greeting }}</h1>
+      </div>
+      <div class="col-sm-6 col-sm-offset-3">
+        <a class="btn btn-lg btn-block"  href="{{pathFor 'viajesHome'}}">
+          <img src="/bt_viajes.jpg" class="img-home img-responsive img-rounded">
+          Viaja con MDQ Rollers
+        </a>
+        </div>
+    </div>
+  </div>
+</template>

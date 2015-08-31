@@ -1,0 +1,23 @@
+<template name="eventInfo">
+    <h1>
+        <strong>Información</strong>
+    </h1>
+    {{#if evento}}
+        <div class="row">
+            <div class="col-sm-12">
+                <p>{{ formatDate this.start_time "short"}} - {{ formatDate this.end_time "short"}}</p>
+            </div>
+        </div>
+        <div class="alert alert-info">
+            {{ this.shortDescripcion }}
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                {{ this.description }}
+            </div>
+        </div>
+    {{else}}
+        <p class="text-warning">No hay evento activo</p>
+    {{/if}}
+
+</template>
