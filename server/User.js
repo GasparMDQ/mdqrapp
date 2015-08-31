@@ -125,12 +125,13 @@ Meteor.methods({
         }});
     },
     userRemoveEvent: function(data){
-        var eventos = Meteor.user().eventos;
+        var user = Meteor.users.findOne({'_id': data.userId});
+        var eventos = user.eventos;
         var index = _.indexOf(eventos, data.eventId);
 
         if (index > -1) {
             eventos.splice(index, 1);
-            Meteor.users.update({_id:Meteor.user()._id}, {$set: {
+            Meteor.users.update({'_id':data.userId}, {$set: {
                 "eventos": _.uniq(eventos),
                 "pago": false,
                 "sena": false
@@ -138,20 +139,20 @@ Meteor.methods({
 
             // Checkout del cuarto
             var room = Rooms.findOne({
-                'pax': { $in: [Meteor.user()._id] },
+                'pax': { $in: [data.userId] },
                 'eventId': data.eventId
             });
             if(room) {
-                Rooms.update( { '_id': room._id }, { $pull: { 'pax': Meteor.user()._id } } );
+                Rooms.update( { '_id': room._id }, { $pull: { 'pax': data.userId } } );
             }
 
             // Checkout del micro
             var bus = Buses.findOne({
-                'pax': { $in: [Meteor.user()._id] },
+                'pax': { $in: [data.userId] },
                 'eventId': data.eventId
             });
             if(bus) {
-                Buses.update( { '_id': bus._id }, { $pull: { 'pax': Meteor.user()._id } } );
+                Buses.update( { '_id': bus._id }, { $pull: { 'pax': data.userId } } );
             }
 
         }
