@@ -17,7 +17,7 @@ Meteor.methods({
         var e = validateEvent(evento);
         if(!e.isValid){
             throw new Meteor.Error("not-valid","Campos incompletos",
-              e.errors.join("\r\n"));
+            e.errors.join("\r\n"));
         }
         //Verifico que tenga los permisos necesarios para agregar eventos
         if(Roles.userIsInRole(user, ['admin','super-admin'])){
@@ -27,131 +27,113 @@ Meteor.methods({
         } else {
             console.log('Error:addNewEvent: not allowed');
             throw new Meteor.Error("not-allowed",
-              "El usuario no tiene permisos para crear eventos");
+            "El usuario no tiene permisos para crear eventos");
         }
     },
 
     setActiveEvent: function(eId, user){
-        Meteor.call('userHasEvento',eId, user, function (error, result){
-            //Verifico que tenga los permisos necesarios para activar eventos
-            if(
-                (result && Roles.userIsInRole(user, ['admin'])) ||
-                Roles.userIsInRole(user, ['super-admin'])
-            ){
-                Eventos.update({ _id: { $ne: eId.toString() }}, { $set: { active: false }}, {multi: true});
-                Eventos.update({ _id: eId.toString() }, { $set: { active: true }});
-            } else {
-                console.log('Error:setActiveEvent: ' + error);
-            }
-        });
+        //Verifico que tenga los permisos necesarios para activar eventos
+        if(
+            (Roles.userIsInRole(user, ['admin'])) ||
+            Roles.userIsInRole(user, ['super-admin'])
+        ){
+            Eventos.update({ _id: { $ne: eId.toString() }}, { $set: { active: false }}, {multi: true});
+            Eventos.update({ _id: eId.toString() }, { $set: { active: true }});
+        } else {
+            console.log('Error:setActiveEvent: ' + error);
+        }
     },
 
     unSetActiveEvent: function(eId, user){
-        Meteor.call('userHasEvento',eId, user, function (error, result){
-            //Verifico que tenga los permisos necesarios para desactivar eventos
-            if(
-                (result && Roles.userIsInRole(user, ['admin'])) ||
-                Roles.userIsInRole(user, ['super-admin'])
-            ){
-                Eventos.update({ _id: eId.toString() }, { $set: { active: false }});
-            } else {
-                console.log('Error:unSetActiveEvent: ' + error);
-            }
-        });
+        //Verifico que tenga los permisos necesarios para desactivar eventos
+        if(
+            (Roles.userIsInRole(user, ['admin'])) ||
+            Roles.userIsInRole(user, ['super-admin'])
+        ){
+            Eventos.update({ _id: eId.toString() }, { $set: { active: false }});
+        } else {
+            console.log('Error:unSetActiveEvent: ' + error);
+        }
     },
 
     removeEvent: function(eId, user){
-        Meteor.call('userHasEvento',eId, user, function (error, result){
-            //Verifico que tenga los permisos necesarios para borrar eventos
-            if(
-                (result && Roles.userIsInRole(user, ['admin'])) ||
-                Roles.userIsInRole(user, ['super-admin'])
-            ){
-                Rooms.remove({ eventId: eId.toString() });
-                Eventos.remove({ _id: eId.toString() });
-            } else {
-                console.log('Error:removeEvent: ' + error);
-            }
-        });
+        //Verifico que tenga los permisos necesarios para borrar eventos
+        if(
+            (Roles.userIsInRole(user, ['admin'])) ||
+            Roles.userIsInRole(user, ['super-admin'])
+        ){
+            Rooms.remove({ eventId: eId.toString() });
+            Eventos.remove({ _id: eId.toString() });
+        } else {
+            console.log('Error:removeEvent: ' + error);
+        }
     },
 
-  setRegisterEvent: function(eId, user){
-    Meteor.call('userHasEvento',eId, user, function (error, result){
-      //Verifico que tenga los permisos necesarios para desactivar eventos
-      if(
-        (result && Roles.userIsInRole(user, ['admin'])) ||
-        Roles.userIsInRole(user, ['super-admin'])
-       ){
-        Eventos.update({ _id: eId.toString() }, { $set: { registracion: true }});
-      } else {
-        console.log('Error:setRegisterEvent: ' + error);
-      }
-    });
-  },
-
-  unSetRegisterEvent: function(eId, user){
-    Meteor.call('userHasEvento',eId, user, function (error, result){
-      //Verifico que tenga los permisos necesarios para desactivar eventos
-      if(
-        (result && Roles.userIsInRole(user, ['admin'])) ||
-        Roles.userIsInRole(user, ['super-admin'])
-       ){
-        Eventos.update({ _id: eId.toString() }, { $set: { registracion: false }});
-      } else {
-        console.log('Error:unSetRegisterEvent: ' + error);
-      }
-    });
-    if(eId){
-    }
-  },
-  setChismeEvent: function(eId, user){
-    Meteor.call('userHasEvento',eId, user, function (error, result){
-      //Verifico que tenga los permisos necesarios para desactivar eventos
-      if(
-        (result && Roles.userIsInRole(user, ['admin'])) ||
-        Roles.userIsInRole(user, ['super-admin'])
-       ){
-        Eventos.update({ _id: eId.toString() }, { $set: { chismografo: true }});
-      } else {
-        console.log('Error:setChismeEvent: ' + error);
-      }
-    });
-  },
-
-  unSetChismeEvent: function(eId, user){
-    Meteor.call('userHasEvento',eId, user, function (error, result){
-      //Verifico que tenga los permisos necesarios para desactivar eventos
-      if(
-        (result && Roles.userIsInRole(user, ['admin'])) ||
-        Roles.userIsInRole(user, ['super-admin'])
-       ){
-        Eventos.update({ _id: eId.toString() }, { $set: { chismografo: false }});
-      } else {
-        console.log('Error:unSetChismeEvent: ' + error);
-      }
-    });
-  },
-
-  refreshEventData: function(eId, user){
-    Meteor.call('userHasEvento',eId, user, function (error, result){
-
-      //Verifico que tenga los permisos necesarios para agregar eventos
-      if(result && Roles.userIsInRole(user, ['admin','super-admin'])){
-        var evento = Meteor.call('getEventInfo', eId);
-
-        if (evento.description){
-          evento.shortDescripcion = Trunc(evento.description,200,true);
-        }
-
-        Eventos.update({ _id:eId}, {$set: evento}, {upsert:true});
-      } else {
-        if(error){
-          console.log('Error:userHasEvento: ' + error);
+    setRegisterEvent: function(eId, user){
+        //Verifico que tenga los permisos necesarios para desactivar eventos
+        if(
+            (Roles.userIsInRole(user, ['admin'])) ||
+            Roles.userIsInRole(user, ['super-admin'])
+        ){
+            Eventos.update({ _id: eId.toString() }, { $set: { registracion: true }});
         } else {
-          console.log('Error:addNewEvent: not allowed');
+            console.log('Error:setRegisterEvent: ' + error);
         }
+    },
 
-      }
-    });
-  },
+    unSetRegisterEvent: function(eId, user){
+        //Verifico que tenga los permisos necesarios para desactivar eventos
+        if(
+            (Roles.userIsInRole(user, ['admin'])) ||
+            Roles.userIsInRole(user, ['super-admin'])
+        ){
+            Eventos.update({ _id: eId.toString() }, { $set: { registracion: false }});
+        } else {
+            console.log('Error:unSetRegisterEvent: ' + error);
+        }
+    },
+    setChismeEvent: function(eId, user){
+        //Verifico que tenga los permisos necesarios para desactivar eventos
+        if(
+            (Roles.userIsInRole(user, ['admin'])) ||
+            Roles.userIsInRole(user, ['super-admin'])
+        ){
+            Eventos.update({ _id: eId.toString() }, { $set: { chismografo: true }});
+        } else {
+            console.log('Error:setChismeEvent: ' + error);
+        }
+    },
+
+    unSetChismeEvent: function(eId, user){
+        //Verifico que tenga los permisos necesarios para desactivar eventos
+        if(
+            (Roles.userIsInRole(user, ['admin'])) ||
+            Roles.userIsInRole(user, ['super-admin'])
+        ){
+            Eventos.update({ _id: eId.toString() }, { $set: { chismografo: false }});
+        } else {
+            console.log('Error:unSetChismeEvent: ' + error);
+        }
+    },
+
+    refreshEventData: function(eId, user){
+
+        //Verifico que tenga los permisos necesarios para agregar eventos
+        if(Roles.userIsInRole(user, ['admin','super-admin'])){
+            var evento = Meteor.call('getEventInfo', eId);
+
+            if (evento.description){
+                evento.shortDescripcion = Trunc(evento.description,200,true);
+            }
+
+            Eventos.update({ _id:eId}, {$set: evento}, {upsert:true});
+        } else {
+            if(error){
+                console.log('Error:userHasEvento: ' + error);
+            } else {
+                console.log('Error:addNewEvent: not allowed');
+            }
+
+        }
+    },
 });

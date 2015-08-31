@@ -47,6 +47,9 @@ Meteor.publish('allUsersData', function(userId){
       fields: {
         '_id': 1,
         'profile': 1,
+        'eventos': 1,
+        'pago': 1,
+        'sena': 1,
         'services.facebook.id': 1
       }
     });
@@ -56,6 +59,9 @@ Meteor.publish('allUsersData', function(userId){
         '_id': 1,
         'profile.nombre': 1,
         'profile.name': 1,
+        'eventos': 1,
+        'pago': 1,
+        'sena': 1,
         'services.facebook.id': 1
       }
     });

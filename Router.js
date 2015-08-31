@@ -101,6 +101,7 @@ Router.route('/habitaciones', {
     action: function () {
         if (this.ready()) {
             Session.set('event-active', Eventos.find({active:true}).count() == 1);
+            Session.set('event-id', Eventos.findOne({active:true})._id);
             this.render('roomsList', {
                 data: function () {
                     return Eventos.findOne({active:true});
@@ -120,6 +121,7 @@ Router.route('/micros', {
     action: function () {
         if (this.ready()) {
             Session.set('event-active', Eventos.find({active:true}).count() == 1);
+            Session.set('event-id', Eventos.findOne({active:true})._id);
             this.render('busesList', {
                 data: function () {
                     return Eventos.findOne({active:true});
