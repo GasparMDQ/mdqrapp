@@ -2,25 +2,25 @@
     <div class="jumbotron">
         <div class="container">
             {{#unless isEventSet }}
-            <div class="alert alert-block alert-danger">
-                Todavía no nos decidimos a dónde viajar!
-            </div>
-            {{ else }}
-            <div class="row">
-                <p>
-                    Nuestro próximo viaje es a <strong>{{ this.name }}</strong>
-                </p>
-            </div>
-            {{/unless}}
-            {{#unless seniaPaga}}
                 <div class="alert alert-block alert-danger">
-                    Paga la seña para asegurarte un lugar en el viaje!
+                    Todavía no nos decidimos a dónde viajar!
                 </div>
-            {{else}}
-                {{#unless totalPago}}
-                    <div class="alert alert-block alert-info">
-                        Completa el pago para poder elegir tu habitación y el lugar en el micro
+            {{ else }}
+                <div class="row">
+                    <p>
+                        Nuestro próximo viaje es a <strong>{{ this.name }}</strong>
+                    </p>
+                </div>
+                {{#unless seniaPaga}}
+                    <div class="alert alert-block alert-danger">
+                        Paga la seña para asegurarte un lugar en el viaje!
                     </div>
+                {{else}}
+                    {{#unless totalPago}}
+                        <div class="alert alert-block alert-info">
+                            Completa el pago para poder elegir tu habitación y el lugar en el micro
+                        </div>
+                    {{/unless}}
                 {{/unless}}
             {{/unless}}
             <div class="row">
