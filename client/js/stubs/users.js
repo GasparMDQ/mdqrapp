@@ -20,6 +20,9 @@ if (Meteor.isClient) {
         togglePagoUser: function(user){
             Meteor.users.update({ '_id': user._id }, { $set: { 'pago': !user.pago }});
         },
+        toggleSenaUser: function(user){
+            Meteor.users.update({ '_id': user._id }, { $set: { 'sena': !user.sena }});
+        },
 
     });
 }

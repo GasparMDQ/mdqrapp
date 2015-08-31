@@ -104,6 +104,19 @@ Meteor.methods({
         }
 
     },
+    toggleSenaUser: function(user){
+        if(
+            (Roles.userIsInRole(Meteor.user(), ['admin'])) ||
+            Roles.userIsInRole(Meteor.user(), ['super-admin'])
+        ){
+            if(!user.hasOwnProperty('sena')) { user.sena = false; }
+            Meteor.users.update({ '_id': user._id }, { $set: { 'sena': !user.sena }});
+        } else {
+            throw new Meteor.Error("not-allowed",
+              "El usuario no tiene permisos para editar señas");
+        }
+
+    },
     userAddEvent: function(data){
         var eventos = Meteor.user().eventos;
         eventos.push(data.eventId);
@@ -120,7 +133,8 @@ Meteor.methods({
             eventos.splice(index, 1);
             Meteor.users.update({_id:Meteor.user()._id}, {$set: {
                 "eventos": _.uniq(eventos),
-                "pago": false
+                "pago": false,
+                "sena": false
             }});
 
             // Checkout del cuarto

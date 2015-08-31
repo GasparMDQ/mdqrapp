@@ -5,6 +5,11 @@ if (Meteor.isClient) {
                 if (error) { alert(error.message); }
             });
         },
+        'click .js-sena-toggle': function (e) {
+            Meteor.call('toggleSenaUser', this, function (error, result){
+                if (error) { alert(error.message); }
+            });
+        },
         'click .js-remove-pax' : function (e) {
             e.preventDefault();
             if (confirm('Esta seguro que desea eliminar a este usuario del evento?\n(se borraran sus reservas de micro y habitacion)')) {

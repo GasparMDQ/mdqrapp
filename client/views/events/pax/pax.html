@@ -4,12 +4,15 @@
             <img src="{{this.profile.picture}}" class="headerTinymanPhoto">
             {{ this.profile.name}}
         </p>
-      <button type="button" class="btn btn-{{#if this.pago }}success{{else}}danger{{/if}} btn-sm js-pago-toggle">
-          <span class="glyphicon glyphicon-usd"></span>
-      </button>
-      <button type="button" class="btn btn-danger btn-sm js-remove-pax">
-          <span class="glyphicon glyphicon-minus"></span>
-      </button>
+        <button type="button" class="btn btn-{{#if this.sena }}success{{else}}danger{{/if}} btn-sm js-sena-toggle">
+            <span class="glyphicon glyphicon-usd"></span> Seña
+        </button>
+        <button type="button" class="btn btn-{{#if this.pago }}success{{else}}danger{{/if}} btn-sm js-pago-toggle">
+            <span class="glyphicon glyphicon-usd"></span> Pago Total
+        </button>
+        <button type="button" class="btn btn-danger btn-sm js-remove-pax">
+            <span class="glyphicon glyphicon-minus"></span>
+        </button>
     </div>
 </template>
 

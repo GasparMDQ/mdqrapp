@@ -13,6 +13,10 @@ if (Meteor.isClient) {
             return Meteor.user().pago;
         },
 
+        seniaPaga: function () {
+            return Meteor.user().sena;
+        },
+
         isRoomSelected: function () {
             //Buscar si el usuario tiene una habitacion seleccionada en el evento activo
             var results = Rooms.findOne({

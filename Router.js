@@ -24,13 +24,6 @@ var isAbleToChoose = function(){
     }
     this.next();
 };
-//
-// var mustBeAttending = function(){
-//     if(!Session.get('event-attending')){
-//         this.redirect('viajesHome');
-//     }
-//     this.next();
-// };
 
 var setProfileStatus = function(){
     //Verifica el estado del perfil
@@ -44,41 +37,12 @@ var setProfileStatus = function(){
     this.next();
 };
 
-// var setEventOptions = function(){
-//     //Verifica que haya un evento activo y lo setea
-//     if(Eventos.find({active:true}).count() == 1){
-//         var evento = Eventos.findOne({active:true});
-//         Session.set('event-active', evento._id);
-//         Session.set('event-registracion', evento.registracion);
-//         Session.set('event-chismografo', evento.chismografo);
-//
-//         //Verifica que el usuario asista al evento activo
-//         Meteor.call('userAttendingEvento', Session.get('event-active'), Meteor.user(), function(error,result){
-//             if(!error){
-//                 Session.set('event-attending', result);
-//             } else {
-//                 Session.set('event-attending', false);
-//             }
-//         });
-//     } else {
-//         Session.set('event-active', false);
-//         Session.set('event-attending', false);
-//         Session.set('event-chismografo', false);
-//         Session.set('event-registracion', false);
-//     }
-//     this.next();
-// };
-
-
 //Global rules
 Router.onBeforeAction(mustBeSignedIn, {except: ['home']});
 Router.onBeforeAction(mustBeAdmin, {only: ['admin', 'newEvent']});
 
-//Router.onBeforeAction(setEventOptions, {only: ['viajesHome', 'roomsList', 'busesList']});
 Router.onBeforeAction(setProfileStatus, {only: ['viajesHome', 'roomsList', 'busesList']});
 Router.onBeforeAction(isAbleToChoose, {only: ['roomsList', 'busesList']});
-//Router.onBeforeAction(mustBeAttending, {only: ['roomsList', 'busesList']});
-
 
 Router.route('/', function () {
         this.render('home', {});
