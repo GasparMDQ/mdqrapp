@@ -11,5 +11,5 @@ Tracker.autorun(function(){
 });
 
 Tracker.autorun(function(){
-    Meteor.subscribe('roomsAndBuses', Session.get('event-active'), Meteor.user());
+    Meteor.subscribe('roomsAndBuses', Session.get('event-id'), Meteor.user());
 });
