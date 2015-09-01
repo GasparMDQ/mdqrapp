@@ -28,7 +28,7 @@ Accounts.onCreateUser(function(options, user) {
 
 Accounts.onLogin(function(info) {
     var user = info.user;
-    if(typeof user.profile !== 'undefined' && typeof user.id !== 'undefined') {
+    if(typeof user.profile !== 'undefined' && typeof user._id !== 'undefined') {
         var picture = getFbPicture(user.services.facebook.accessToken);
         if (user.profile.picture !== picture){
             Meteor.users.update({_id: user._id}, {$set: {'profile.picture': picture}});
