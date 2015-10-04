@@ -1,0 +1,37 @@
+<template name="rowEdit">
+    {{#if elementos}}
+        {{> rowShow elementos }}
+    {{else}}
+        <div class="alert alert-danger">
+            <p> #{{this.index}} Fila vacia</p>
+        </div>
+    {{/if}}
+    {{> rowOptions}}
+</template>
+
+<template name="rowOptions">
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-default btn-xs js-row-action" data-value="A" >A</button>
+      <button type="button" class="btn btn-default btn-xs js-row-action" data-value="P" >P</button>
+      <button type="button" class="btn btn-default btn-xs js-row-action" data-value="E" >E</button>
+      <button type="button" class="btn btn-default btn-xs js-row-action" data-value="B" >B</button>
+      <button type="button" class="btn btn-default btn-xs js-row-action" data-value="C" >C</button>
+    </div>
+    <button type="button" class="btn btn-default btn-xs js-row-action" data-value="clear" >Borrar Elementos</button>
+    <button type="button" class="btn btn-danger btn-sm js-remove-row-bus">
+        <span class="glyphicon glyphicon-minus"></span>
+    </button>
+</template>
+
+<template name="rowShow">
+    <div class="element window"></div>
+    {{#each this}}
+        <div class="element {{classElement}}">
+            {{# if isAsiento}}
+                <img src="{{picture}}" class="picture">
+            {{/if}}
+        </div>
+    {{/each}}
+    <div class="element window"></div>
+    <div class="element last"></div>
+</template>

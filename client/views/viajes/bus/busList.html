@@ -24,20 +24,13 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              {{#each this.pax }}
-                {{> paxBusDetail}}
-              {{/each}}
-              {{#unless isFull }}
-                <div class="btn-group">
-                  <button type="button" class="btn btn-default js-check-in"><span class="glyphicon glyphicon-plus"></span></button>
-                </div>
-              {{/unless }}
-
+              <div class="well bus-row">
+                  {{#each filas}}
+                    {{> rowShow elementos }}
+                  {{/each}}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-sm-4 col-sm-offset-3">
-          <h2><small>Plazas disponibles</small> <span class="badge">{{ plazasDisponibles }}</span></h2>
         </div>
       </div>
     </div>

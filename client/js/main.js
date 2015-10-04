@@ -13,3 +13,7 @@ Tracker.autorun(function(){
 Tracker.autorun(function(){
     Meteor.subscribe('roomsAndBuses', Session.get('event-id'), Meteor.user());
 });
+
+Tracker.autorun(function(){
+    Meteor.subscribe('rowsAndSeats', Session.get('event-id'), Meteor.user());
+});

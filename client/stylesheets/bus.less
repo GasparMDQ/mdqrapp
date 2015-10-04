@@ -1,0 +1,132 @@
+@banio-1:rgb(0, 208, 152);
+@banio-2:rgb(128, 213, 69);
+
+@escalera-1:rgb(255, 255, 255);
+@escalera-2:rgb(166, 166, 166);
+
+@cafe-1:rgb(128, 64, 0);
+@cafe-2:rgb(156, 81, 7);
+
+.RoundBorders {
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+}
+
+.bus-row {
+    div.element {
+        width: 40px;
+        height: 40px;
+        float: left;
+        margin: 0px 1px;
+
+        &.window {
+            width: 5px;
+            background-color: rgb(28, 184, 237);
+        }
+
+        &.cafe {
+            .RoundBorders;
+            background: repeating-linear-gradient(
+              90deg,
+              @cafe-1,
+              @cafe-1 10%,
+              @cafe-2 10%,
+              @cafe-2 20%,
+              @cafe-1 20%,
+              @cafe-1 30%,
+              @cafe-2 30%,
+              @cafe-2 40%,
+              @cafe-1 40%,
+              @cafe-1 50%,
+              @cafe-2 50%,
+              @cafe-2 60%,
+              @cafe-1 60%,
+              @cafe-1 70%,
+              @cafe-2 70%,
+              @cafe-2 80%,
+              @cafe-1 80%,
+              @cafe-1 90%,
+              @cafe-2 90%,
+              @cafe-2
+            );
+        }
+
+        &.escalera {
+            background: linear-gradient(
+              to bottom,
+              @escalera-1,
+              @escalera-1 10%,
+              @escalera-2 10%,
+              @escalera-2 20%,
+              @escalera-1 20%,
+              @escalera-1 30%,
+              @escalera-2 30%,
+              @escalera-2 40%,
+              @escalera-1 40%,
+              @escalera-1 50%,
+              @escalera-2 50%,
+              @escalera-2 60%,
+              @escalera-1 60%,
+              @escalera-1 70%,
+              @escalera-2 70%,
+              @escalera-2 80%,
+              @escalera-1 80%,
+              @escalera-1 90%,
+              @escalera-2 90%,
+              @escalera-2
+            );
+        }
+
+        &.bano {
+            .RoundBorders;
+            background: repeating-linear-gradient(
+              45deg,
+              @banio-1,
+              @banio-1 10%,
+              @banio-2 10%,
+              @banio-2 20%,
+              @banio-1 20%,
+              @banio-1 30%,
+              @banio-2 30%,
+              @banio-2 40%,
+              @banio-1 40%,
+              @banio-1 50%,
+              @banio-2 50%,
+              @banio-2 60%,
+              @banio-1 60%,
+              @banio-1 70%,
+              @banio-2 70%,
+              @banio-2 80%,
+              @banio-1 80%,
+              @banio-1 90%,
+              @banio-2 90%,
+              @banio-2
+            );
+        }
+
+        &.asiento {
+            border: 1px;
+            border-style: dashed;
+            border-color: rgb(0, 0, 0);
+            border-radius: 5px 5px 0px 0px;
+            background-color: rgb(128, 128, 128);
+            overflow: hidden;
+            height: 38px;
+            margin-top: 2px;
+            &.ocupado {
+                background-color: rgb(201, 32, 32);
+            }
+            .picture {
+                height: 38px;
+                width: 38px;
+            }
+
+
+        }
+
+        &.last {
+            float: none;
+        }
+    }
+}

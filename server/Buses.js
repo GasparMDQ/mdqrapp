@@ -2,8 +2,6 @@ var isBusValid = function (busData){
     if(busData) {
         if(!busData.id || busData.id === ''){ return false; }
         if(!busData.descripcion  || busData.descripcion === '' ){ return false; }
-        if(!busData.cupo || busData.cupo === '' ){ return false; }
-        if(busData.cupo < 0) { return false; }
         return true;
     }
     return false;
@@ -34,8 +32,7 @@ Meteor.methods({
                     { _id:busData._id},
                     { $set: {
                         'id': busData.id,
-                        'descripcion': busData.descripcion,
-                        'cupo': busData.cupo
+                        'descripcion': busData.descripcion
                     }}
                 );
             } else {
@@ -52,6 +49,7 @@ Meteor.methods({
     removeBus: function(rId, eId, user){
         //Verifico que tenga los permisos necesarios para editar el eventos
         if(Roles.userIsInRole(user, ['admin','super-admin'])){
+            Rows.remove ({ 'busId': rId});
             Buses.remove({ _id: rId.toString() });
         } else {
             console.log('Error:removeBus: ' + error);

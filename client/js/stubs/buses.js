@@ -4,7 +4,6 @@ if (Meteor.isClient) {
             if(eId && busData){
                 if(!busData.id || busData.id === ''){ return false; }
                 if(!busData.descripcion  || busData.descripcion === '' ){ return false; }
-                if(!busData.cupo || busData.cupo === '' ){ return false; }
                 Buses.insert(busData);
             }
         },
@@ -12,13 +11,11 @@ if (Meteor.isClient) {
             if(bId && busData){
                 if(!busData.id || busData.id === ''){ return false; }
                 if(!busData.descripcion  || busData.descripcion === '' ){ return false; }
-                if(!busData.cupo || busData.cupo === '' ){ return false; }
                 Buses.update(
                     { _id:busData._id},
                     { $set: {
                         'id': busData.id,
-                        'descripcion': busData.descripcion,
-                        'cupo': busData.cupo
+                        'descripcion': busData.descripcion
                     }}
                 );
             }
