@@ -5,14 +5,6 @@ if (Meteor.isClient) {
         }
     });
     Template.busDetail.helpers({
-        isFull: function () {
-            return this.cupo - this.pax.length <= 0;
-        },
-
-        plazasDisponibles: function () {
-            return this.cupo - this.pax.length < 0 ? 0:this.cupo - this.pax.length;
-        },
-
         filas: function () {
             return Rows.find({'busId': this._id}, {sort: { 'index': 1}});
         },

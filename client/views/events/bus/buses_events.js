@@ -39,7 +39,6 @@ if (Meteor.isClient) {
 
         'click .js-add-row-bus' : function (e) {
             e.preventDefault();
-            console.log(this);
             var response = Meteor.call('addRowToBus', this._id, Session.get('edit-event'), Meteor.user(), function (error, result){
                 if (error) {
                     alert(error.message);
