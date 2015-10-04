@@ -8,7 +8,6 @@ if (Meteor.isClient) {
             var busData = {
                 id: $('#busId').val(),
                 descripcion: $('#busDesc').val(),
-                cupo: parseInt($('#busQty').val()),
                 eventId : Session.get('edit-event'),
                 pax: []
             };
@@ -21,7 +20,6 @@ if (Meteor.isClient) {
             });
             $('#busId').val('');
             $('#busDesc').val('');
-            $('#busQty').val('');
         },
     });
 
@@ -39,6 +37,16 @@ if (Meteor.isClient) {
             }
         },
 
+        'click .js-add-row-bus' : function (e) {
+            e.preventDefault();
+            console.log(this);
+            var response = Meteor.call('addRowToBus', this._id, Session.get('edit-event'), Meteor.user(), function (error, result){
+                if (error) {
+                    alert(error.message);
+                }
+            });
+        },
+
         'click .js-update-bus' : function (e) {
             e.preventDefault();
             var updateBtn = $(e.target).closest('div.js-bus').find('button.js-update-bus').first();
@@ -48,7 +56,6 @@ if (Meteor.isClient) {
                 _id: $(e.target).closest('div.js-bus').data('bus'),
                 id: $(e.target).closest('div.js-bus').find('input.js-bus-id').val(),
                 descripcion: $(e.target).closest('div.js-bus').find('input.js-bus-desc').val(),
-                cupo: parseInt($(e.target).closest('div.js-bus').find('input.js-bus-qty').val()),
                 eventId : Session.get('edit-event')
             };
 

@@ -99,8 +99,27 @@ Meteor.publish('roomsAndBuses', function(eventId, userId){
 
   if (eventId){
     return [
-      Rooms.find( {'eventId': eventId }),
-      Buses.find( {'eventId': eventId })
+        Rooms.find( {'eventId': eventId }),
+        Buses.find( {'eventId': eventId })
+    ];
+  }
+
+  this.stop();
+  return;
+});
+
+Meteor.publish('rowsAndSeats', function(eventId, userId){
+  if (Roles.userIsInRole(userId, ['super-admin', 'admin'])){
+    return [
+      Seats.find(),
+      Rows.find()
+    ];
+  }
+
+  if (eventId){
+    return [
+        Seats.find( {'eventId': eventId }),
+        Rows.find( {'eventId': eventId })
     ];
   }
 

@@ -11,7 +11,16 @@ if (Meteor.isClient) {
 
         plazasDisponibles: function () {
             return this.cupo - this.pax.length < 0 ? 0:this.cupo - this.pax.length;
+        },
+
+        filas: function () {
+            return Rows.find({'busId': this._id}, {sort: { 'index': 1}});
+        },
+
+        elementos: function () {
+            return _.sortBy(this.elements, function(e) { return e.index; });
         }
+
     });
     Template.paxBusDetail.helpers({
         user: function () {
