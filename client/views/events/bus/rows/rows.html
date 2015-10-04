@@ -28,7 +28,7 @@
     {{#each this}}
         <div class="element {{classElement}}">
             {{# if isAsiento}}
-                <img src="{{picture}}" class="picture">
+                <img src="https://graph.facebook.com/{{ user.services.facebook.id }}/picture" class="picture"  alt="{{ user.profile.nombre }}" title="{{ user.profile.nombre }}">
             {{/if}}
         </div>
     {{/each}}

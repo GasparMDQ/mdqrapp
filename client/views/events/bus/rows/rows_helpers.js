@@ -31,9 +31,8 @@ if (Meteor.isClient) {
         isAsiento: function() {
             return 'pax' in this && this.pax !== '';
         },
-        picture: function() {
-            pax =  Meteor.users.findOne({'_id': this.pax});
-            return pax.profile.picture;
+        user: function() {
+            return  Meteor.users.findOne({'_id': this.pax});
         }
     });
 }
