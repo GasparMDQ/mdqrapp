@@ -4,8 +4,8 @@
   </h3>
   <div>
   <p>
-    Total de inscriptos: 
-    <span> {{ pax.length }} </span>
+    Total de inscriptos:
+    <span> {{ pax.count }} </span>
   </p>
   </div>
   <table class="table table-hover">
@@ -18,6 +18,8 @@
         <th>Teléfono</th>
         <th>Contacto de Emergencia</th>
         <th>Obra Social</th>
+        <th>Señó</th>
+        <th>Pago Total</th>
         <th>Micro</th>
         <th>Habitación</th>
       </tr>
@@ -34,14 +36,16 @@
 <template name="paxReportDetail">
   <tr>
     <td>
-      <img src="https://graph.facebook.com/{{ user.services.facebook.id }}/picture" class="headerTinymanPhoto js-check-out"  alt="{{ user.profile.nombre }}" title="{{ user.profile.nombre }}" data-profile="{{ user._id }}">
+      <img src="https://graph.facebook.com/{{ this.services.facebook.id }}/picture" class="headerTinymanPhoto"  alt="{{ this.profile.nombre }}" title="{{ yhis.profile.nombre }}" data-profile="{{ this._id }}">
     </td>
-    <td>{{ user.profile.nombre }}</td>
-    <td>{{ user.profile.apellido }}</td>
-    <td>{{ user.profile.documento }}</td>
-    <td>{{ user.profile.telefono }}</td>
-    <td>{{ user.profile.telefonoEmergencia }}</td>
-    <td>{{ user.profile.obraSocial }}</td>
+    <td>{{ this.profile.nombre }}</td>
+    <td>{{ this.profile.apellido }}</td>
+    <td>{{ this.profile.documento }}</td>
+    <td>{{ this.profile.telefono }}</td>
+    <td>{{ this.profile.telefonoEmergencia }}</td>
+    <td>{{ this.profile.obraSocial }}</td>
+    <td>{{#if this.sena }}Si{{else}}No{{/if}}</td>
+    <td>{{#if this.pago }}Si{{else}}No{{/if}}</td>
     <td>{{ busDescripcion }}</td>
     <td>{{ roomDescripcion }}</td>
   </tr>

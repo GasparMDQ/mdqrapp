@@ -178,6 +178,25 @@ Router.route('/eventos/edit/:_id', {
     name: 'editEvent'
 });
 
+Router.route('/eventos/edit/:_id/report', {
+    waitOn: function () {
+        return Meteor.subscribe('events', Meteor.user());
+    },
+    action: function () {
+        if (this.ready()) {
+            Session.set('edit-event', this.params._id);
+            this.render('eventReport', {
+                data: function () {
+                    return Eventos.findOne({_id: this.params._id});
+                }
+            });
+        } else {
+            this.render('Loading');
+        }
+    },
+    name: 'eventReport'
+});
+
 /*
 Router.map(function () {
 
