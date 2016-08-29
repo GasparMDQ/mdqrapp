@@ -19,7 +19,7 @@
 </template>
 
 <template name="eventPaxList">
-    <h3>Asistentes</h3>
+    <h3>Asistentes {{#if hasPax}}<span class="badge">{{paxCount}}</span>{{/if}}</h3>
     {{#if hasPax}}
         <table class="table">
             <thead>

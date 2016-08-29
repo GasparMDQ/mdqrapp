@@ -5,6 +5,9 @@ if (Meteor.isClient) {
         },
         pax: function () {
             return Meteor.users.find({'eventos': this._id}, {sort: { 'profile.name': 1}});
+        },
+        paxCount: function () {
+            return Meteor.users.find({'eventos': this._id}, {sort: { 'profile.name': 1}}).count();
         }
     });
 }

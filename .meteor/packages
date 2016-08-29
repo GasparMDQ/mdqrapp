@@ -8,7 +8,6 @@ insecure
 iron:router
 twbs:bootstrap
 fortawesome:fontawesome
-msavin:mongol
 alanning:roles
 less
 mike:mocha
