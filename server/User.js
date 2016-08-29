@@ -121,7 +121,8 @@ Meteor.methods({
         eventos.push(data.eventId);
         Meteor.users.update({_id:Meteor.user()._id}, {$set: {
             "eventos": _.uniq(eventos),
-            "pago": false
+            "pago": false,
+            "sena": false
         }});
     },
     userRemoveEvent: function(data){

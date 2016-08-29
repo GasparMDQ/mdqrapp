@@ -19,7 +19,6 @@ caching-html-compiler@1.0.2
 callback-hook@1.0.4
 check@1.0.6
 coffeescript@1.0.10
-dburles:mongo-collection-instances@0.3.4
 ddp@1.2.2
 ddp-client@1.2.1
 ddp-common@1.2.1
@@ -30,7 +29,6 @@ diff-sequence@1.0.1
 ecmascript@0.1.5
 ecmascript-collections@0.1.6
 ejson@1.0.7
-email@1.0.7
 facebook@1.2.2
 fastclick@1.0.7
 fortawesome:fontawesome@4.4.0
@@ -50,7 +48,6 @@ iron:middleware-stack@1.1.0
 iron:router@1.0.13
 iron:url@1.0.11
 jquery@1.11.4
-lai:collection-extensions@0.1.4
 launch-screen@1.0.4
 less@2.5.0_3
 livedata@1.0.15
@@ -60,7 +57,6 @@ meteor@1.1.9
 meteor-base@1.0.1
 meteorhacks:async@1.0.0
 meteorhacks:npm@1.5.0
-meteortoys:toykit@1.0.3
 mike:mocha@0.6.4
 mike:mocha-core@0.1.0
 minifiers@1.1.7
@@ -71,7 +67,6 @@ momentjs:moment@2.10.6
 mongo@1.1.2
 mongo-id@1.0.1
 mrt:bootstrap-switch@1.9.0
-msavin:mongol@1.2.0
 npm-container@1.2.0
 npm-mongo@1.4.39_1
 oauth@1.1.6
