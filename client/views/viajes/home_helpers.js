@@ -20,24 +20,25 @@ if (Meteor.isClient) {
         isRoomSelected: function () {
             //Buscar si el usuario tiene una habitacion seleccionada en el evento activo
             var results = Rooms.findOne({
-                'pax': { $in: [Meteor.user()._id] },
+                'pax': {$in: [Meteor.user()._id]},
                 'eventId': this._id
             });
 
-            if(results) {
+            if (results) {
                 return true;
             }
             return false;
         },
 
         isBusSelected: function () {
-            //Buscar si el usuario tiene una habitacion seleccionada en el evento activo
-            var results = Buses.findOne({
-                'pax': { $in: [Meteor.user()._id] },
-                'eventId': this._id
+            //Buscar si el usuario tiene un asiento seleccionado en el evento activo
+
+            var results = Rows.findOne({
+                'eventId': this._id,
+                'elements.pax': Meteor.user()._id
             });
 
-            if(results) {
+            if (results) {
                 return true;
             }
             return false;
