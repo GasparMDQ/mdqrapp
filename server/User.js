@@ -1,12 +1,12 @@
 Meteor.methods({
     hasProfileComplete: function(user){
         if(user && user.profile) {
-            if(!user.profile.nombre || user.profile.nombre === ''){ return false; }
-            if(!user.profile.apellido  || user.profile.apellido === '' ){ return false; }
-            if(!user.profile.documento || user.profile.documento === '' ){ return false; }
-            if(!user.profile.telefono  || user.profile.telefono === '' ){ return false; }
-            if(!user.profile.telefonoEmergencia || user.profile.telefonoEmergencia === '' ){ return false; }
-            if(!user.profile.obraSocial || user.profile.obraSocial === '' ){ return false; }
+            if(!user.profile.nombre || user.profile.nombre === ""){ return false; }
+            if(!user.profile.apellido  || user.profile.apellido === "" ){ return false; }
+            if(!user.profile.documento || user.profile.documento === "" ){ return false; }
+            if(!user.profile.telefono  || user.profile.telefono === "" ){ return false; }
+            if(!user.profile.telefonoEmergencia || user.profile.telefonoEmergencia === "" ){ return false; }
+            if(!user.profile.obraSocial || user.profile.obraSocial === "" ){ return false; }
             return true;
         }
         return false;
@@ -15,12 +15,12 @@ Meteor.methods({
     isProfileValid: function(user){
         if(user && user.profile) {
 
-            if(!user.profile.nombre || user.profile.nombre === ''){ return false; }
-            if(!user.profile.apellido  || user.profile.apellido === '' ){ return false; }
-            if(!user.profile.documento || user.profile.documento === '' ){ return false; }
-            if(!user.profile.telefono  || user.profile.telefono === '' ){ return false; }
-            if(!user.profile.telefonoEmergencia || user.profile.telefonoEmergencia === '' ){ return false; }
-            if(!user.profile.obraSocial || user.profile.obraSocial === '' ){ return false; }
+            if(!user.profile.nombre || user.profile.nombre === ""){ return false; }
+            if(!user.profile.apellido  || user.profile.apellido === "" ){ return false; }
+            if(!user.profile.documento || user.profile.documento === "" ){ return false; }
+            if(!user.profile.telefono  || user.profile.telefono === "" ){ return false; }
+            if(!user.profile.telefonoEmergencia || user.profile.telefonoEmergencia === "" ){ return false; }
+            if(!user.profile.obraSocial || user.profile.obraSocial === "" ){ return false; }
 
             if(!parseInt(user.profile.documento)){ return false; }
             if(!parseInt(user.profile.telefono)){ return false; }
@@ -56,8 +56,8 @@ Meteor.methods({
 
     userHasRoom: function(eId, user) {
         var results = Rooms.findOne({
-            'pax': { $in: [user._id] },
-            'eventId': eId
+            "pax": { $in: [user._id] },
+            "eventId": eId
         });
         if(results) {
             return true;
@@ -67,8 +67,8 @@ Meteor.methods({
 
     userHasBus: function(eId, user) {
         var results = Buses.findOne({
-            'pax': { $in: [user._id] },
-            'eventId': eId
+            "pax": { $in: [user._id] },
+            "eventId": eId
         });
 
         if(results) {
@@ -78,7 +78,7 @@ Meteor.methods({
     },
 
     userAttendingEvento: function(eId, user) {
-        var results = Meteor.call('getUserAttendingEvents',user);
+        var results = Meteor.call("getUserAttendingEvents",user);
         if(results.data){
             for (var i = 0; i < results.data.length; i++) {
                 if(eId === results.data[i].id) {
@@ -92,11 +92,11 @@ Meteor.methods({
     },
     togglePagoUser: function(user){
         if(
-            (Roles.userIsInRole(Meteor.user(), ['admin'])) ||
-            Roles.userIsInRole(Meteor.user(), ['super-admin'])
+            (Roles.userIsInRole(Meteor.user(), ["admin"])) ||
+            Roles.userIsInRole(Meteor.user(), ["super-admin"])
         ){
-            if(!user.hasOwnProperty('pago')) { user.pago = false; }
-            Meteor.users.update({ '_id': user._id }, { $set: { 'pago': !user.pago }});
+            if(!user.hasOwnProperty("pago")) { user.pago = false; }
+            Meteor.users.update({ "_id": user._id }, { $set: { "pago": !user.pago }});
         } else {
             throw new Meteor.Error("not-allowed",
               "El usuario no tiene permisos para editar pagos");
@@ -105,11 +105,11 @@ Meteor.methods({
     },
     toggleSenaUser: function(user){
         if(
-            (Roles.userIsInRole(Meteor.user(), ['admin'])) ||
-            Roles.userIsInRole(Meteor.user(), ['super-admin'])
+            (Roles.userIsInRole(Meteor.user(), ["admin"])) ||
+            Roles.userIsInRole(Meteor.user(), ["super-admin"])
         ){
-            if(!user.hasOwnProperty('sena')) { user.sena = false; }
-            Meteor.users.update({ '_id': user._id }, { $set: { 'sena': !user.sena }});
+            if(!user.hasOwnProperty("sena")) { user.sena = false; }
+            Meteor.users.update({ "_id": user._id }, { $set: { "sena": !user.sena }});
         } else {
             throw new Meteor.Error("not-allowed",
               "El usuario no tiene permisos para editar señas");
@@ -126,13 +126,13 @@ Meteor.methods({
         }});
     },
     userRemoveEvent: function(data){
-        var user = Meteor.users.findOne({'_id': data.userId});
+        var user = Meteor.users.findOne({"_id": data.userId});
         var eventos = user.eventos;
         var index = _.indexOf(eventos, data.eventId);
 
         if (index > -1) {
             eventos.splice(index, 1);
-            Meteor.users.update({'_id':data.userId}, {$set: {
+            Meteor.users.update({"_id":data.userId}, {$set: {
                 "eventos": _.uniq(eventos),
                 "pago": false,
                 "sena": false
@@ -140,20 +140,27 @@ Meteor.methods({
 
             // Checkout del cuarto
             var room = Rooms.findOne({
-                'pax': { $in: [data.userId] },
-                'eventId': data.eventId
+                "pax": { $in: [data.userId] },
+                "eventId": data.eventId
             });
             if(room) {
-                Rooms.update( { '_id': room._id }, { $pull: { 'pax': data.userId } } );
+                Rooms.update( { "_id": room._id }, { $pull: { "pax": data.userId } } );
             }
 
             // Checkout del micro
-            var bus = Buses.findOne({
-                'pax': { $in: [data.userId] },
-                'eventId': data.eventId
+            var bus = Rows.findOne({
+                "eventId": data.eventId,
+                "elements.pax": Meteor.user()._id
             });
             if(bus) {
-                Buses.update( { '_id': bus._id }, { $pull: { 'pax': data.userId } } );
+                Rows.update(
+                    {"_id": bus._id, "elements.pax": Meteor.user()._id},
+                    {
+                        "$set": {
+                            "elements.$.pax": ""
+                        }
+                    }
+                );
             }
 
         }
