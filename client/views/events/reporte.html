@@ -36,7 +36,7 @@
 <template name="paxReportDetail">
   <tr>
     <td>
-      <img src="https://graph.facebook.com/{{ this.services.facebook.id }}/picture" class="headerTinymanPhoto"  alt="{{ this.profile.nombre }}" title="{{ yhis.profile.nombre }}" data-profile="{{ this._id }}">
+      <img src="https://graph.facebook.com/{{ this.services.facebook.id }}/picture" class="headerTinymanPhoto"  alt="{{ this.profile.nombre }}" title="{{ this.profile.nombre }}" data-profile="{{ this._id }}">
     </td>
     <td>{{ this.profile.nombre }}</td>
     <td>{{ this.profile.apellido }}</td>
@@ -49,4 +49,48 @@
     <td>{{ busDescripcion }}</td>
     <td>{{ roomDescripcion }}</td>
   </tr>
+</template>
+
+<template name="agenda">
+    <h3>
+        Agenda
+    </h3>
+    <div>
+        <p>
+            Total de usuarios:
+            <span> {{ pax.count }} </span>
+        </p>
+    </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Foto</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Documento</th>
+            <th>Teléfono</th>
+            <th>Contacto de Emergencia</th>
+            <th>Obra Social</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each pax }}
+            {{> paxAgendaDetail}}
+        {{/each}}
+        </tbody>
+    </table>
+</template>
+
+<template name="paxAgendaDetail">
+    <tr>
+        <td>
+            <img src="https://graph.facebook.com/{{ this.services.facebook.id }}/picture" class="headerTinymanPhoto"  alt="{{ this.profile.nombre }}" title="{{ this.profile.nombre }}" data-profile="{{ this._id }}">
+        </td>
+        <td>{{ this.profile.nombre }}</td>
+        <td>{{ this.profile.apellido }}</td>
+        <td>{{ this.profile.documento }}</td>
+        <td>{{ this.profile.telefono }}</td>
+        <td>{{ this.profile.telefonoEmergencia }}</td>
+        <td>{{ this.profile.obraSocial }}</td>
+    </tr>
 </template>
