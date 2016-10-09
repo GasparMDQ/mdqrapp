@@ -197,6 +197,17 @@ Router.route('/eventos/edit/:_id/report', {
     name: 'eventReport'
 });
 
+
+Router.route('/eventos/agenda', {
+    action: function () {
+        if (this.ready()) {
+            this.render('agenda', {});
+        } else {
+            this.render('Loading');
+        }
+    },
+    name: 'agenda'
+});
 /*
 Router.map(function () {
 

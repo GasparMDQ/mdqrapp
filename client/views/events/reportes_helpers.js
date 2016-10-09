@@ -28,6 +28,9 @@ if (Meteor.isClient) {
         }
     });
 
-
-
+    Template.agenda.helpers({
+        pax: function () {
+            return Meteor.users.find({}, {sort: { 'profile.name': 1}});
+        }
+    });
 }
