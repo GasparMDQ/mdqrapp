@@ -65,6 +65,7 @@
         <thead>
         <tr>
             <th>Foto</th>
+            <th>Nombre en Facebook</th>
             <th>Nombre</th>
             <th>Apellido</th>
             <th>Documento</th>
@@ -86,6 +87,7 @@
         <td>
             <img src="https://graph.facebook.com/{{ this.services.facebook.id }}/picture" class="headerTinymanPhoto"  alt="{{ this.profile.nombre }}" title="{{ this.profile.nombre }}" data-profile="{{ this._id }}">
         </td>
+        <td>{{ this.profile.name }}</td>
         <td>{{ this.profile.nombre }}</td>
         <td>{{ this.profile.apellido }}</td>
         <td>{{ this.profile.documento }}</td>
