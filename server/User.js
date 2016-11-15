@@ -150,11 +150,11 @@ Meteor.methods({
             // Checkout del micro
             var bus = Rows.findOne({
                 "eventId": data.eventId,
-                "elements.pax": Meteor.user()._id
+                "elements.pax": data.userId
             });
             if(bus) {
                 Rows.update(
-                    {"_id": bus._id, "elements.pax": Meteor.user()._id},
+                    {"_id": bus._id, "elements.pax": Meteor.data.userId},
                     {
                         "$set": {
                             "elements.$.pax": ""
