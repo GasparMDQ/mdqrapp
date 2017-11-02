@@ -132,17 +132,13 @@ Meteor.methods({
 
         if (index > -1) {
             eventos.splice(index, 1);
-            Meteor.users.update({"_id":data.userId}, {$set: {
-                "eventos": _.uniq(eventos),
-                "pago": false,
-                "sena": false
-            }});
 
             // Checkout del cuarto
             var room = Rooms.findOne({
                 "pax": { $in: [data.userId] },
                 "eventId": data.eventId
             });
+
             if(room) {
                 Rooms.update( { "_id": room._id }, { $pull: { "pax": data.userId } } );
             }
@@ -152,9 +148,10 @@ Meteor.methods({
                 "eventId": data.eventId,
                 "elements.pax": data.userId
             });
+
             if(bus) {
                 Rows.update(
-                    {"_id": bus._id, "elements.pax": Meteor.data.userId},
+                    {"_id": bus._id, "elements.pax": data.userId},
                     {
                         "$set": {
                             "elements.$.pax": ""
@@ -163,6 +160,11 @@ Meteor.methods({
                 );
             }
 
+            Meteor.users.update({"_id":data.userId}, {$set: {
+                "eventos": _.uniq(eventos),
+                "pago": false,
+                "sena": false
+            }});
         }
     }
 
